@@ -21,10 +21,9 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: VSBuild@1
+- task: CmdLine@2
   inputs:
-    solution: '**\*.sln'
-    msbuildArgs: '--runtime win10-x64'
+    script: 'dotnet build --runtime win-x64'
 
 
 - task: ArchiveFiles@2
