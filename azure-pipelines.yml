@@ -24,11 +24,11 @@ steps:
 - task: VSBuild@1
   inputs:
     solution: '**\*.sln'
-    msbuildArgs: '-r win10-x64'
+    msbuildArgs: '--runtime win10-x64'
 - task: CmdLine@2
   displayName: 编译
   inputs:
-    script: 'dotnet build -r win10-x64'
+    script: 'dotnet build --runtime win10-x64'
 
 - task: ArchiveFiles@2
   displayName: 压缩文件
