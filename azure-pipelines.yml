@@ -20,6 +20,11 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '**\*.sln'
+    msbuildArgs: '-r win10-x64'
 - task: CmdLine@2
   displayName: 编译
   inputs:
