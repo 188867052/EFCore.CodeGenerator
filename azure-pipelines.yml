@@ -25,10 +25,7 @@ steps:
   inputs:
     solution: '**\*.sln'
     msbuildArgs: '--runtime win10-x64'
-- task: CmdLine@2
-  displayName: 编译
-  inputs:
-    script: 'dotnet build --runtime win10-x64'
+
 
 - task: ArchiveFiles@2
   displayName: 压缩文件
