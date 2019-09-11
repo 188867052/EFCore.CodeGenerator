@@ -1,8 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-16"?>
 <config>
-  <entity Name="Person">
+  <entity Name="Class">
+    <property Name="Id" Summary="主键" />
+    <property Name="Name" Summary="名称" />
+    <property Name="HeadTeacherId" Summary="班主任ID" />
+    <property Name="CreateTime" Summary="创建时间" />
+    <property Name="UpdateTime" Summary="更新时间" />
+  </entity>
+  <entity Name="Course">
+    <property Name="Id" Summary="主键" />
+    <property Name="Name" Summary="名称" />
+    <property Name="TeacherId" Summary="教师ID" />
+    <property Name="CreateTime" Summary="创建时间" />
+    <property Name="UpdateTime" Summary="更新时间" />
+  </entity>
+  <entity Name="CourseScore">
+    <property Name="Id" Summary="主键" />
+    <property Name="Score" Summary="分数" />
+    <property Name="StudentId" Summary="学生ID" />
+    <property Name="CourseId" Summary="课程ID" />
+    <property Name="CreateTime" Summary="创建时间" />
+    <property Name="UpdateTime" Summary="更新时间" />
+  </entity>
+  <entity Name="Student">
+    <property Name="Name" Summary="名称" />
+    <property Name="Sex" Summary="性别" />
+    <property Name="Id" Summary="主键" />
+    <property Name="ClassId" Summary="班级ID" />
+    <property Name="CreateTime" Summary="创建时间" />
+    <property Name="UpdateTime" Summary="更新时间" />
+  </entity>
+  <entity Name="Teacher">
     <property Name="Id" Summary="主键" />
     <property Name="Name" Summary="名称" />
     <property Name="Sex" Summary="性别" />
+    <property Name="CreateTime" Summary="创建时间" />
+    <property Name="UpdateTime" Summary="更新时间" />
+  </entity>
+  <entity Name="TeacherCourseMapping">
+    <property Name="Id" Summary="主键" />
+    <property Name="CourseId" Summary="课程ID" />
+    <property Name="TeacherId" Summary="教师ID" />
+    <property Name="CreateTime" Summary="创建时间" />
+    <property Name="UpdateTime" Summary="更新时间" />
   </entity>
 </config>
