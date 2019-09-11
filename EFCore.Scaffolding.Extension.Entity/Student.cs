@@ -34,5 +34,17 @@ namespace Entities
         /// 更新时间.
         /// </summary>
         public DateTime? UpdateTime { get; set; }
+
+        /// <summary>
+        /// 地址.
+        /// </summary>
+        public string Address { get; set; }
+
+        /// <summary>
+        /// 联系电话.
+        /// </summary>
+        public string Mobile { get; set; }
+
+        public Class Class { get; set; }
     }
 }

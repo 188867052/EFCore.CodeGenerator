@@ -13,7 +13,6 @@
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
     using Microsoft.EntityFrameworkCore.Metadata.Internal;
-    using ReleaseManage.ControllerHelper.Scaffolding;
 
     public abstract class CSharpDbContextGeneratorBase : ICSharpDbContextGenerator
     {

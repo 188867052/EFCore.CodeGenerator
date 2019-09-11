@@ -1,4 +1,4 @@
-﻿namespace ReleaseManage.Controllers
+﻿namespace EFCore.Scaffolding.Extension
 {
     using System;
     using System.Collections.Generic;
@@ -6,13 +6,15 @@
     using System.Linq;
     using System.Text;
     using System.Xml.Serialization;
+    using EFCore.Scaffolding.Extension.Models;
     using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
     using Microsoft.Extensions.DependencyInjection;
-    using ReleaseManage.ControllerHelper.Scaffolding.Models;
 
     internal static class Helper
     {
+        private static readonly string file;
+
         static Helper()
         {
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
@@ -20,7 +22,6 @@
             ScaffoldConfig = GetScaffoldConfig();
         }
 
-        private static string file;
 
         internal static ScaffoldConfig ScaffoldConfig { get; }
 
@@ -53,13 +54,13 @@
                 };
                 var properties = entityType.GetProperties();
 
-                IList<ControllerHelper.Scaffolding.Models.Property> propertyList = new List<ControllerHelper.Scaffolding.Models.Property>();
+                IList<Models.Property> propertyList = new List<Models.Property>();
                 foreach (var column in table.Columns)
                 {
                     // TODO: may has issue.
                     var property = properties.FirstOrDefault(o => o.Name.Equals(column.Name.Replace("_", string.Empty), StringComparison.InvariantCultureIgnoreCase));
                     var configProperty = configEntity?.Properties.FirstOrDefault(o => o.Name == property.Name);
-                    var p = new ControllerHelper.Scaffolding.Models.Property
+                    var p = new Models.Property
                     {
                         Name = property.Name,
                         //ColumnName = field.Name,

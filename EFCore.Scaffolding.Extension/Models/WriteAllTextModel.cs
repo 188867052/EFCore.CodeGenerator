@@ -1,11 +1,11 @@
-﻿namespace ReleaseManage.ControllerHelper.Scaffolding.Models
+﻿namespace EFCore.Scaffolding.Extension.Models
 {
     internal class WriteAllTextModel
     {
         public WriteAllTextModel(string code, string path)
         {
-            this.Code = code;
-            this.Path = path;
+            Code = code;
+            Path = path;
         }
 
         public string Code { get; set; }

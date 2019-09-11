@@ -1,12 +1,12 @@
-﻿namespace ReleaseManage.Controllers
+﻿namespace EFCore.Scaffolding.Extension
 {
     using System;
     using System.Linq;
+    using EFCore.Scaffolding.Extension.Models;
     using JetBrains.Annotations;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-    using ReleaseManage.ControllerHelper.Scaffolding.Models;
 
     internal class MyEntityTypeGenerator
         : CSharpEntityTypeGeneratorBase
@@ -36,9 +36,9 @@
             {
                 foreach (var p in table.Properties.Where(p => !string.IsNullOrEmpty(p.Summary) && p.Name == property.Name))
                 {
-                    this.IndentedStringBuilder.AppendLine($"/// <summary>");
-                    this.IndentedStringBuilder.AppendLine($"/// {p.Summary}.");
-                    this.IndentedStringBuilder.AppendLine($"/// </summary>");
+                    IndentedStringBuilder.AppendLine($"/// <summary>");
+                    IndentedStringBuilder.AppendLine($"/// {p.Summary}.");
+                    IndentedStringBuilder.AppendLine($"/// </summary>");
                 }
             }
         }
@@ -48,9 +48,9 @@
             var table = Helper.ScaffoldConfig.Entities.FirstOrDefault(o => o.Name == entityType.Name);
             if (table != null && !string.IsNullOrEmpty(table.Summary))
             {
-                this.IndentedStringBuilder.AppendLine($"/// <summary>");
-                this.IndentedStringBuilder.AppendLine($"/// {table.Summary}.");
-                this.IndentedStringBuilder.AppendLine($"/// </summary>");
+                IndentedStringBuilder.AppendLine($"/// <summary>");
+                IndentedStringBuilder.AppendLine($"/// {table.Summary}.");
+                IndentedStringBuilder.AppendLine($"/// </summary>");
             }
         }
 
@@ -65,9 +65,9 @@
                     if (ns != default)
                     {
                         string us = $"using {ns.Value};";
-                        if (!this.IndentedStringBuilder.ToString().Contains(us, StringComparison.InvariantCulture))
+                        if (!IndentedStringBuilder.ToString().Contains(us, StringComparison.InvariantCulture))
                         {
-                            this.IndentedStringBuilder.AppendLine(us);
+                            IndentedStringBuilder.AppendLine(us);
                         }
                     }
                 }

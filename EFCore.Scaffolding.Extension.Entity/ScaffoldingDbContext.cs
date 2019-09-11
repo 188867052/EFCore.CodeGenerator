@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities
 {
-    public partial class TestDbContext : DbContext
+    public partial class ScaffoldingDbContext : DbContext
     {
-        public TestDbContext()
+        public ScaffoldingDbContext()
         {
         }
 
-        public TestDbContext(DbContextOptions<TestDbContext> options)
+        public ScaffoldingDbContext(DbContextOptions<ScaffoldingDbContext> options)
             : base(options)
         {
         }
@@ -32,7 +32,7 @@ namespace Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=47.105.214.235;Initial Catalog=Test;Persist Security Info=True;User ID=sa;Password=931592457czA");
+                optionsBuilder.UseSqlServer("Data Source=47.105.214.235;Initial Catalog=Scaffolding;Persist Security Info=True;User ID=sa;Password=931592457czA");
             }
         }
 
@@ -124,11 +124,19 @@ namespace Entities
 
                 entity.Property(e => e.Id).HasColumnName("id");
 
+                entity.Property(e => e.Address)
+                    .HasColumnName("address")
+                    .HasMaxLength(10);
+
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.Mobile)
+                    .HasColumnName("mobile")
+                    .HasMaxLength(10);
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -141,6 +149,11 @@ namespace Entities
                 entity.Property(e => e.UpdateTime)
                     .HasColumnName("update_time")
                     .HasColumnType("datetime");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.Student)
+                    .HasForeignKey(d => d.ClassId)
+                    .HasConstraintName("FK_student_class");
             });
 
             modelBuilder.Entity<Teacher>(entity =>

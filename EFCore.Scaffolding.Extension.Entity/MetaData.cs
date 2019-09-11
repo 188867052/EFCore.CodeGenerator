@@ -2,7 +2,7 @@
 {
     using System.Collections.Generic;
 
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1509:Opening braces should not be preceded by blank line", Justification = "<挂起>")]
+     [System.Diagnostics.CodeAnalysis.SuppressMessage("StyleCop.CSharp.LayoutRules", "SA1509:Opening braces should not be preceded by blank line", Justification = "<挂起>")]
     public static class MetaData
     {
         public static Dictionary<string, string> Mapping = new Dictionary<string, string>
@@ -15,6 +15,8 @@
             { "Student.ClassId", "class_id" },
             { "Student.CreateTime", "create_time" },
             { "Student.UpdateTime", "update_time" },
+            { "Student.Address", "address" },
+            { "Student.Mobile", "mobile" },
 
             { "Class.PrimaryKey", "id" },
             { "Class", "class" },

@@ -1,4 +1,4 @@
-﻿namespace ReleaseManage.ControllerHelper.Scaffolding.Models
+﻿namespace EFCore.Scaffolding.Extension.Models
 {
     using System;
     using System.ComponentModel;

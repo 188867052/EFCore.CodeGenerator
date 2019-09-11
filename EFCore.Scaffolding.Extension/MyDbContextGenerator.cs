@@ -1,13 +1,13 @@
-﻿namespace ReleaseManage.Controllers
+﻿namespace EFCore.Scaffolding.Extension
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using EFCore.Scaffolding.Extension.Models;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.EntityFrameworkCore.Metadata;
     using Microsoft.EntityFrameworkCore.Scaffolding;
     using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-    using ReleaseManage.ControllerHelper.Scaffolding.Models;
 
     internal class MyDbContextGenerator : CSharpDbContextGeneratorBase
     {
@@ -38,14 +38,14 @@
                 if (ns != null)
                 {
                     string us = $"using {ns.Value};";
-                    if (!this.sb.ToString().Contains(us, StringComparison.InvariantCulture))
+                    if (!sb.ToString().Contains(us, StringComparison.InvariantCulture))
                     {
-                        this.sb.AppendLine(us);
+                        sb.AppendLine(us);
                     }
                 }
             }
 
-            this.sb.AppendLine("using Microsoft.EntityFrameworkCore.Storage.ValueConversion;");
+            sb.AppendLine("using Microsoft.EntityFrameworkCore.Storage.ValueConversion;");
         }
 
         protected override List<string> Lines(IProperty property)

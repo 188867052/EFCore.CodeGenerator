@@ -29,6 +29,8 @@
     <property Name="ClassId" Summary="班级ID" />
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Summary="更新时间" />
+    <property Name="Address" Summary="地址" />
+    <property Name="Mobile" Summary="联系电话" />
   </entity>
   <entity Name="Teacher">
     <property Name="Id" Summary="主键" />

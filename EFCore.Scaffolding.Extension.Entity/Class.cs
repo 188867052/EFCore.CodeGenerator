@@ -5,6 +5,11 @@ namespace Entities
 {
     public partial class Class
     {
+        public Class()
+        {
+            this.Student = new HashSet<Student>();
+        }
+
         /// <summary>
         /// 主键.
         /// </summary>
@@ -31,5 +36,7 @@ namespace Entities
         public DateTime? UpdateTime { get; set; }
 
         public Teacher HeadTeacher { get; set; }
+
+        public ICollection<Student> Student { get; set; }
     }
 }
