@@ -20,10 +20,11 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
+
 - task: CmdLine@2
-  displayName: 编译
   inputs:
-    script: 'dotnet build -r win10-x64'
+    script: 'dotnet build --runtime win-x64'
+
 
 - task: ArchiveFiles@2
   displayName: 压缩文件
