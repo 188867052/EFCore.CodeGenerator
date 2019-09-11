@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-16"?>
+<config>
+  <entity Name="Person">
+    <property Name="Id" Summary="主键" />
+    <property Name="Name" Summary="名称" />
+    <property Name="Sex" Summary="性别" />
+  </entity>
+</config>
