@@ -1,0 +1,1 @@
+[![Build Status](https://542153354-qq.visualstudio.com/EFCore.Scaffolding.Extension/_apis/build/status/Generator?branchName=master)](https://542153354-qq.visualstudio.com/EFCore.Scaffolding.Extension/_build/latest?definitionId=19&branchName=master)
