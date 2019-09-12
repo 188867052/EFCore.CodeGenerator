@@ -35,6 +35,9 @@ namespace Entities
         /// </summary>
         public DateTime? UpdateTime { get; set; }
 
+        /// <summary>
+        /// 年级.
+        /// </summary>
         public string Grade { get; set; }
 
         public Teacher HeadTeacher { get; set; }
