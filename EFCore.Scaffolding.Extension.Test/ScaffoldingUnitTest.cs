@@ -39,7 +39,7 @@ namespace EFCore.Scaffolding.Extension.Test
                 isSuccess &= tableNameSuggests.Count == 0;
                 if (tableNameSuggests.Count != 0)
                 {
-                    this.output.WriteLine($"Spell Wrong, Table Name: {table.Name}.");
+                    this.output.WriteLine($"Typo: Table Name: {table.Name}.");
                     this.output.WriteLine("Suggestions:");
                     this.output.WriteLine($"{string.Join(Environment.NewLine, tableNameSuggests.Where(o => !o.Contains("-")).Select(o => "     " + o.Replace(" ", "_").ToLower()))}");
                     this.output.WriteLine(new string('-', 30));
@@ -50,7 +50,7 @@ namespace EFCore.Scaffolding.Extension.Test
                     var columnSuggests = this.FieldSpellCheckAndReturnSuggestionsWhenHasTypo(column.Name);
                     if (columnSuggests.Count != 0)
                     {
-                        this.output.WriteLine($"Spell Wrong, Table Name: {table.Name}, Column: {column.Name}.");
+                        this.output.WriteLine($"Typo: Table Name: {table.Name}, Column: {column.Name}.");
                         this.output.WriteLine("Suggestions:");
                         this.output.WriteLine($"{string.Join(Environment.NewLine, columnSuggests.Where(o => !o.Contains("-")).Select(o => "     " + o.Replace(" ", "_").ToLower()))}");
                         this.output.WriteLine(new string('-', 30));
