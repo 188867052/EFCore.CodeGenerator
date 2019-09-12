@@ -33,7 +33,7 @@ namespace EFCore.Scaffolding.Extension.Test
             bool isSuccess = true;
             foreach (var table in databaseModel.Tables)
             {
-                var tableNameSuggests = this.CheckFieldAndReturnSuggestions(table.Name);
+                var tableNameSuggests = this.FieldSpellCheckAndReturnSuggestionsWhenHasTypo(table.Name);
                 isSuccess &= tableNameSuggests.Count == 0;
                 if (tableNameSuggests.Count != 0)
                 {
@@ -45,7 +45,7 @@ namespace EFCore.Scaffolding.Extension.Test
 
                 foreach (var column in table.Columns)
                 {
-                    var columnSuggests = this.CheckFieldAndReturnSuggestions(column.Name);
+                    var columnSuggests = this.FieldSpellCheckAndReturnSuggestionsWhenHasTypo(column.Name);
                     if (columnSuggests.Count != 0)
                     {
                         this.output.WriteLine($"Spell Wrong, Table Name: {table.Name}, Column: {column.Name}.");
@@ -61,7 +61,7 @@ namespace EFCore.Scaffolding.Extension.Test
             }
         }
 
-        private List<string> CheckFieldAndReturnSuggestions(string filed)
+        private List<string> FieldSpellCheckAndReturnSuggestionsWhenHasTypo(string filed)
         {
             var directory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent;
             var file = directory.GetFiles("en_US.dic").First();
