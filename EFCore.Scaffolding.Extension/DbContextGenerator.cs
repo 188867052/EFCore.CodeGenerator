@@ -19,8 +19,8 @@
     public class DbContextGenerator
     {
         public const string ConnectionString = "Data Source=47.105.214.235;Initial Catalog=Scaffolding;Persist Security Info=True;User ID=sa;Password=931592457czA";
-
         private readonly string directory;
+        private static DatabaseModel DatabaseModel;
 
         internal IList<WriteAllTextModel> WriteAllTextModels { get; set; }
 
@@ -56,19 +56,22 @@
 
         public static DatabaseModel GetDatabaseModel()
         {
-            IServiceCollection services = new ServiceCollection()
-               .AddEntityFrameworkDesignTimeServices()
-               .AddSingleton<ICSharpDbContextGenerator, MyDbContextGenerator>()
-               .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>()
-               .AddSingleton<IScaffoldingModelFactory, MyScaffoldingModelFactory>();
+            if (DatabaseModel == null)
+            {
+                IServiceCollection services = new ServiceCollection()
+                   .AddEntityFrameworkDesignTimeServices()
+                   .AddSingleton<ICSharpDbContextGenerator, MyDbContextGenerator>()
+                   .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>()
+                   .AddSingleton<IScaffoldingModelFactory, MyScaffoldingModelFactory>();
 
-            new SqlServerDesignTimeServices().ConfigureDesignTimeServices(services);
-            var logger = services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
-            var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
-            var connection = new SqlConnection(ConnectionString);
-            var databaseModel = databaseModelFactory.Create(connection, new List<string>(), new List<string>());
+                new SqlServerDesignTimeServices().ConfigureDesignTimeServices(services);
+                var logger = services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
+                var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
+                var connection = new SqlConnection(ConnectionString);
+                DatabaseModel = databaseModelFactory.Create(connection, new List<string>(), new List<string>());
+            }
 
-            return databaseModel;
+            return DatabaseModel;
         }
 
         internal void WriteCode(Dictionary<string, string> dictionary, string @namespace)

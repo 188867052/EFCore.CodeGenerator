@@ -12,6 +12,7 @@ namespace EFCore.Scaffolding.Extension.Test
     public class ScaffoldingUnitTest
     {
         private readonly ITestOutputHelper output;
+        private static WordList WordList;
 
         public ScaffoldingUnitTest(ITestOutputHelper outputHelper)
         {
@@ -73,12 +74,21 @@ namespace EFCore.Scaffolding.Extension.Test
             }
         }
 
+        private WordList GetWordList()
+        {
+            if (WordList == null)
+            {
+                var directory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent;
+                var file = directory.GetFiles("en_US.dic").First();
+                WordList = WordList.CreateFromFiles(file.FullName);
+            }
+
+            return WordList;
+        }
+
         private List<string> FieldSpellCheckAndReturnSuggestionsWhenHasTypo(string filed)
         {
-            var directory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent;
-            var file = directory.GetFiles("en_US.dic").First();
-            var dictionary = WordList.CreateFromFiles(file.FullName);
-
+            var dictionary = this.GetWordList();
             var valuesToCheck = filed.Split('_');
             bool ok = true;
             var suggests = new List<string>();
