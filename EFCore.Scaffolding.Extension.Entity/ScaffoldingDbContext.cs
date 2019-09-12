@@ -50,6 +50,10 @@ namespace Entities
                     .HasColumnName("create_time")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.Grade)
+                    .HasColumnName("grade")
+                    .HasMaxLength(10);
+
                 entity.Property(e => e.HeadTeacherId).HasColumnName("head_teacher_id");
 
                 entity.Property(e => e.Name)

@@ -25,6 +25,7 @@
             { "Class.HeadTeacherId", "head_teacher_id" },
             { "Class.CreateTime", "create_time" },
             { "Class.UpdateTime", "update_time" },
+            { "Class.Grade", "grade" },
 
             { "Course.PrimaryKey", "id" },
             { "Course", "course" },

@@ -6,6 +6,7 @@
     <property Name="HeadTeacherId" Summary="班主任ID" />
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Summary="更新时间" />
+    <property Name="Grade" />
   </entity>
   <entity Name="Course">
     <property Name="Id" Summary="主键" />

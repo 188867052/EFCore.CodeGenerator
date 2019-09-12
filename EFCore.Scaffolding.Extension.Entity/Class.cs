@@ -35,6 +35,8 @@ namespace Entities
         /// </summary>
         public DateTime? UpdateTime { get; set; }
 
+        public string Grade { get; set; }
+
         public Teacher HeadTeacher { get; set; }
 
         public ICollection<Student> Student { get; set; }
