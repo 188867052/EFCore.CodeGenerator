@@ -101,7 +101,7 @@
                 Directory.CreateDirectory(directory);
             }
 
-            WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(directory, "MetaData.cs")));
+            WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(directory, "_MetaData.cs")));
         }
 
         internal void WriteTo()
