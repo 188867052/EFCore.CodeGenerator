@@ -24,6 +24,8 @@ namespace EFCore.Scaffolding.Extension.Test
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
             var _Scaffolding = di.Parent.Parent.Parent.Parent.GetFiles("_Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
             var list = ScaffoldingHelper.Scaffolding("Entities", "ScaffoldingDbContext", _Scaffolding.Directory.FullName);
+
+            this.output.WriteLine(string.Join(Environment.NewLine, list));
         }
 
         [Fact]
