@@ -22,10 +22,20 @@ namespace EFCore.Scaffolding.Extension.Test
         public void Generate_entities()
         {
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
-            var _Scaffolding = di.Parent.Parent.Parent.Parent.GetFiles("_Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
-            var list = ScaffoldingHelper.Scaffolding("Entities", "ScaffoldingDbContext", _Scaffolding.Directory.FullName);
+            var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles("_Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
+            var list = ScaffoldingHelper.Scaffolding("Entities", "ScaffoldingDbContext", scaffoldingFile.Directory.FullName);
 
             this.output.WriteLine(string.Join(Environment.NewLine, list));
+        }
+
+        [Fact]
+        public void Database_check_all_table_must_has_primary_key()
+        {
+            var databaseModel = DbContextGenerator.GetDatabaseModel();
+            foreach (var table in databaseModel.Tables)
+            {
+                Assert.NotEmpty(table.PrimaryKey.Columns);
+            }
         }
 
         [Fact]

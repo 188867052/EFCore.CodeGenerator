@@ -36,9 +36,9 @@
             {
                 foreach (var p in table.Properties.Where(p => !string.IsNullOrEmpty(p.Summary) && p.Name == property.Name))
                 {
-                    IndentedStringBuilder.AppendLine($"/// <summary>");
-                    IndentedStringBuilder.AppendLine($"/// {p.Summary}.");
-                    IndentedStringBuilder.AppendLine($"/// </summary>");
+                    this.IndentedStringBuilder.AppendLine($"/// <summary>");
+                    this.IndentedStringBuilder.AppendLine($"/// {p.Summary}.");
+                    this.IndentedStringBuilder.AppendLine($"/// </summary>");
                 }
             }
         }
@@ -48,9 +48,9 @@
             var table = Helper.ScaffoldConfig.Entities.FirstOrDefault(o => o.Name == entityType.Name);
             if (table != null && !string.IsNullOrEmpty(table.Summary))
             {
-                IndentedStringBuilder.AppendLine($"/// <summary>");
-                IndentedStringBuilder.AppendLine($"/// {table.Summary}.");
-                IndentedStringBuilder.AppendLine($"/// </summary>");
+                this.IndentedStringBuilder.AppendLine($"/// <summary>");
+                this.IndentedStringBuilder.AppendLine($"/// {table.Summary}.");
+                this.IndentedStringBuilder.AppendLine($"/// </summary>");
             }
         }
 
@@ -65,9 +65,9 @@
                     if (ns != default)
                     {
                         string us = $"using {ns.Value};";
-                        if (!IndentedStringBuilder.ToString().Contains(us, StringComparison.InvariantCulture))
+                        if (!this.IndentedStringBuilder.ToString().Contains(us, StringComparison.InvariantCulture))
                         {
-                            IndentedStringBuilder.AppendLine(us);
+                            this.IndentedStringBuilder.AppendLine(us);
                         }
                     }
                 }

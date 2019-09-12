@@ -4,8 +4,8 @@
     {
         public WriteAllTextModel(string code, string path)
         {
-            Code = code;
-            Path = path;
+            this.Code = code;
+            this.Path = path;
         }
 
         public string Code { get; set; }

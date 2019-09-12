@@ -38,14 +38,14 @@
                 if (ns != null)
                 {
                     string us = $"using {ns.Value};";
-                    if (!sb.ToString().Contains(us, StringComparison.InvariantCulture))
+                    if (!this.sb.ToString().Contains(us, StringComparison.InvariantCulture))
                     {
-                        sb.AppendLine(us);
+                        this.sb.AppendLine(us);
                     }
                 }
             }
 
-            sb.AppendLine("using Microsoft.EntityFrameworkCore.Storage.ValueConversion;");
+            this.sb.AppendLine("using Microsoft.EntityFrameworkCore.Storage.ValueConversion;");
         }
 
         protected override List<string> Lines(IProperty property)

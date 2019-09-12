@@ -1,20 +1,20 @@
 ﻿namespace EFCore.Scaffolding.Extension
 {
     using System.Collections.Generic;
+    using System.Data.SqlClient;
     using System.IO;
     using System.Linq;
     using System.Text;
+    using EFCore.Scaffolding.Extension.Models;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.EntityFrameworkCore.Metadata.Internal;
     using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
-    using Microsoft.Extensions.DependencyInjection;
-    using System.Data.SqlClient;
+    using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
     using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
     using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
-    using EFCore.Scaffolding.Extension.Models;
-    using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+    using Microsoft.Extensions.DependencyInjection;
 
     public class DbContextGenerator
     {
@@ -26,8 +26,8 @@
 
         internal DbContextGenerator(string @namespace, string contextName, string writeCodePath)
         {
-            WriteAllTextModels = new List<WriteAllTextModel>();
-            directory = writeCodePath;
+            this.WriteAllTextModels = new List<WriteAllTextModel>();
+            this.directory = writeCodePath;
 
             IServiceCollection services = new ServiceCollection()
                 .AddEntityFrameworkDesignTimeServices()
@@ -42,16 +42,16 @@
             var databaseModel = GetDatabaseModel();
             Model model = (Model)scaffoldingModelFactory.Create(databaseModel, false);
             var dbContextCode = dbContextGenerator.WriteCode(model, @namespace, contextName, ConnectionString, false, false);
-            WriteAllTextModels.Add(new WriteAllTextModel(dbContextCode, Path.Combine(directory, contextName + ".cs")));
+            this.WriteAllTextModels.Add(new WriteAllTextModel(dbContextCode, Path.Combine(this.directory, contextName + ".cs")));
 
             Helper.FormattingXml(model, databaseModel);
             foreach (var entityType in model.GetEntityTypes())
             {
                 var entityCode = entityTypeGenerator.WriteCode(entityType, @namespace, false);
-                WriteAllTextModels.Add(new WriteAllTextModel(entityCode, Path.Combine(directory, entityType.Name + ".cs")));
+                this.WriteAllTextModels.Add(new WriteAllTextModel(entityCode, Path.Combine(this.directory, entityType.Name + ".cs")));
             }
 
-            WriteCode(scaffoldingModelFactory.Data, @namespace);
+            this.WriteCode(scaffoldingModelFactory.Data, @namespace);
         }
 
         public static DatabaseModel GetDatabaseModel()
@@ -96,22 +96,22 @@
             sb.AppendLine("        };");
             sb.AppendLine("    }");
             sb.AppendLine("}");
-            if (!Directory.Exists(directory))
+            if (!Directory.Exists(this.directory))
             {
-                Directory.CreateDirectory(directory);
+                Directory.CreateDirectory(this.directory);
             }
 
-            WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(directory, "_MetaData.cs")));
+            this.WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(this.directory, "_MetaData.cs")));
         }
 
         internal void WriteTo()
         {
-            if (!Directory.Exists(directory))
+            if (!Directory.Exists(this.directory))
             {
-                Directory.CreateDirectory(directory);
+                Directory.CreateDirectory(this.directory);
             }
 
-            foreach (var model in WriteAllTextModels)
+            foreach (var model in this.WriteAllTextModels)
             {
                 File.WriteAllText(model.Path, model.Code, Encoding.UTF8);
             }
