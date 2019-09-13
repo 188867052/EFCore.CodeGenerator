@@ -45,16 +45,10 @@ steps:
     testRunTitle: '单元测试并代码生成'
     workingDirectory: 'd:/a/1/s/temp'
 
-- task: PublishCodeCoverageResults@1
-  inputs:
-    codeCoverageTool: 'JaCoCo'
-    summaryFileLocation: 'coverage'
-
 - task: BuildQualityChecks@6
   inputs:
     checkWarnings: true
-    warningFailOption: 'fixed'
-    warningThreshold: '10'
+    warningFailOption: 'build'
     inclusiveFiltering: true
     showStatistics: true
     checkCoverage: true
