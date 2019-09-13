@@ -39,10 +39,8 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: DotNetCoreCLI@2
-  displayName: dotnet test & code generator
   inputs:
-    command: 'test'
-    testRunTitle: '单元测试并代码生成'
+    command: 'build'
     workingDirectory: 'd:/a/1/s/temp'
 
 - task: BuildQualityChecks@6
@@ -55,6 +53,15 @@ steps:
     checkCoverage: true
     coverageFailOption: 'build'
     coverageType: 'blocks'
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet test & code generator
+  inputs:
+    command: 'test'
+    testRunTitle: '单元测试并代码生成'
+    workingDirectory: 'd:/a/1/s/temp'
+
+
 
 - task: CmdLine@2
   displayName: debug cmd dir
