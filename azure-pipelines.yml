@@ -42,6 +42,12 @@ steps:
   inputs:
     command: 'build'
     workingDirectory: 'd:/a/1/s/temp'
+    
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: 'JaCoCo'
+    summaryFileLocation: 'coverage'
+
 
 - task: BuildQualityChecks@6
   inputs:
