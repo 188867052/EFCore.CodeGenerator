@@ -56,6 +56,10 @@ namespace Entities
 
                 entity.Property(e => e.HeadTeacherId).HasColumnName("head_teacher_id");
 
+                entity.Property(e => e.Location)
+                    .HasColumnName("location")
+                    .HasMaxLength(10);
+
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
                     .HasMaxLength(50);

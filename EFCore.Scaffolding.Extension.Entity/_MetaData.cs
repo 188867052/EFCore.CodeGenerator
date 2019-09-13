@@ -26,6 +26,7 @@
             { "Class.CreateTime", "create_time" },
             { "Class.UpdateTime", "update_time" },
             { "Class.Grade", "grade" },
+            { "Class.Location", "location" },
 
             { "Course.PrimaryKey", "id" },
             { "Course", "course" },

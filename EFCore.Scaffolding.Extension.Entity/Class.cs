@@ -40,6 +40,11 @@ namespace Entities
         /// </summary>
         public string Grade { get; set; }
 
+        /// <summary>
+        /// 地址.
+        /// </summary>
+        public string Location { get; set; }
+
         public Teacher HeadTeacher { get; set; }
 
         public ICollection<Student> Student { get; set; }
