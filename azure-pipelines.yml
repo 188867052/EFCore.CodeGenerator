@@ -45,16 +45,6 @@ steps:
     testRunTitle: '单元测试并代码生成'
     workingDirectory: 'd:/a/1/s/temp'
 
-- task: BuildQualityChecks@6
-  inputs:
-    checkWarnings: true
-    warningFailOption: 'build'
-    inclusiveFiltering: true
-    showStatistics: true
-    checkCoverage: true
-    coverageFailOption: 'build'
-    coverageType: 'blocks'
-
 - task: CmdLine@2
   displayName: debug cmd dir
   inputs:
