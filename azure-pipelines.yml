@@ -48,7 +48,10 @@ steps:
 - task: BuildQualityChecks@6
   inputs:
     checkWarnings: true
-    warningFailOption: 'build'
+    warningFailOption: 'fixed'
+    warningThreshold: '10'
+    inclusiveFiltering: true
+    showStatistics: true
     checkCoverage: true
     coverageFailOption: 'build'
     coverageType: 'blocks'
