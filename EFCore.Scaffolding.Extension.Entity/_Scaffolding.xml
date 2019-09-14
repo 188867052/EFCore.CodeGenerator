@@ -24,6 +24,10 @@
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Summary="更新时间" />
   </entity>
+  <entity Name="Log">
+    <property Name="Identifier" />
+    <property Name="Message" />
+  </entity>
   <entity Name="Student">
     <property Name="Name" Summary="名称" />
     <property Name="Sex" Summary="性别" />

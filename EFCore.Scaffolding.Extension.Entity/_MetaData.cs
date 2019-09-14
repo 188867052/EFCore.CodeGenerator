@@ -60,6 +60,11 @@
             { "TeacherCourseMapping.TeacherId", "teacher_id" },
             { "TeacherCourseMapping.CreateTime", "create_time" },
             { "TeacherCourseMapping.UpdateTime", "update_time" },
+
+            { "Log.PrimaryKey", "identifier" },
+            { "Log", "log" },
+            { "Log.Identifier", "identifier" },
+            { "Log.Message", "message" },
         };
     }
 }
