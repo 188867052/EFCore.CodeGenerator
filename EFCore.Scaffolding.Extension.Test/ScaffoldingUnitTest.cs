@@ -4,6 +4,7 @@ namespace EFCore.Scaffolding.Extension.Test
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using System.Text;
     using Entities;
     using WeCantSpell.Hunspell;
     using Xunit;
@@ -17,6 +18,7 @@ namespace EFCore.Scaffolding.Extension.Test
         public ScaffoldingUnitTest(ITestOutputHelper outputHelper)
         {
             this.output = outputHelper;
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         [Fact]
