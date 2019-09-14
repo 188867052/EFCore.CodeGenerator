@@ -22,6 +22,8 @@ namespace Entities
 
         public virtual DbSet<CourseScore> CourseScore { get; set; }
 
+        public virtual DbSet<Log> Log { get; set; }
+
         public virtual DbSet<Student> Student { get; set; }
 
         public virtual DbSet<Teacher> Teacher { get; set; }
@@ -124,6 +126,21 @@ namespace Entities
                     .HasForeignKey<CourseScore>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_course_score_course");
+            });
+
+            modelBuilder.Entity<Log>(entity =>
+            {
+                entity.HasKey(e => e.Identifier);
+
+                entity.ToTable("log");
+
+                entity.Property(e => e.Identifier)
+                    .HasColumnName("identifier")
+                    .ValueGeneratedNever();
+
+                entity.Property(e => e.Message)
+                    .HasColumnName("message")
+                    .HasMaxLength(50);
             });
 
             modelBuilder.Entity<Student>(entity =>
