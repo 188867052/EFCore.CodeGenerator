@@ -11,7 +11,8 @@
     public class MyScaffoldingModelFactory
         : RelationalScaffoldingModelFactoryBase
     {
-        public MyScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper) : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper)
+        public MyScaffoldingModelFactory([NotNull] IOperationReporter reporter, [NotNull] ICandidateNamingService candidateNamingService, [NotNull] IPluralizer pluralizer, [NotNull] ICSharpUtilities cSharpUtilities, [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper)
+            : base(reporter, candidateNamingService, pluralizer, cSharpUtilities, scaffoldingTypeMapper)
         {
             this.Data = new Dictionary<string, string>();
         }

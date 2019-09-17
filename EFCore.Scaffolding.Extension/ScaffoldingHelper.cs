@@ -15,5 +15,4 @@ namespace EFCore.Scaffolding.Extension
             return generator.WriteAllTextModels.Select(o => o.Code);
         }
     }
-
 }

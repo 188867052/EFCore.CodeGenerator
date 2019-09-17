@@ -23,7 +23,6 @@
         private readonly IScaffoldingProviderCodeGenerator _legacyProviderCodeGenerator;
         private readonly IProviderConfigurationCodeGenerator _providerConfigurationCodeGenerator;
         private readonly IAnnotationCodeGenerator _annotationCodeGenerator;
-        protected IndentedStringBuilder sb;
         private bool _entityTypeBuilderInitialized;
 
         public CSharpDbContextGeneratorBase(
@@ -47,6 +46,8 @@
             this._annotationCodeGenerator = annotationCodeGenerator;
             this._code = cSharpHelper;
         }
+
+        protected IndentedStringBuilder sb { get; set; }
 
         protected virtual void GenerateNameSpace()
         {

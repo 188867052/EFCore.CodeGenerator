@@ -18,10 +18,9 @@
         static Helper()
         {
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
-            file = Directory.GetFiles(di.Parent.Parent.Parent.Parent.FullName, "_Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
+            file = Directory.GetFiles(di.Parent.Parent.Parent.Parent.FullName, ".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
             ScaffoldConfig = GetScaffoldConfig();
         }
-
 
         internal static ScaffoldConfig ScaffoldConfig { get; }
 
@@ -49,7 +48,6 @@
                 Entity entity = new Entity
                 {
                     Name = entityType.Name,
-                    //TableName = table.Name,
                     Summary = configEntity?.Summary,
                 };
                 var properties = entityType.GetProperties();
@@ -63,7 +61,6 @@
                     var p = new Models.Property
                     {
                         Name = property.Name,
-                        //ColumnName = field.Name,
                         Summary = configProperty?.Summary,
                         CSharpType = configProperty?.CSharpType,
                         Converter = configProperty?.Converter,

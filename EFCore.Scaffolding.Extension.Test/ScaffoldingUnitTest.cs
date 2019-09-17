@@ -13,7 +13,7 @@ namespace EFCore.Scaffolding.Extension.Test
     public class ScaffoldingUnitTest
     {
         private readonly ITestOutputHelper output;
-        private static WordList WordList;
+        private static WordList wordList;
 
         public ScaffoldingUnitTest(ITestOutputHelper outputHelper)
         {
@@ -76,16 +76,34 @@ namespace EFCore.Scaffolding.Extension.Test
             }
         }
 
+        [Fact]
+        public void Test_insert_entity()
+        {
+            using (ScaffoldingDbContext testContext = new ScaffoldingDbContext())
+            {
+                var entity = new Student
+                {
+                    Name = "test",
+                    Sex = "ÄÐ",
+                    CreateTime = DateTime.Now,
+                    UpdateTime = DateTime.Now,
+                };
+                testContext.Student.Add(entity);
+                int count = testContext.SaveChanges();
+                Assert.Equal(1, count);
+            }
+        }
+
         private WordList GetWordList()
         {
-            if (WordList == null)
+            if (wordList == null)
             {
                 var directory = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent;
                 var file = directory.GetFiles("en_US.dic").First();
-                WordList = WordList.CreateFromFiles(file.FullName);
+                wordList = WordList.CreateFromFiles(file.FullName);
             }
 
-            return WordList;
+            return wordList;
         }
 
         private List<string> FieldSpellCheckAndReturnSuggestionsWhenHasTypo(string filed)
@@ -105,24 +123,6 @@ namespace EFCore.Scaffolding.Extension.Test
             }
 
             return suggests;
-        }
-
-        [Fact]
-        public void Test_insert_entity()
-        {
-            using (ScaffoldingDbContext testContext = new ScaffoldingDbContext())
-            {
-                var entity = new Student
-                {
-                    Name = "test",
-                    Sex = "ÄÐ",
-                    CreateTime = DateTime.Now,
-                    UpdateTime = DateTime.Now,
-                };
-                testContext.Student.Add(entity);
-                int count = testContext.SaveChanges();
-                Assert.Equal(1, count);
-            }
         }
     }
 }

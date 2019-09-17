@@ -20,7 +20,7 @@
     {
         public const string ConnectionString = "Data Source=47.105.214.235;Initial Catalog=Scaffolding;Persist Security Info=True;User ID=sa;Password=931592457czA";
         private readonly string directory;
-        private static DatabaseModel DatabaseModel;
+        private static DatabaseModel databaseModel;
 
         internal IList<WriteAllTextModel> WriteAllTextModels { get; set; }
 
@@ -56,7 +56,7 @@
 
         public static DatabaseModel GetDatabaseModel()
         {
-            if (DatabaseModel == null)
+            if (databaseModel == null)
             {
                 IServiceCollection services = new ServiceCollection()
                    .AddEntityFrameworkDesignTimeServices()
@@ -68,10 +68,10 @@
                 var logger = services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
                 var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
                 var connection = new SqlConnection(ConnectionString);
-                DatabaseModel = databaseModelFactory.Create(connection, new List<string>(), new List<string>());
+                databaseModel = databaseModelFactory.Create(connection, new List<string>(), new List<string>());
             }
 
-            return DatabaseModel;
+            return databaseModel;
         }
 
         internal void WriteCode(Dictionary<string, string> dictionary, string @namespace)
@@ -81,8 +81,8 @@
             sb.AppendLine("{");
             sb.AppendLine("    using System.Collections.Generic;");
             sb.AppendLine();
-            sb.AppendLine("     [System.Diagnostics.CodeAnalysis.SuppressMessage(\"StyleCop.CSharp.LayoutRules\", \"SA1509:Opening braces should not be preceded by blank line\", Justification = \"<挂起>\")]");
-            sb.AppendLine($"    public static class MetaData");
+            sb.AppendLine("    [System.Diagnostics.CodeAnalysis.SuppressMessage(\"StyleCop.CSharp.LayoutRules\", \"SA1509:Opening braces should not be preceded by blank line\", Justification = \"<挂起>\")]");
+            sb.AppendLine("    public static class MetaData");
             sb.AppendLine("    {");
             sb.AppendLine("        public static Dictionary<string, string> Mapping = new Dictionary<string, string>");
             sb.AppendLine("        {");
@@ -104,7 +104,7 @@
                 Directory.CreateDirectory(this.directory);
             }
 
-            this.WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(this.directory, "_MetaData.cs")));
+            this.WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(this.directory, ".DatabaseModel.cs")));
         }
 
         internal void WriteTo()
