@@ -138,6 +138,10 @@ namespace Entities
                     .HasColumnName("identifier")
                     .ValueGeneratedNever();
 
+                entity.Property(e => e.CreateTime)
+                    .HasColumnName("create_time")
+                    .HasColumnType("datetime");
+
                 entity.Property(e => e.Message)
                     .HasColumnName("message")
                     .HasMaxLength(50);

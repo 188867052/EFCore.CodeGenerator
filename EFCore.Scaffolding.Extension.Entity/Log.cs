@@ -8,5 +8,7 @@ namespace Entities
         public Guid Identifier { get; set; }
 
         public string Message { get; set; }
+
+        public DateTime? CreateTime { get; set; }
     }
 }
