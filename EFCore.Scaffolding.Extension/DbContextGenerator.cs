@@ -82,7 +82,7 @@
             sb.AppendLine("    using System.Collections.Generic;");
             sb.AppendLine();
             sb.AppendLine("    [System.Diagnostics.CodeAnalysis.SuppressMessage(\"StyleCop.CSharp.LayoutRules\", \"SA1509:Opening braces should not be preceded by blank line\", Justification = \"<挂起>\")]");
-            sb.AppendLine("    public static class MetaData");
+            sb.AppendLine("    public static class DatabaseModel");
             sb.AppendLine("    {");
             sb.AppendLine("        public static Dictionary<string, string> Mapping = new Dictionary<string, string>");
             sb.AppendLine("        {");
