@@ -27,6 +27,7 @@
   <entity Name="Log">
     <property Name="Identifier" />
     <property Name="Message" />
+    <property Name="CreateTime" />
   </entity>
   <entity Name="Student">
     <property Name="Name" Summary="名称" />
