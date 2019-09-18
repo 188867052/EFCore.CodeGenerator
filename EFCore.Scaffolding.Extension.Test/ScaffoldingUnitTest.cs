@@ -4,7 +4,6 @@ namespace EFCore.Scaffolding.Extension.Test
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    using System.Text;
     using Entities;
     using WeCantSpell.Hunspell;
     using Xunit;
