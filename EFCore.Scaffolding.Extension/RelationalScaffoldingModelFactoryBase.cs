@@ -98,6 +98,7 @@
 
             var table = column.Table ?? this._nullTable;
             var usedNames = new List<string>();
+
             // TODO - need to clean up the way CSharpNamer & CSharpUniqueNamer work (see issue #1671)
             if (column.Table != null)
             {
@@ -398,7 +399,7 @@
 
             property.Metadata.AddAnnotations(
                 column.GetAnnotations().Where(
-                    a => a.Name != ScaffoldingAnnotationNames.UnderlyingStoreType
+                    a => a.Name != column.StoreType
                          && a.Name != ScaffoldingAnnotationNames.ConcurrencyToken));
 
             this.SetDictionary(property, column);
@@ -773,11 +774,11 @@
             }
 
             var typeScaffoldingInfo = this._scaffoldingTypeMapper.FindMapping(
-                column.GetUnderlyingStoreType() ?? column.StoreType,
+                column.StoreType,
                 column.IsKeyOrIndex(),
                 column.IsRowVersion());
 
-            if (column.GetUnderlyingStoreType() != null)
+            if (column.StoreType != null)
             {
                 return new TypeScaffoldingInfo(
                     typeScaffoldingInfo.ClrType,

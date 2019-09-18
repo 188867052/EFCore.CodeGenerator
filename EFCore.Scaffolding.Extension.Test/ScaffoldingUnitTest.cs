@@ -12,13 +12,12 @@ namespace EFCore.Scaffolding.Extension.Test
 
     public class ScaffoldingUnitTest
     {
-        private readonly ITestOutputHelper output;
         private static WordList wordList;
+        private readonly ITestOutputHelper output;
 
         public ScaffoldingUnitTest(ITestOutputHelper outputHelper)
         {
             this.output = outputHelper;
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
         }
 
         [Fact]

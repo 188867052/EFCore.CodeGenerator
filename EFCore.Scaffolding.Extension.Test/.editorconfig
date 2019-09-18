@@ -11,3 +11,6 @@ dotnet_diagnostic.CA1307.severity = none
 
 # CA1304: 指定 CultureInfo
 dotnet_diagnostic.CA1304.severity = suggestion
+
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
