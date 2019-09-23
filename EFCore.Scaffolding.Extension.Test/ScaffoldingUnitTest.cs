@@ -82,7 +82,7 @@ namespace EFCore.Scaffolding.Extension.Test
                 var entity = new Student
                 {
                     Name = "test",
-                    Sex = "ÄÐ",
+                    Sex = Entity.Enums.SexEnum.Male,
                     CreateTime = DateTime.Now,
                     UpdateTime = DateTime.Now,
                 };

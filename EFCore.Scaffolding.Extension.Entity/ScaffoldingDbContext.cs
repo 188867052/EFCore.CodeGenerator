@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using EFCore.Scaffolding.Extension.Entity.Enums;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities
 {
@@ -43,7 +47,9 @@ namespace Entities
             {
                 entity.ToTable("class");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
@@ -51,16 +57,21 @@ namespace Entities
 
                 entity.Property(e => e.Grade)
                     .HasColumnName("grade")
+                    .HasColumnType("nchar(10)")
                     .HasMaxLength(10);
 
-                entity.Property(e => e.HeadTeacherId).HasColumnName("head_teacher_id");
+                entity.Property(e => e.HeadTeacherId)
+                    .HasColumnName("head_teacher_id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.Location)
                     .HasColumnName("location")
+                    .HasColumnType("nchar(10)")
                     .HasMaxLength(10);
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
+                    .HasColumnType("nvarchar(50)")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.UpdateTime)
@@ -77,7 +88,9 @@ namespace Entities
             {
                 entity.ToTable("course");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
@@ -85,10 +98,12 @@ namespace Entities
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
+                    .HasColumnType("nchar(10)")
                     .HasMaxLength(10);
 
                 entity.Property(e => e.TeacherId)
                     .HasColumnName("teacher_id")
+                    .HasColumnType("nchar(10)")
                     .HasMaxLength(10);
 
                 entity.Property(e => e.UpdateTime)
@@ -102,17 +117,24 @@ namespace Entities
 
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
+                    .HasColumnType("int")
                     .ValueGeneratedOnAdd();
 
-                entity.Property(e => e.CourseId).HasColumnName("course_id");
+                entity.Property(e => e.CourseId)
+                    .HasColumnName("course_id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.Score).HasColumnName("score");
+                entity.Property(e => e.Score)
+                    .HasColumnName("score")
+                    .HasColumnType("int");
 
-                entity.Property(e => e.StudentId).HasColumnName("student_id");
+                entity.Property(e => e.StudentId)
+                    .HasColumnName("student_id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.UpdateTime)
                     .HasColumnName("update_time")
@@ -133,6 +155,7 @@ namespace Entities
 
                 entity.Property(e => e.Identifier)
                     .HasColumnName("identifier")
+                    .HasColumnType("uniqueidentifier")
                     .ValueGeneratedNever();
 
                 entity.Property(e => e.CreateTime)
@@ -141,6 +164,7 @@ namespace Entities
 
                 entity.Property(e => e.Message)
                     .HasColumnName("message")
+                    .HasColumnType("nvarchar(50)")
                     .HasMaxLength(50);
             });
 
@@ -148,13 +172,18 @@ namespace Entities
             {
                 entity.ToTable("student");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.Address)
                     .HasColumnName("address")
+                    .HasColumnType("nchar(10)")
                     .HasMaxLength(10);
 
-                entity.Property(e => e.ClassId).HasColumnName("class_id");
+                entity.Property(e => e.ClassId)
+                    .HasColumnName("class_id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
@@ -162,14 +191,18 @@ namespace Entities
 
                 entity.Property(e => e.Mobile)
                     .HasColumnName("mobile")
+                    .HasColumnType("nchar(10)")
                     .HasMaxLength(10);
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
+                    .HasColumnType("nchar(10)")
                     .HasMaxLength(10);
 
                 entity.Property(e => e.Sex)
+                    .HasConversion(new EnumToStringConverter<SexEnum>())
                     .HasColumnName("sex")
+                    .HasColumnType("nchar(10)")
                     .HasMaxLength(10);
 
                 entity.Property(e => e.UpdateTime)
@@ -186,7 +219,9 @@ namespace Entities
             {
                 entity.ToTable("teacher");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
@@ -194,10 +229,13 @@ namespace Entities
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
+                    .HasColumnType("nvarchar(50)")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.Sex)
+                    .HasConversion(new EnumToStringConverter<SexEnum>())
                     .HasColumnName("sex")
+                    .HasColumnType("nvarchar(50)")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.UpdateTime)
@@ -209,15 +247,21 @@ namespace Entities
             {
                 entity.ToTable("teacher_course_mapping");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Id)
+                    .HasColumnName("id")
+                    .HasColumnType("int");
 
-                entity.Property(e => e.CourseId).HasColumnName("course_id");
+                entity.Property(e => e.CourseId)
+                    .HasColumnName("course_id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
+                entity.Property(e => e.TeacherId)
+                    .HasColumnName("teacher_id")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.UpdateTime)
                     .HasColumnName("update_time")

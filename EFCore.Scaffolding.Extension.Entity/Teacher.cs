@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using EFCore.Scaffolding.Extension.Entity.Enums;
 
 namespace Entities
 {
@@ -24,7 +25,7 @@ namespace Entities
         /// <summary>
         /// 性别.
         /// </summary>
-        public string Sex { get; set; }
+        public SexEnum Sex { get; set; }
 
         /// <summary>
         /// 创建时间.
