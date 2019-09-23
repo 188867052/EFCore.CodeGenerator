@@ -31,7 +31,7 @@
   </entity>
   <entity Name="Student">
     <property Name="Name" Summary="名称" />
-    <property Name="Sex" Summary="性别" />
+    <property Name="Sex" Summary="性别"  Converter="EnumToString"  SexEnum="int" />
     <property Name="Id" Summary="主键" />
     <property Name="ClassId" Summary="班级ID" />
     <property Name="CreateTime" Summary="创建时间" />
@@ -42,7 +42,7 @@
   <entity Name="Teacher">
     <property Name="Id" Summary="主键" />
     <property Name="Name" Summary="名称" />
-    <property Name="Sex" Summary="性别" />
+    <property Name="Sex" Summary="性别"  Converter="EnumToString"  SexEnum="int" />
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Summary="更新时间" />
   </entity>
@@ -53,4 +53,5 @@
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Summary="更新时间" />
   </entity>
+  <namespace Name="SexEnum">EFCore.Scaffolding.Extension.Entity.Enums</namespace>
 </config>
