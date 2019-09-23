@@ -4,6 +4,7 @@ namespace EFCore.Scaffolding.Extension.Test
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using EFCore.Scaffolding.Extension.Entity.Enums;
     using Entities;
     using WeCantSpell.Hunspell;
     using Xunit;
@@ -82,7 +83,7 @@ namespace EFCore.Scaffolding.Extension.Test
                 var entity = new Student
                 {
                     Name = "test",
-                    Sex = Entity.Enums.SexEnum.Male,
+                    Sex = SexEnum.Male,
                     CreateTime = DateTime.Now,
                     UpdateTime = DateTime.Now,
                 };

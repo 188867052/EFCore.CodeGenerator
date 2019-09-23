@@ -57,7 +57,6 @@
             {
                 case "DateTimeToTicks":
                     line.Add($@".HasConversion(new DateTimeToTicksConverter())");
-
                     break;
                 case "EnumToString":
                     line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.CSharpType}>())");
@@ -65,6 +64,8 @@
                 case "BoolToString":
                     line.Add($@".HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))");
                     break;
+                default:
+                    throw new ArgumentException($"Converter {fieldConfig?.Converter} not exist.");
             }
 
             return line;
