@@ -33,8 +33,7 @@ namespace EFCore.Scaffolding.Extension.Test
         [Fact]
         public void Database_check_all_table_must_has_primary_key()
         {
-            var databaseModel = DbContextGenerator.GetDatabaseModel();
-            foreach (var table in databaseModel.Tables)
+            foreach (var table in DbContextGenerator.DatabaseModel.Tables)
             {
                 Assert.NotEmpty(table.PrimaryKey.Columns);
             }
@@ -43,8 +42,7 @@ namespace EFCore.Scaffolding.Extension.Test
         [Fact]
         public void Database_check_all_table_primary_key_at_the_top()
         {
-            var databaseModel = DbContextGenerator.GetDatabaseModel();
-            foreach (var table in databaseModel.Tables)
+            foreach (var table in DbContextGenerator.DatabaseModel.Tables)
             {
                 foreach (var column in table.Columns)
                 {
@@ -64,9 +62,8 @@ namespace EFCore.Scaffolding.Extension.Test
         [Fact]
         public void Database_check_typo()
         {
-            var databaseModel = DbContextGenerator.GetDatabaseModel();
             bool isSuccess = true;
-            foreach (var table in databaseModel.Tables)
+            foreach (var table in DbContextGenerator.DatabaseModel.Tables)
             {
                 var tableNameSuggests = this.FieldSpellCheckAndReturnSuggestionsWhenHasTypo(table.Name);
                 isSuccess &= tableNameSuggests.Count == 0;
