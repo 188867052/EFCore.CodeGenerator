@@ -30,9 +30,9 @@
     <property Name="CreateTime" />
   </entity>
   <entity Name="Student">
+    <property Name="Id" Summary="主键" />
     <property Name="Name" Summary="名称" />
     <property Name="Sex" Converter="EnumToString" CSharpType="SexEnum" Summary="性别" />
-    <property Name="Id" Summary="主键" />
     <property Name="ClassId" Summary="班级ID" />
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Summary="更新时间" />

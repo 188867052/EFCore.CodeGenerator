@@ -7,6 +7,11 @@ namespace Entities
     public partial class Student
     {
         /// <summary>
+        /// 主键.
+        /// </summary>
+        public int Id { get; set; }
+
+        /// <summary>
         /// 名称.
         /// </summary>
         public string Name { get; set; }
@@ -15,11 +20,6 @@ namespace Entities
         /// 性别.
         /// </summary>
         public SexEnum Sex { get; set; }
-
-        /// <summary>
-        /// 主键.
-        /// </summary>
-        public int Id { get; set; }
 
         /// <summary>
         /// 班级ID.

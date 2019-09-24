@@ -21,6 +21,7 @@
         public const string ConnectionString = "Data Source=47.105.214.235;Initial Catalog=Scaffolding;Persist Security Info=True;User ID=sa;Password=931592457czA";
         private readonly string directory;
         private static DatabaseModel databaseModel;
+        private static IServiceCollection _servicesCache;
 
         internal IList<WriteAllTextModel> WriteAllTextModels { get; set; }
 
@@ -29,16 +30,9 @@
             this.WriteAllTextModels = new List<WriteAllTextModel>();
             this.directory = writeCodePath;
 
-            IServiceCollection services = new ServiceCollection()
-                .AddEntityFrameworkDesignTimeServices()
-                .AddSingleton<ICSharpDbContextGenerator, MyDbContextGenerator>()
-                .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>()
-                .AddSingleton<IScaffoldingModelFactory, MyScaffoldingModelFactory>();
-
-            new SqlServerDesignTimeServices().ConfigureDesignTimeServices(services);
-            MyDbContextGenerator dbContextGenerator = (MyDbContextGenerator)services.GetService<ICSharpDbContextGenerator>();
-            MyEntityTypeGenerator entityTypeGenerator = (MyEntityTypeGenerator)services.GetService<ICSharpEntityTypeGenerator>();
-            var scaffoldingModelFactory = (MyScaffoldingModelFactory)services.GetService<IScaffoldingModelFactory>();
+            MyDbContextGenerator dbContextGenerator = (MyDbContextGenerator)Services.GetService<ICSharpDbContextGenerator>();
+            MyEntityTypeGenerator entityTypeGenerator = (MyEntityTypeGenerator)Services.GetService<ICSharpEntityTypeGenerator>();
+            var scaffoldingModelFactory = (MyScaffoldingModelFactory)Services.GetService<IScaffoldingModelFactory>();
             var databaseModel = GetDatabaseModel();
             Model model = (Model)scaffoldingModelFactory.Create(databaseModel, false);
             var dbContextCode = dbContextGenerator.WriteCode(model, @namespace, contextName, ConnectionString, false, false);
@@ -58,20 +52,31 @@
         {
             if (databaseModel == null)
             {
-                IServiceCollection services = new ServiceCollection()
-                   .AddEntityFrameworkDesignTimeServices()
-                   .AddSingleton<ICSharpDbContextGenerator, MyDbContextGenerator>()
-                   .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>()
-                   .AddSingleton<IScaffoldingModelFactory, MyScaffoldingModelFactory>();
-
-                new SqlServerDesignTimeServices().ConfigureDesignTimeServices(services);
-                var logger = services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
+                var logger = Services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
                 var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
                 var connection = new SqlConnection(ConnectionString);
                 databaseModel = databaseModelFactory.Create(connection, new List<string>(), new List<string>());
             }
 
             return databaseModel;
+        }
+
+        private static IServiceCollection Services
+        {
+            get
+            {
+                if (_servicesCache == null)
+                {
+                    _servicesCache = new ServiceCollection()
+                        .AddEntityFrameworkDesignTimeServices()
+                        .AddSingleton<ICSharpDbContextGenerator, MyDbContextGenerator>()
+                        .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>()
+                        .AddSingleton<IScaffoldingModelFactory, MyScaffoldingModelFactory>();
+                    new SqlServerDesignTimeServices().ConfigureDesignTimeServices(_servicesCache);
+                }
+
+                return _servicesCache;
+            }
         }
 
         internal void WriteCode(Dictionary<string, string> dictionary, string @namespace)

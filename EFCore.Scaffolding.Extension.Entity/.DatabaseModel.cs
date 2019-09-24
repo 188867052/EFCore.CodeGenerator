@@ -7,17 +7,6 @@
     {
         public static Dictionary<string, string> Mapping = new Dictionary<string, string>
         {
-            { "Student.PrimaryKey", "id" },
-            { "Student", "student" },
-            { "Student.Name", "name" },
-            { "Student.Sex", "sex" },
-            { "Student.Id", "id" },
-            { "Student.ClassId", "class_id" },
-            { "Student.CreateTime", "create_time" },
-            { "Student.UpdateTime", "update_time" },
-            { "Student.Address", "address" },
-            { "Student.Mobile", "mobile" },
-
             { "Class.PrimaryKey", "id" },
             { "Class", "class" },
             { "Class.Id", "id" },
@@ -66,6 +55,17 @@
             { "Log.Identifier", "identifier" },
             { "Log.Message", "message" },
             { "Log.CreateTime", "create_time" },
+
+            { "Student.PrimaryKey", "id" },
+            { "Student", "student" },
+            { "Student.Id", "id" },
+            { "Student.Name", "name" },
+            { "Student.Sex", "sex" },
+            { "Student.ClassId", "class_id" },
+            { "Student.CreateTime", "create_time" },
+            { "Student.UpdateTime", "update_time" },
+            { "Student.Address", "address" },
+            { "Student.Mobile", "mobile" },
         };
     }
 }

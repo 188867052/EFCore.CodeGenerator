@@ -41,6 +41,27 @@ namespace EFCore.Scaffolding.Extension.Test
         }
 
         [Fact]
+        public void Database_check_all_table_primary_key_at_the_top()
+        {
+            var databaseModel = DbContextGenerator.GetDatabaseModel();
+            foreach (var table in databaseModel.Tables)
+            {
+                foreach (var column in table.Columns)
+                {
+                    var index = table.Columns.IndexOf(column);
+                    if (index < table.PrimaryKey.Columns.Count)
+                    {
+                        Assert.Contains(column, table.PrimaryKey.Columns);
+                    }
+                    else
+                    {
+                        Assert.DoesNotContain(column, table.PrimaryKey.Columns);
+                    }
+                }
+            }
+        }
+
+        [Fact]
         public void Database_check_typo()
         {
             var databaseModel = DbContextGenerator.GetDatabaseModel();
@@ -60,6 +81,7 @@ namespace EFCore.Scaffolding.Extension.Test
                 foreach (var column in table.Columns)
                 {
                     var columnSuggests = this.FieldSpellCheckAndReturnSuggestionsWhenHasTypo(column.Name);
+                    isSuccess &= columnSuggests.Count == 0;
                     if (columnSuggests.Count != 0)
                     {
                         this.output.WriteLine($"Typo: Table Name: {table.Name}, Column: {column.Name}.");
@@ -67,8 +89,6 @@ namespace EFCore.Scaffolding.Extension.Test
                         this.output.WriteLine($"{string.Join(Environment.NewLine, columnSuggests.Where(o => !o.Contains("-")).Select(o => "     " + o.Replace(" ", "_").ToLower()))}");
                         this.output.WriteLine(new string('-', 30));
                     }
-
-                    isSuccess &= columnSuggests.Count == 0;
                 }
 
                 Assert.True(isSuccess);
