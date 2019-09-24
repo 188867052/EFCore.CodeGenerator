@@ -62,7 +62,7 @@
                 foreach (Property property in table.Properties.Where(property => !string.IsNullOrEmpty(property.Converter)).Select(property => property))
                 {
                     Namespace ns = Helper.ScaffoldConfig.Namespaces.FirstOrDefault(o => o.Name == property.CSharpType);
-                    if (ns != default)
+                    if (ns != null)
                     {
                         string us = $"using {ns.Value};";
                         if (!this.IndentedStringBuilder.ToString().Contains(us, StringComparison.InvariantCulture))

@@ -84,6 +84,7 @@ namespace EFCore.Scaffolding.Extension.Test
                 {
                     Name = "test",
                     Sex = SexEnum.Male,
+                    Mobile = "123456789",
                     CreateTime = DateTime.Now,
                     UpdateTime = DateTime.Now,
                 };
