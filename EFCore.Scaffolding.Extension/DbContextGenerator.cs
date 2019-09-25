@@ -52,11 +52,13 @@
         {
             var logger = Services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
             var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
-            var connection = new SqlConnection(ConnectionString);
-            return databaseModelFactory.Create(connection, new List<string>(), new List<string>());
+            using (var connection = new SqlConnection(ConnectionString))
+            {
+                return databaseModelFactory.Create(connection, new List<string>(), new List<string>());
+            }
         }
 
-        public static T AddOrUpdate<T>(string key, Func<T> action)
+        private static T AddOrUpdate<T>(string key, Func<T> action)
         {
             if (!_cache.ContainsKey(key))
             {
@@ -65,8 +67,7 @@
                 return v;
             }
 
-            _cache.TryGetValue(key, out object value);
-            return (T)value;
+            return (T)_cache[key];
         }
 
         private static IServiceCollection Services => AddOrUpdate(nameof(Services), GetServices);
