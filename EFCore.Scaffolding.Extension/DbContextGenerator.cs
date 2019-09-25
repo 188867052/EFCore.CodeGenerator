@@ -46,7 +46,7 @@
             this.WriteCode(scaffoldingModelFactory.Data, @namespace);
         }
 
-        public static DatabaseModel DatabaseModel => AddOrUpdate(nameof(DatabaseModel), GetDatabaseModel);
+        public static DatabaseModel DatabaseModel => GetOrAdd(nameof(DatabaseModel), GetDatabaseModel);
 
         private static DatabaseModel GetDatabaseModel()
         {
@@ -58,7 +58,7 @@
             }
         }
 
-        private static T AddOrUpdate<T>(string key, Func<T> action)
+        private static T GetOrAdd<T>(string key, Func<T> action)
         {
             if (!_cache.ContainsKey(key))
             {
@@ -70,7 +70,7 @@
             return (T)_cache[key];
         }
 
-        private static IServiceCollection Services => AddOrUpdate(nameof(Services), GetServices);
+        private static IServiceCollection Services => GetOrAdd(nameof(Services), GetServices);
 
         private static IServiceCollection GetServices()
         {
