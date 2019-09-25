@@ -4,3 +4,6 @@
 * The EFCore.Scaffolding extension, support sql server, sqlite, mysql
 * Automatically generate entities, annotations, type conversions...
 * Azure Devops CI/CD, Unit Test, Greatly improve development efficiency
+
+![image](https://github.com/188867052/EFCore.Scaffolding.Extension/blob/master/dashboard.png)
+![image](https://github.com/188867052/EFCore.Scaffolding.Extension/blob/master/pipelines.png)
