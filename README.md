@@ -5,5 +5,10 @@
 * Automatically generate entities, annotations, type conversions...
 * Azure Devops CI/CD, Unit Test, Greatly improve development efficiency
 
+### Dashboards
+
 ![image](https://github.com/188867052/EFCore.Scaffolding.Extension/blob/master/dashboard.png)
+
+### Pipelines
+
 ![image](https://github.com/188867052/EFCore.Scaffolding.Extension/blob/master/pipelines.png)
