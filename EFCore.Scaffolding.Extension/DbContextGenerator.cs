@@ -34,7 +34,7 @@
             var scaffoldingModelFactory = (MyScaffoldingModelFactory)Services.GetService<IScaffoldingModelFactory>();
             Model model = (Model)scaffoldingModelFactory.Create(DatabaseModel, false);
             var dbContextCode = dbContextGenerator.WriteCode(model, @namespace, contextName, ConnectionString, false, false);
-            this.WriteAllTextModels.Add(new WriteAllTextModel(dbContextCode, Path.Combine(this.directory, contextName + ".cs")));
+            this.WriteAllTextModels.Add(new WriteAllTextModel(dbContextCode, Path.Combine(this.directory, $".{contextName}.cs")));
 
             Helper.FormattingXml(model, DatabaseModel);
             foreach (var entityType in model.GetEntityTypes())
