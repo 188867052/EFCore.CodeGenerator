@@ -11,7 +11,7 @@ namespace Entities
         public Guid Identifier { get; set; }
 
         /// <summary>
-        /// 日志类容.
+        /// 日志内容.
         /// </summary>
         public string Message { get; set; }
 
