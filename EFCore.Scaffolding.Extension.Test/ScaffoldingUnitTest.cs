@@ -21,7 +21,7 @@ namespace EFCore.Scaffolding.Extension.Test
         }
 
         [Fact]
-        public void Generate_entities()
+        public void Generate_entities_and_DBContext()
         {
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
             var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();

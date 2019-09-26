@@ -19,7 +19,6 @@
 
     public class DbContextGenerator
     {
-        public const string ConnectionString = "Data Source=47.105.214.235;Initial Catalog=Scaffolding;Persist Security Info=True;User ID=sa;Password=931592457czA";
         private readonly string directory;
         private static Dictionary<string, object> _cache = new Dictionary<string, object>();
 
@@ -33,7 +32,7 @@
             MyEntityTypeGenerator entityTypeGenerator = (MyEntityTypeGenerator)Services.GetService<ICSharpEntityTypeGenerator>();
             var scaffoldingModelFactory = (MyScaffoldingModelFactory)Services.GetService<IScaffoldingModelFactory>();
             Model model = (Model)scaffoldingModelFactory.Create(DatabaseModel, false);
-            var dbContextCode = dbContextGenerator.WriteCode(model, @namespace, contextName, ConnectionString, false, false);
+            var dbContextCode = dbContextGenerator.WriteCode(model, @namespace, contextName, Connection.ConnectionString, false, false);
             this.WriteAllTextModels.Add(new WriteAllTextModel(dbContextCode, Path.Combine(this.directory, $".{contextName}.cs")));
 
             Helper.FormattingXml(model, DatabaseModel);
@@ -44,6 +43,9 @@
             }
 
             this.WriteCode(scaffoldingModelFactory.Data, @namespace);
+            this.WriteValueGeneratedModel(DatabaseModel, @namespace);
+            this.WriteDefaultValueModel(DatabaseModel, @namespace);
+            this.WriteValueConverterModel(dbContextGenerator.KeyValuePairs, @namespace);
         }
 
         public static DatabaseModel DatabaseModel => GetOrAdd(nameof(DatabaseModel), GetDatabaseModel);
@@ -52,7 +54,7 @@
         {
             var logger = Services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
             var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
-            using (var connection = new SqlConnection(ConnectionString))
+            using (var connection = new SqlConnection(Connection.ConnectionString))
             {
                 return databaseModelFactory.Create(connection, new List<string>(), new List<string>());
             }
@@ -115,6 +117,103 @@
             }
 
             this.WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(this.directory, ".DatabaseModel.cs")));
+        }
+
+        internal void WriteValueGeneratedModel(DatabaseModel databaseModel, string @namespace)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"namespace {@namespace}");
+            sb.AppendLine("{");
+            sb.AppendLine("    using System.Collections.Generic;");
+            sb.AppendLine();
+            sb.AppendLine("    [System.Diagnostics.CodeAnalysis.SuppressMessage(\"StyleCop.CSharp.LayoutRules\", \"SA1509:Opening braces should not be preceded by blank line\", Justification = \"<挂起>\")]");
+            sb.AppendLine("    public static class IncreaseModel");
+            sb.AppendLine("    {");
+            sb.AppendLine("        public static Dictionary<string, string> Mapping = new Dictionary<string, string>");
+            sb.AppendLine("        {");
+            foreach (var table in databaseModel.Tables)
+            {
+                foreach (var column in table.Columns)
+                {
+                    if (column.ValueGenerated.HasValue)
+                    {
+                        sb.AppendLine($"            {{ \"{table.Name}.{column.Name}\", \"{column.Name}\" }},");
+                    }
+                }
+            }
+
+            sb.AppendLine("        };");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+            if (!Directory.Exists(this.directory))
+            {
+                Directory.CreateDirectory(this.directory);
+            }
+
+            this.WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(this.directory, ".ValueGeneratedModel.cs")));
+        }
+
+        internal void WriteDefaultValueModel(DatabaseModel databaseModel, string @namespace)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"namespace {@namespace}");
+            sb.AppendLine("{");
+            sb.AppendLine("    using System.Collections.Generic;");
+            sb.AppendLine();
+            sb.AppendLine("    [System.Diagnostics.CodeAnalysis.SuppressMessage(\"StyleCop.CSharp.LayoutRules\", \"SA1509:Opening braces should not be preceded by blank line\", Justification = \"<挂起>\")]");
+            sb.AppendLine("    public static class DefaultValueSqlModel");
+            sb.AppendLine("    {");
+            sb.AppendLine("        public static Dictionary<string, string> Mapping = new Dictionary<string, string>");
+            sb.AppendLine("        {");
+            foreach (var table in databaseModel.Tables)
+            {
+                foreach (var column in table.Columns)
+                {
+                    if (!string.IsNullOrEmpty(column.DefaultValueSql))
+                    {
+                        sb.AppendLine($"            {{ \"{table.Name}.{column.Name}\", \"{column.Name}\" }},");
+                    }
+                }
+            }
+
+            sb.AppendLine("        };");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+            if (!Directory.Exists(this.directory))
+            {
+                Directory.CreateDirectory(this.directory);
+            }
+
+            this.WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(this.directory, ".DefaultValueSqlModel.cs")));
+        }
+
+        internal void WriteValueConverterModel(Dictionary<string, string> keyValuePairs, string @namespace)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"namespace {@namespace}");
+            sb.AppendLine("{");
+            sb.AppendLine("    using System.Collections.Generic;");
+            sb.AppendLine("    using EFCore.Scaffolding.Extension.Entity.Dapper;");
+            sb.AppendLine();
+            sb.AppendLine("    [System.Diagnostics.CodeAnalysis.SuppressMessage(\"StyleCop.CSharp.LayoutRules\", \"SA1509:Opening braces should not be preceded by blank line\", Justification = \"<挂起>\")]");
+            sb.AppendLine("    public static class ValueConverterModel");
+            sb.AppendLine("    {");
+            sb.AppendLine("        public static Dictionary<string, ConverterEnum> Mapping = new Dictionary<string, ConverterEnum>");
+            sb.AppendLine("        {");
+            foreach (var kvp in keyValuePairs)
+            {
+                sb.AppendLine($"            {{ \"{kvp.Key}\", {kvp.Value} }},");
+            }
+
+            sb.AppendLine("        };");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+            if (!Directory.Exists(this.directory))
+            {
+                Directory.CreateDirectory(this.directory);
+            }
+
+            this.WriteAllTextModels.Add(new WriteAllTextModel(sb.ToString(), Path.Combine(this.directory, ".ValueConverterModel.cs")));
         }
 
         internal void WriteTo()

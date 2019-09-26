@@ -26,3 +26,15 @@ dotnet_diagnostic.CA1062.severity = none
 
 # CA1716: 标识符不应与关键字匹配
 dotnet_diagnostic.CA1716.severity = none
+
+# IDE0022: 使用方法的程序块主体
+csharp_style_expression_bodied_methods = false:silent
+
+# CA1720: 标识符包含类型名称
+dotnet_diagnostic.CA1720.severity = none
+
+# CA1303: 请不要将文本作为本地化参数传递
+dotnet_diagnostic.CA1303.severity = none
+
+# CA1307: 指定 StringComparison
+dotnet_diagnostic.CA1307.severity = none

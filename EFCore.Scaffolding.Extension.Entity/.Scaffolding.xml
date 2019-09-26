@@ -28,6 +28,7 @@
     <property Name="Identifier" Summary="主键" />
     <property Name="Message" Summary="日志内容" />
     <property Name="CreateTime" Summary="创建时间" />
+    <property Name="UpdateTimeTicks" Converter="DateTimeToTicks" CSharpType="DateTime?" Summary="创建时间" />
   </entity>
   <entity Name="Student">
     <property Name="Id" Summary="主键" />

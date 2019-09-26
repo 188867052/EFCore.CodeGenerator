@@ -35,7 +35,7 @@ namespace Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Data Source=47.105.214.235;Initial Catalog=Scaffolding;Persist Security Info=True;User ID=sa;Password=931592457czA");
+                optionsBuilder.UseSqlServer(@"Data Source=47.105.214.235;Initial Catalog=Scaffolding;Persist Security Info=True;User ID=sa;Password=931592457czA");
             }
         }
 
@@ -156,7 +156,7 @@ namespace Entities
                 entity.Property(e => e.Identifier)
                     .HasColumnName("identifier")
                     .HasColumnType("uniqueidentifier")
-                    .ValueGeneratedNever();
+                    .HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
@@ -166,6 +166,11 @@ namespace Entities
                     .HasColumnName("message")
                     .HasColumnType("nvarchar(50)")
                     .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTimeTicks)
+                    .HasConversion(new DateTimeToTicksConverter())
+                    .HasColumnName("update_time_ticks")
+                    .HasColumnType("bigint");
             });
 
             modelBuilder.Entity<Student>(entity =>

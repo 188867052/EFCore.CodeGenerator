@@ -25,14 +25,6 @@
             { "Course.CreateTime", "create_time" },
             { "Course.UpdateTime", "update_time" },
 
-            { "Teacher.PrimaryKey", "id" },
-            { "Teacher", "teacher" },
-            { "Teacher.Id", "id" },
-            { "Teacher.Name", "name" },
-            { "Teacher.Sex", "sex" },
-            { "Teacher.CreateTime", "create_time" },
-            { "Teacher.UpdateTime", "update_time" },
-
             { "CourseScore.PrimaryKey", "id" },
             { "CourseScore", "course_score" },
             { "CourseScore.Id", "id" },
@@ -42,19 +34,12 @@
             { "CourseScore.CreateTime", "create_time" },
             { "CourseScore.UpdateTime", "update_time" },
 
-            { "TeacherCourseMapping.PrimaryKey", "id" },
-            { "TeacherCourseMapping", "teacher_course_mapping" },
-            { "TeacherCourseMapping.Id", "id" },
-            { "TeacherCourseMapping.CourseId", "course_id" },
-            { "TeacherCourseMapping.TeacherId", "teacher_id" },
-            { "TeacherCourseMapping.CreateTime", "create_time" },
-            { "TeacherCourseMapping.UpdateTime", "update_time" },
-
             { "Log.PrimaryKey", "identifier" },
             { "Log", "log" },
             { "Log.Identifier", "identifier" },
             { "Log.Message", "message" },
             { "Log.CreateTime", "create_time" },
+            { "Log.UpdateTimeTicks", "update_time_ticks" },
 
             { "Student.PrimaryKey", "id" },
             { "Student", "student" },
@@ -66,6 +51,22 @@
             { "Student.UpdateTime", "update_time" },
             { "Student.Address", "address" },
             { "Student.Mobile", "mobile" },
+
+            { "Teacher.PrimaryKey", "id" },
+            { "Teacher", "teacher" },
+            { "Teacher.Id", "id" },
+            { "Teacher.Name", "name" },
+            { "Teacher.Sex", "sex" },
+            { "Teacher.CreateTime", "create_time" },
+            { "Teacher.UpdateTime", "update_time" },
+
+            { "TeacherCourseMapping.PrimaryKey", "id" },
+            { "TeacherCourseMapping", "teacher_course_mapping" },
+            { "TeacherCourseMapping.Id", "id" },
+            { "TeacherCourseMapping.CourseId", "course_id" },
+            { "TeacherCourseMapping.TeacherId", "teacher_id" },
+            { "TeacherCourseMapping.CreateTime", "create_time" },
+            { "TeacherCourseMapping.UpdateTime", "update_time" },
         };
     }
 }
