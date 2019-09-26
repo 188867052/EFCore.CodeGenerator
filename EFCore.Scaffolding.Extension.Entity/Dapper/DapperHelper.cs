@@ -38,12 +38,22 @@
             }
         }
 
-        // TODO: not support multiple key.
+        // TODO: Multi-keys are not supported so far.
         public static int Delete<T>(int id)
         {
             using (Connection)
             {
                 PrepareDelete<T>(id, out string sql, out DynamicParameters parameters);
+                return Connection.Execute(sql, parameters);
+            }
+        }
+
+        // TODO: Multi-keys are not supported so far.
+        public static int Delete<T>(T Entity)
+        {
+            using (Connection)
+            {
+                PrepareDelete(Entity, out string sql, out DynamicParameters parameters);
                 return Connection.Execute(sql, parameters);
             }
         }
@@ -105,6 +115,17 @@
             sql = $"DELETE FROM {Table<T>()} WHERE {pk}=@{pk}";
             parameters = new DynamicParameters();
             parameters.Add(pk, id);
+        }
+
+        private static void PrepareDelete<T>(T entity, out string sql, out DynamicParameters parameters)
+        {
+            var pk = PK<T>();
+            sql = $"DELETE FROM {Table<T>()} WHERE {pk}=@{pk}";
+            parameters = new DynamicParameters();
+            string pkPropertyName = GetColumMappings<T>().FirstOrDefault(o => o.Value == pk).Key.Split('.')[1];
+            var pkPropertyInfo = typeof(T).GetProperties().FirstOrDefault(o => o.Name == pkPropertyName);
+            var pkValue = pkPropertyInfo.GetValue(entity);
+            parameters.Add(pk, pkValue);
         }
 
         private static void PrepareInsert<T>(T entity, out string sql, out DynamicParameters parameters)
