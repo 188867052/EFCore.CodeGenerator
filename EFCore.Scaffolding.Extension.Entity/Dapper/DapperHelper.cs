@@ -12,8 +12,6 @@
 
     public static class DapperHelper
     {
-        public const string connLocal = @"Data Source=HCHENG\SQLEXPRESS;Initial Catalog=Scaffolding;Integrated Security=True";
-
         static DapperHelper()
         {
             DefaultTypeMap.MatchNamesWithUnderscores = true;
@@ -22,7 +20,7 @@
 
         private static List<PropertyInfo> GetPropertyInfos<T>() => typeof(T).GetProperties().ToList();
 
-        public static IDbConnection Connection => new SqlConnection(connLocal);
+        public static IDbConnection Connection => new SqlConnection(Extension.Connection.ConnectionString);
 
         public static T Find<T>(params object[] keyValues)
         {
