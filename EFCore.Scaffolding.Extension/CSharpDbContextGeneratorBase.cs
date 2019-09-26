@@ -172,7 +172,7 @@
 
                 using (this.sb.Indent())
                 {
-                    this.sb.AppendLine($"optionsBuilder.UseSqlServer(@\"{Connection.ConnectionString}\");");
+                    this.sb.AppendLine($"optionsBuilder.UseSqlServer(EFCore.Scaffolding.Extension.{nameof(Connection)}.{nameof(Connection.ConnectionString)});");
                 }
 
                 this.sb.AppendLine("}");
