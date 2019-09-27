@@ -11,7 +11,7 @@
     using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
     using Microsoft.Extensions.DependencyInjection;
 
-    internal static class Helper
+    public static class Helper
     {
         private static readonly string file;
 
@@ -48,7 +48,9 @@
                 Entity entity = new Entity
                 {
                     Name = entityType.Name,
+                    TableName = table.Name,
                     Summary = configEntity?.Summary,
+                    PrimaryKey = string.Join(",", table.PrimaryKey.Columns.Select(o => o.Name)),
                 };
                 var properties = entityType.GetProperties();
 
@@ -61,6 +63,9 @@
                     var p = new Models.Property
                     {
                         Name = property.Name,
+                        DefaultValueSql = column.DefaultValueSql,
+                        ColumnName = column.Name,
+                        ValueGenerated = column.ValueGenerated?.ToString(),
                         Summary = configProperty?.Summary,
                         CSharpType = configProperty?.CSharpType,
                         Converter = configProperty?.Converter,

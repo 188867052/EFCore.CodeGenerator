@@ -2,6 +2,7 @@
 {
     using System;
     using System.ComponentModel;
+    using System.Linq;
     using System.Xml.Serialization;
 
     [Serializable]
@@ -15,5 +16,10 @@
 
         [XmlElement("namespace")]
         public Namespace[] Namespaces { get; set; }
+
+        public Entity GetEntity<T>()
+        {
+            return this.Entities.FirstOrDefault(o => o.Name == typeof(T).Name);
+        }
     }
 }

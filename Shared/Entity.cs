@@ -7,21 +7,21 @@
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
-    public class Property
+    public class Entity
     {
+        [XmlElement(ElementName = "property")]
+        public Property[] Properties { get; set; }
+
         [XmlAttribute]
         public string Name { get; set; }
 
         [XmlAttribute]
-        public string ColumnName { get; set; }
-
-        [XmlAttribute]
-        public string Converter { get; set; }
-
-        [XmlAttribute]
-        public string CSharpType { get; set; }
+        public string TableName { get; set; }
 
         [XmlAttribute]
         public string Summary { get; set; }
+
+        [XmlAttribute]
+        public string PrimaryKey { get; set; }
     }
 }
