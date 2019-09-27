@@ -9,7 +9,7 @@
 * It extends the [Dapper](https://github.com/StackExchange/Dapper), without sacrificing performance, and more automated.
 * No configuration and attributes required, just need to run EfCore scaffolding tools.
 
-### Related projects
+### Technologies
 
 These are some other repos for related projects:
 
@@ -18,7 +18,7 @@ These are some other repos for related projects:
 * [Entity Framework Core](https://github.com/aspnet/EntityFrameworkCore) - data access technology
 * [Dapper](https://github.com/StackExchange/Dapper) - a simple object mapper for .Net
 * [.Net Extensions](https://github.com/aspnet/Extensions) - .NET APIs for commonly used programming patterns and utilities, such as dependency injection, logging, and configuration.
-* [Azure Pipelines](https://github.com/microsoft/azure-pipelines-tasks) 
+* [Azure Devops](http://azure.microsoft.com/zh-cn/services/devops/) - Using a series of new program development services smarter, better coordination and faster delivery.
 
 ### Dashboards
 
