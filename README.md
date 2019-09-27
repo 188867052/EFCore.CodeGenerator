@@ -5,7 +5,7 @@
 * Asp.Net Core 2.2
 * The EFCore.Scaffolding extension, support sql server, sqlite, mysql
 * Automatically generate entities, annotations, type conversions...
-* Azure Devops CI/CD, Unit Test, Greatly improve development efficiency
+* [Azure Devops](http://azure.microsoft.com/zh-cn/services/devops/)  CI/CD, Unit Test, Greatly improve development efficiency
 * It extends the [Dapper](https://github.com/StackExchange/Dapper), without sacrificing performance, and more automated.
 * No configuration and attributes required, just need to run EfCore scaffolding tools.
 
@@ -18,7 +18,6 @@ These are some other repos for related projects:
 * [Entity Framework Core](https://github.com/aspnet/EntityFrameworkCore) - data access technology
 * [Dapper](https://github.com/StackExchange/Dapper) - a simple object mapper for .Net
 * [.Net Extensions](https://github.com/aspnet/Extensions) - .NET APIs for commonly used programming patterns and utilities, such as dependency injection, logging, and configuration.
-* [Azure Devops](http://azure.microsoft.com/zh-cn/services/devops/) - Using a series of new program development services smarter, better coordination and faster delivery.
 
 ### Dashboards
 
