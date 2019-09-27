@@ -30,8 +30,11 @@ namespace EFCore.Scaffolding.Extension.Test
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
             var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".sql", SearchOption.AllDirectories).FirstOrDefault();
             string sql = File.ReadAllText(scaffoldingFile.FullName);
-            int count = DapperHelper.Connection.Execute(sql);
-            Assert.Equal(count, -1);
+            if (!string.IsNullOrEmpty(sql))
+            {
+                int count = DapperHelper.Connection.Execute(sql);
+                Assert.Equal(count, -1);
+            }
         }
 
         [Fact]
