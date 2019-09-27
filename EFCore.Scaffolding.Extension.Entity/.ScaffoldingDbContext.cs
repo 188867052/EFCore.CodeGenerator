@@ -194,6 +194,13 @@ namespace Entities
                     .HasColumnName("create_time")
                     .HasColumnType("datetime");
 
+                entity.Property(e => e.IsDeleted)
+                    .HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))
+                    .IsRequired()
+                    .HasColumnName("is_deleted")
+                    .HasColumnType("nchar(10)")
+                    .HasMaxLength(10);
+
                 entity.Property(e => e.Mobile)
                     .HasColumnName("mobile")
                     .HasColumnType("nchar(10)")

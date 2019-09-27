@@ -83,6 +83,15 @@
             }
         }
 
+        public static T FirstOrDefault<T>()
+        {
+            using (Connection)
+            {
+                PrepareFirst<T>(out string sql);
+                return Connection.QueryFirstOrDefault<T>(sql);
+            }
+        }
+
         public static async Task<int> DeleteAsync<T>(int id)
         {
             using (Connection)
@@ -165,6 +174,11 @@
                     parameters.Add(property.ColumnName, ValueConverter.GetConvertedValue(entity, item, property));
                 }
             }
+        }
+
+        private static void PrepareFirst<T>(out string sql)
+        {
+            sql = $"SELECT TOP 1 * FROM {TableName<T>()}";
         }
 
         private static string GetUpdateSetClause<T>(T entity)

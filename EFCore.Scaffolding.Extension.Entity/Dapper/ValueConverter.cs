@@ -7,6 +7,7 @@
     public static class ValueConverter
     {
         private static readonly DateTimeToTicksConverter dateTimeToTicks = new DateTimeToTicksConverter();
+        private static readonly BoolToStringConverter boolToString = new BoolToStringConverter(bool.FalseString, bool.TrueString);
 
         public static object GetConvertedValue<T>(T obj, PropertyInfo propertyInfo, Models.Property property)
         {
@@ -16,6 +17,8 @@
                 case ConverterEnum.None:
                 case ConverterEnum.EnumToString:
                     return v;
+                case ConverterEnum.BoolToString:
+                    return boolToString.ConvertToProviderExpression.Compile()((bool)v);
                 case ConverterEnum.DateTimeToTicks:
                     return dateTimeToTicks.ConvertToProviderExpression.Compile()((DateTime)v);
                 default:

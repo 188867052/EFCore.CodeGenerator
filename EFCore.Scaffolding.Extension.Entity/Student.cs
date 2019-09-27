@@ -46,6 +46,11 @@ namespace Entities
         /// </summary>
         public string Mobile { get; set; }
 
+        /// <summary>
+        /// 是否已删除.
+        /// </summary>
+        public bool IsDeleted { get; set; }
+
         public Class Class { get; set; }
     }
 }

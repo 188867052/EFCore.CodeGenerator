@@ -4,11 +4,14 @@ namespace EFCore.Scaffolding.Extension.Test
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Dapper;
+    using EFCore.Scaffolding.Extension.Entity.Dapper;
     using EFCore.Scaffolding.Extension.Entity.Enums;
     using Entities;
     using WeCantSpell.Hunspell;
     using Xunit;
     using Xunit.Abstractions;
+    using Xunit.Extensions.Ordering;
 
     public class ScaffoldingUnitTest
     {
@@ -21,6 +24,18 @@ namespace EFCore.Scaffolding.Extension.Test
         }
 
         [Fact]
+        [Order(1)]
+        public void Run_database_script()
+        {
+            DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
+            var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".sql", SearchOption.AllDirectories).FirstOrDefault();
+            string sql = File.ReadAllText(scaffoldingFile.FullName);
+            int count = DapperHelper.Connection.Execute(sql);
+            Assert.Equal(count, -1);
+        }
+
+        [Fact]
+        [Order(2)]
         public void Generate_entities_and_DBContext()
         {
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);

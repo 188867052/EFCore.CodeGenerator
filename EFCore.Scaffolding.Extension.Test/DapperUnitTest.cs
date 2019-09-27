@@ -86,16 +86,9 @@
 
         public void Test_update_entity_with_self_increase_PK()
         {
-            using (var dbContext = new ScaffoldingDbContext())
+            var student = DapperHelper.FirstOrDefault<Student>();
+            if (student != null)
             {
-                var student = new Student
-                {
-                    Name = "insert",
-                    UpdateTime = DateTime.Now,
-                };
-
-                dbContext.Add(student);
-                dbContext.SaveChanges();
                 student.Name = "update";
                 int count = DapperHelper.Update(student);
                 Assert.Equal(1, count);
@@ -110,6 +103,7 @@
                 Name = "test",
                 Sex = SexEnum.Male,
                 Mobile = "123456789",
+                IsDeleted = true,
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now,
             };

@@ -39,6 +39,7 @@
     <property Name="UpdateTime" ColumnName="update_time" Summary="更新时间" />
     <property Name="Address" ColumnName="address" Summary="地址" />
     <property Name="Mobile" ColumnName="mobile" Summary="联系电话" />
+    <property Name="IsDeleted" ColumnName="is_deleted" Converter="BoolToString" CSharpType="bool" Summary="是否已删除" />
   </entity>
   <entity Name="Teacher" TableName="teacher" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" ColumnName="id" Summary="主键" />

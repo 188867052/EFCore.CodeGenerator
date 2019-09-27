@@ -56,22 +56,25 @@
             var line = base.Lines(property);
             var propertyImp = (Microsoft.EntityFrameworkCore.Metadata.Internal.Property)property;
             var fieldConfig = Helper.ScaffoldConfig?.Entities?.FirstOrDefault(o => o.Name == propertyImp?.DeclaringType?.Name)?.Properties?.FirstOrDefault(o => o.Name == property.Name);
-            switch (fieldConfig.ConverterEnum)
+            if (fieldConfig != null)
             {
-                case ConverterEnum.DateTimeToTicks:
-                    line.Add($@".HasConversion(new DateTimeToTicksConverter())");
-                    this.KeyValuePairs.Add($"{property.DeclaringEntityType.Name}.{property.Name}", "ConverterEnum.DateTimeToTicks");
-                    break;
-                case ConverterEnum.EnumToString:
-                    line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.CSharpType}>())");
-                    break;
-                case ConverterEnum.BoolToString:
-                    line.Add($@".HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))");
-                    break;
-                case ConverterEnum.None:
-                    break;
-                default:
-                    throw new ArgumentException($"Converter {fieldConfig.Converter} not exist.");
+                switch (fieldConfig.ConverterEnum)
+                {
+                    case ConverterEnum.DateTimeToTicks:
+                        line.Add($@".HasConversion(new DateTimeToTicksConverter())");
+                        this.KeyValuePairs.Add($"{property.DeclaringEntityType.Name}.{property.Name}", "ConverterEnum.DateTimeToTicks");
+                        break;
+                    case ConverterEnum.EnumToString:
+                        line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.CSharpType}>())");
+                        break;
+                    case ConverterEnum.BoolToString:
+                        line.Add($@".HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))");
+                        break;
+                    case ConverterEnum.None:
+                        break;
+                    default:
+                        throw new ArgumentException($"Converter {fieldConfig.Converter} not exist.");
+                }
             }
 
             return line;

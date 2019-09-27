@@ -68,7 +68,7 @@
                         ValueGenerated = column.ValueGenerated?.ToString(),
                         Summary = configProperty?.Summary,
                         CSharpType = configProperty?.CSharpType,
-                        Converter = configProperty.Converter,
+                        Converter = configProperty?.Converter,
                     };
                     propertyList.Add(p);
                 }
