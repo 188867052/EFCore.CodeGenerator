@@ -59,7 +59,7 @@
             var table = Helper.ScaffoldConfig.Entities.FirstOrDefault(o => o.Name == entityType.Name);
             if (table != null)
             {
-                foreach (Property property in table.Properties.Where(property => !string.IsNullOrEmpty(property.Converter)).Select(property => property))
+                foreach (Property property in table.Properties.Select(property => property))
                 {
                     Namespace ns = Helper.ScaffoldConfig.Namespaces.FirstOrDefault(o => o.Name == property.CSharpType);
                     if (ns != null)

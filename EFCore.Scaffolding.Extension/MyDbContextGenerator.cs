@@ -32,7 +32,7 @@
 
         protected override void GenerateNameSpace()
         {
-            foreach (var property in Helper.ScaffoldConfig.Entities.SelectMany(table => table.Properties.Where(property => !string.IsNullOrEmpty(property.Converter)).Select(property => property)))
+            foreach (var property in Helper.ScaffoldConfig.Entities.SelectMany(table => table.Properties.Select(property => property)))
             {
                 Namespace ns = Helper.ScaffoldConfig.Namespaces.FirstOrDefault(o => o.Name == property.CSharpType);
                 if (ns != null)
@@ -56,23 +56,22 @@
             var line = base.Lines(property);
             var propertyImp = (Microsoft.EntityFrameworkCore.Metadata.Internal.Property)property;
             var fieldConfig = Helper.ScaffoldConfig?.Entities?.FirstOrDefault(o => o.Name == propertyImp?.DeclaringType?.Name)?.Properties?.FirstOrDefault(o => o.Name == property.Name);
-            if (!string.IsNullOrEmpty(fieldConfig?.Converter))
+            switch (fieldConfig.ConverterEnum)
             {
-                switch (fieldConfig?.Converter)
-                {
-                    case "DateTimeToTicks":
-                        line.Add($@".HasConversion(new DateTimeToTicksConverter())");
-                        this.KeyValuePairs.Add($"{property.DeclaringEntityType.Name}.{property.Name}", "ConverterEnum.DateTimeToTicks");
-                        break;
-                    case "EnumToString":
-                        line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.CSharpType}>())");
-                        break;
-                    case "BoolToString":
-                        line.Add($@".HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))");
-                        break;
-                    default:
-                        throw new ArgumentException($"Converter {fieldConfig?.Converter} not exist.");
-                }
+                case ConverterEnum.DateTimeToTicks:
+                    line.Add($@".HasConversion(new DateTimeToTicksConverter())");
+                    this.KeyValuePairs.Add($"{property.DeclaringEntityType.Name}.{property.Name}", "ConverterEnum.DateTimeToTicks");
+                    break;
+                case ConverterEnum.EnumToString:
+                    line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.CSharpType}>())");
+                    break;
+                case ConverterEnum.BoolToString:
+                    line.Add($@".HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))");
+                    break;
+                case ConverterEnum.None:
+                    break;
+                default:
+                    throw new ArgumentException($"Converter {fieldConfig.Converter} not exist.");
             }
 
             return line;

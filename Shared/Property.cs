@@ -29,5 +29,8 @@ namespace EFCore.Scaffolding.Extension.Models
 
         [XmlAttribute]
         public string Summary { get; set; }
+
+        [XmlIgnore]
+        public ConverterEnum ConverterEnum => string.IsNullOrEmpty(this.Converter) ? default : (ConverterEnum)Enum.Parse(typeof(ConverterEnum), this.Converter);
     }
 }

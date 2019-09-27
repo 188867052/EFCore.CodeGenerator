@@ -1,16 +1,4 @@
 ﻿[*.cs]
 
-# CA1819: 属性不应返回数组
-dotnet_diagnostic.CA1819.severity = none
-
 # SA1600: Elements should be documented
 dotnet_diagnostic.SA1600.severity = none
-
-# CA1303: 请不要将文本作为本地化参数传递
-dotnet_diagnostic.CA1303.severity = none
-
-# CA1062: 验证公共方法的参数
-dotnet_diagnostic.CA1062.severity = none
-
-# CA1720: 标识符包含类型名称
-dotnet_diagnostic.CA1720.severity = none

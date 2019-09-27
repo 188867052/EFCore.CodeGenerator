@@ -42,5 +42,13 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="..\Shared\Connection.cs" Link="Shared\Connection.cs" />
+    <Compile Update="..\Shared\Entity.cs" Link="Shared\Entity.cs" />
+    <Compile Update="..\Shared\Namespace.cs" Link="Shared\Namespace.cs" />
+    <Compile Update="..\Shared\Property.cs" Link="Shared\Property.cs" />
+    <Compile Update="..\Shared\ScaffoldConfig.cs" Link="Shared\ScaffoldConfig.cs" />
+    <Compile Update="..\Shared\WriteAllTextModel.cs" Link="Shared\WriteAllTextModel.cs" />
+  </ItemGroup>
 
 </Project>

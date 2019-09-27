@@ -56,11 +56,11 @@
         }
 
         // TODO: Multi-keys are not supported so far.
-        public static int Delete<T>(T Entity)
+        public static int Delete<T>(T entity)
         {
             using (Connection)
             {
-                PrepareDelete(Entity, out string sql, out DynamicParameters parameters);
+                PrepareDelete(entity, out string sql, out DynamicParameters parameters);
                 return Connection.Execute(sql, parameters);
             }
         }

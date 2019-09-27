@@ -137,7 +137,7 @@
         }
 
         [Fact]
-        public void Test_delete_by_Entity()
+        public void Test_delete_by_entity()
         {
             using (var dbContext = new ScaffoldingDbContext())
             {

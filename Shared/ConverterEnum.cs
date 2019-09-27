@@ -1,4 +1,6 @@
-﻿namespace EFCore.Scaffolding.Extension.Entity.Dapper
+﻿using System.Xml.Serialization;
+
+namespace EFCore.Scaffolding.Extension
 {
     public enum ConverterEnum
     {
@@ -16,5 +18,10 @@
         /// Enum to string converter.
         /// </summary>
         EnumToString,
+
+        /// <summary>
+        /// Bool to string converter.
+        /// </summary>
+        BoolToString,
     }
 }

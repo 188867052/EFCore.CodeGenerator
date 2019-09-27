@@ -11,12 +11,12 @@
         public static object GetConvertedValue<T>(T obj, PropertyInfo propertyInfo, Models.Property property)
         {
             var v = propertyInfo.GetValue(obj);
-            switch (property.Converter)
+            switch (property.ConverterEnum)
             {
-                case null:
-                case "EnumToString":
+                case ConverterEnum.None:
+                case ConverterEnum.EnumToString:
                     return v;
-                case "DateTimeToTicks":
+                case ConverterEnum.DateTimeToTicks:
                     return dateTimeToTicks.ConvertToProviderExpression.Compile()((DateTime)v);
                 default:
                     throw new NotSupportedException("Not Supported Converter.");
