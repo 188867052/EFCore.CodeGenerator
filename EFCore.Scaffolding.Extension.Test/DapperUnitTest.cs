@@ -25,7 +25,7 @@
                 Identifier = id,
                 CreateTime = DateTime.Now,
                 UpdateTimeTicks = DateTime.Now,
-                Message = nameof(Value_converter),
+                Message = nameof(this.Value_converter),
             };
 
             int count = DapperHelper.Insert(log);
@@ -42,7 +42,7 @@
             {
                 CreateTime = DateTime.Now,
                 UpdateTimeTicks = DateTime.Now,
-                Message = nameof(Test_insert_default_value_sql_PK_is_default),
+                Message = nameof(this.Test_insert_default_value_sql_PK_is_default),
             };
 
             int count = DapperHelper.Insert(log);
@@ -57,7 +57,7 @@
                 Identifier = Guid.NewGuid(),
                 CreateTime = DateTime.Now,
                 UpdateTimeTicks = DateTime.Now,
-                Message = nameof(Test_insert_default_value_sql_PK_has_value),
+                Message = nameof(this.Test_insert_default_value_sql_PK_has_value),
             };
 
             int count = DapperHelper.Insert(log);
@@ -72,12 +72,12 @@
                 Identifier = Guid.NewGuid(),
                 CreateTime = DateTime.Now,
                 UpdateTimeTicks = DateTime.Now,
-                Message = nameof(Test_insert_default_value_sql_PK_has_value),
+                Message = nameof(this.Test_insert_default_value_sql_PK_has_value),
             };
 
             DapperHelper.Insert(log);
             log.UpdateTimeTicks = DateTime.Now;
-            log.Message = nameof(Test_update_entity);
+            log.Message = nameof(this.Test_update_entity);
             int count = DapperHelper.Update(log);
             Assert.Equal(1, count);
         }

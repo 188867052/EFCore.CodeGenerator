@@ -13,6 +13,10 @@
 
 ![image](https://github.com/188867052/EFCore.Scaffolding.Extension/blob/master/pipelines.png)
 
+### Test failure report
+
+![image](https://github.com/188867052/EFCore.Scaffolding.Extension/blob/master/test_failure_report.png)
+
 ## My projects
 * [EFCore.Scaffolding.Extension](https://github.com/188867052/EFCore.Scaffolding.Extension)
 * [DependencyInjection.Analyzer](https://github.com/188867052/DependencyInjection.Analyzer)
