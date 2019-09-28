@@ -45,6 +45,11 @@ namespace Entities
         /// </summary>
         public string Location { get; set; }
 
+        /// <summary>
+        /// 是否已删除.
+        /// </summary>
+        public bool IsDeleted { get; set; }
+
         public Teacher HeadTeacher { get; set; }
 
         public ICollection<Student> Student { get; set; }

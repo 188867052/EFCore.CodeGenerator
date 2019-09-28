@@ -8,6 +8,7 @@
     <property Name="UpdateTime" ColumnName="update_time" Summary="更新时间" />
     <property Name="Grade" ColumnName="grade" Summary="年级" />
     <property Name="Location" ColumnName="location" Summary="地址" />
+    <property Name="IsDeleted" ColumnName="is_deleted" Summary="是否已删除" />
   </entity>
   <entity Name="Course" TableName="course" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" ColumnName="id" Summary="主键" />
@@ -15,6 +16,7 @@
     <property Name="TeacherId" ColumnName="teacher_id" Summary="教师ID" />
     <property Name="CreateTime" ColumnName="create_time" Summary="创建时间" />
     <property Name="UpdateTime" ColumnName="update_time" Summary="更新时间" />
+    <property Name="IsDeleted" ColumnName="is_deleted" Converter="BoolToZeroOne" CSharpType="bool" Summary="是否已删除" />
   </entity>
   <entity Name="CourseScore" TableName="course_score" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" ColumnName="id" Summary="主键" />

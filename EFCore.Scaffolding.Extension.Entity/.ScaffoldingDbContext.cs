@@ -64,6 +64,10 @@ namespace Entities
                     .HasColumnName("head_teacher_id")
                     .HasColumnType("int");
 
+                entity.Property(e => e.IsDeleted)
+                    .HasColumnName("is_deleted")
+                    .HasColumnType("bit");
+
                 entity.Property(e => e.Location)
                     .HasColumnName("location")
                     .HasColumnType("nchar(10)")
@@ -95,6 +99,11 @@ namespace Entities
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
                     .HasColumnType("datetime");
+
+                entity.Property(e => e.IsDeleted)
+                    .HasConversion(new BoolToZeroOneConverter<int>())
+                    .HasColumnName("is_deleted")
+                    .HasColumnType("int");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")

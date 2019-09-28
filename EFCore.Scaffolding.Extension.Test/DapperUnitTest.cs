@@ -147,5 +147,37 @@
                 Assert.Equal(1, count);
             }
         }
+
+        [Fact]
+        public void Test_BoolToZeroOne()
+        {
+            var course = new Course
+            {
+                Name = "insert",
+                UpdateTime = DateTime.Now,
+                CreateTime = DateTime.Now,
+                IsDeleted = true,
+            };
+
+            int count = DapperHelper.Insert(course);
+            Assert.Equal(1, count);
+
+            course = DapperHelper.FirstOrDefault<Course>();
+        }
+
+        [Fact]
+        public void Test_DateTimeToTicks()
+        {
+            var log = new Log
+            {
+                Message = "insert",
+                UpdateTimeTicks = DateTime.Now,
+            };
+
+            int count = DapperHelper.Insert(log);
+            Assert.Equal(1, count);
+
+            log = DapperHelper.FirstOrDefault<Log>();
+        }
     }
 }

@@ -70,6 +70,9 @@
                     case ConverterEnum.BoolToString:
                         line.Add($@".HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))");
                         break;
+                    case ConverterEnum.BoolToZeroOne:
+                        line.Add($@".HasConversion(new BoolToZeroOneConverter<int>())");
+                        break;
                     case ConverterEnum.None:
                         break;
                     default:

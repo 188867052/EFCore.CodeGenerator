@@ -23,5 +23,10 @@ namespace EFCore.Scaffolding.Extension
         /// Bool to string converter.
         /// </summary>
         BoolToString,
+
+        /// <summary>
+        /// Bool to Zero & One converter.
+        /// </summary>
+        BoolToZeroOne,
     }
 }
