@@ -1,10 +1,10 @@
 ﻿[*.cs]
 
+# SA1633: File should have header
+dotnet_diagnostic.SA1633.severity = none
+
 # SA1600: Elements should be documented
 dotnet_diagnostic.SA1600.severity = none
-
-# CA1720: 标识符包含类型名称
-dotnet_diagnostic.CA1720.severity = none
 
 # CA1062: 验证公共方法的参数
 dotnet_diagnostic.CA1062.severity = none
@@ -14,3 +14,6 @@ dotnet_diagnostic.CA1303.severity = none
 
 # SA1311: Static readonly fields should begin with upper-case letter
 dotnet_diagnostic.SA1311.severity = none
+
+# CA1720: 标识符包含类型名称
+dotnet_diagnostic.CA1720.severity = none

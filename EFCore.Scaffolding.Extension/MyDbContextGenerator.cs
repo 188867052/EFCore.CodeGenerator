@@ -60,20 +60,20 @@
             {
                 switch (fieldConfig.ConverterEnum)
                 {
-                    case ConverterEnum.DateTimeToTicks:
+                    case ValueConverterEnum.DateTimeToTicks:
                         line.Add($@".HasConversion(new DateTimeToTicksConverter())");
                         this.KeyValuePairs.Add($"{property.DeclaringEntityType.Name}.{property.Name}", "ConverterEnum.DateTimeToTicks");
                         break;
-                    case ConverterEnum.EnumToString:
+                    case ValueConverterEnum.EnumToString:
                         line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.CSharpType}>())");
                         break;
-                    case ConverterEnum.BoolToString:
+                    case ValueConverterEnum.BoolToString:
                         line.Add($@".HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))");
                         break;
-                    case ConverterEnum.BoolToZeroOne:
+                    case ValueConverterEnum.BoolToZeroOne:
                         line.Add($@".HasConversion(new BoolToZeroOneConverter<int>())");
                         break;
-                    case ConverterEnum.None:
+                    case ValueConverterEnum.None:
                         break;
                     default:
                         throw new ArgumentException($"Converter {fieldConfig.Converter} not exist.");
