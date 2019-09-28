@@ -149,7 +149,7 @@
         }
 
         [Fact]
-        public void Test_BoolToZeroOne()
+        public void Test_BoolToZeroOneConverter()
         {
             var course = new Course
             {
@@ -166,7 +166,7 @@
         }
 
         [Fact]
-        public void Test_DateTimeToTicks()
+        public void Test_DateTimeToTicksConverter()
         {
             var log = new Log
             {
