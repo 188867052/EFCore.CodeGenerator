@@ -9,7 +9,7 @@
 * It extends the [Dapper](https://github.com/StackExchange/Dapper), without sacrificing performance, and more automated.
 * No configuration and attributes required, just need to run EfCore scaffolding tools.
 
-### Technologies
+### Related projects
 
 These are some other repos for related projects:
 
