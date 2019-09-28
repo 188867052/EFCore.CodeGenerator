@@ -15,7 +15,7 @@
 
     public static class DapperHelper
     {
-        private static ScaffoldConfig ScaffoldConfig;
+        private static readonly ScaffoldConfig ScaffoldConfig;
         private static readonly string file;
 
         static DapperHelper()

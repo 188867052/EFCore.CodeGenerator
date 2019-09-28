@@ -170,7 +170,7 @@
         {
             var log = new Log
             {
-                Message = "insert",
+                Message = nameof(this.Test_DateTimeToTicksConverter),
                 UpdateTimeTicks = DateTime.Now,
             };
 

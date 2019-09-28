@@ -24,5 +24,7 @@ namespace Entities
         /// 创建时间.
         /// </summary>
         public DateTime? UpdateTimeTicks { get; set; }
+
+        public string Url { get; set; }
     }
 }

@@ -48,9 +48,6 @@
             this.sb.AppendLine("using Microsoft.EntityFrameworkCore.Storage.ValueConversion;");
         }
 
-        // TODO: coupled.
-        public Dictionary<string, string> KeyValuePairs = new Dictionary<string, string>();
-
         protected override List<string> Lines(IProperty property)
         {
             var line = base.Lines(property);
@@ -62,7 +59,6 @@
                 {
                     case ValueConverterEnum.DateTimeToTicks:
                         line.Add($@".HasConversion(new DateTimeToTicksConverter())");
-                        this.KeyValuePairs.Add($"{property.DeclaringEntityType.Name}.{property.Name}", "ConverterEnum.DateTimeToTicks");
                         break;
                     case ValueConverterEnum.EnumToString:
                         line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.CSharpType}>())");

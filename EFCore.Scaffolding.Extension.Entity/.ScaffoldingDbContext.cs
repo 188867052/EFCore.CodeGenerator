@@ -180,6 +180,11 @@ namespace Entities
                     .HasConversion(new DateTimeToTicksConverter())
                     .HasColumnName("update_time_ticks")
                     .HasColumnType("bigint");
+
+                entity.Property(e => e.Url)
+                    .HasColumnName("url")
+                    .HasColumnType("nvarchar(100)")
+                    .HasMaxLength(100);
             });
 
             modelBuilder.Entity<Student>(entity =>
