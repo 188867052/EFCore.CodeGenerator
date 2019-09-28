@@ -15,14 +15,14 @@
             var v = propertyInfo.GetValue(obj);
             switch (property.ConverterEnum)
             {
-                case ConverterEnum.None:
-                case ConverterEnum.EnumToString:
+                case ValueConverterEnum.None:
+                case ValueConverterEnum.EnumToString:
                     return v;
-                case ConverterEnum.BoolToString:
+                case ValueConverterEnum.BoolToString:
                     return boolToString.ConvertToProviderExpression.Compile()((bool)v);
-                case ConverterEnum.DateTimeToTicks:
+                case ValueConverterEnum.DateTimeToTicks:
                     return dateTimeToTicks.ConvertToProviderExpression.Compile()((DateTime)v);
-                case ConverterEnum.BoolToZeroOne:
+                case ValueConverterEnum.BoolToZeroOne:
                     return boolToZeroOne.ConvertToProviderExpression.Compile()((bool)v);
                 default:
                     throw new NotSupportedException("Not Supported Converter.");

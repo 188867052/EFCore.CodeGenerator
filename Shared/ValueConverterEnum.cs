@@ -1,8 +1,6 @@
-﻿using System.Xml.Serialization;
-
-namespace EFCore.Scaffolding.Extension
+﻿namespace EFCore.Scaffolding.Extension
 {
-    public enum ConverterEnum
+    public enum ValueConverterEnum
     {
         /// <summary>
         /// Not convert.
