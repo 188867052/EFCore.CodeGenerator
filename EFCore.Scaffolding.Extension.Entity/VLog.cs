@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Entities
 {
-    public partial class Log
+    public partial class VLog
     {
         /// <summary>
         /// 主键.

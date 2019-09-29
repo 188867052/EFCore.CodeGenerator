@@ -48,9 +48,10 @@
                 Entity entity = new Entity
                 {
                     Name = entityType.Name,
-                    TableName = table.Name,
+                    TableName = table.GetType() == typeof(DatabaseView) ? null : table.Name,
+                    ViewName = table.GetType() == typeof(DatabaseView) ? table.Name : null,
                     Summary = configEntity?.Summary,
-                    PrimaryKey = string.Join(",", table.PrimaryKey.Columns.Select(o => o.Name)),
+                    PrimaryKey = table.PrimaryKey == null ? null : string.Join(",", table.PrimaryKey.Columns.Select(o => o.Name)),
                 };
                 var properties = entityType.GetProperties();
 

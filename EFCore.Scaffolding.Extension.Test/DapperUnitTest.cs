@@ -211,5 +211,11 @@
                DapperHelper.Insert(log);
            });
         }
+
+        [Fact]
+        public void Test_select_from_view()
+        {
+            var log = DapperHelper.FirstOrDefault<VLog>();
+        }
     }
 }

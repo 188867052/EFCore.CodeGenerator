@@ -35,7 +35,7 @@
             using (Connection)
             {
                 var keys = PK<T>().Split(',');
-                string sql = $"SELECT * FROM {TableName<T>()} WHERE " + string.Join(" AND ", keys.Select(o => $"{o}=@{o}"));
+                string sql = $"SELECT * FROM {TableOrViewName<T>()} WHERE " + string.Join(" AND ", keys.Select(o => $"{o}=@{o}"));
                 var parameters = new DynamicParameters();
                 for (int i = 0; i < keyValues.Length; i++)
                 {
@@ -106,7 +106,7 @@
         {
             using (Connection)
             {
-                string sql = $"SELECT * FROM {TableName<T>()}";
+                string sql = $"SELECT * FROM {TableOrViewName<T>()}";
                 return Connection.Query<T>(sql);
             }
         }
@@ -115,21 +115,21 @@
         {
             using (Connection)
             {
-                string sql = $"SELECT TOP {size} * FROM {TableName<T>()}";
+                string sql = $"SELECT TOP {size} * FROM {TableOrViewName<T>()}";
                 return Connection.Query<T>(sql);
             }
         }
 
         internal static T Query<T>(string sql, object param = null)
         {
-            sql = $"SELECT * FROM {TableName<T>()} WHERE " + sql;
+            sql = $"SELECT * FROM {TableOrViewName<T>()} WHERE " + sql;
             return Connection.QueryFirst<T>(sql, param);
         }
 
         private static void PrepareDelete<T>(int id, out string sql, out DynamicParameters parameters)
         {
             var keys = PK<T>();
-            sql = $"DELETE FROM {TableName<T>()} WHERE {keys}=@{keys}";
+            sql = $"DELETE FROM {TableOrViewName<T>()} WHERE {keys}=@{keys}";
             parameters = new DynamicParameters();
             parameters.Add(keys, id);
         }
@@ -137,7 +137,7 @@
         private static void PrepareDelete<T>(T entity, out string sql, out DynamicParameters parameters)
         {
             var keys = PK<T>();
-            sql = $"DELETE FROM {TableName<T>()} WHERE {keys}=@{keys}";
+            sql = $"DELETE FROM {TableOrViewName<T>()} WHERE {keys}=@{keys}";
             parameters = new DynamicParameters();
             string pkPropertyName = GetProperties<T>().FirstOrDefault(o => o.ColumnName == keys).Name;
             var pkPropertyInfo = GetPropertyInfos<T>().FirstOrDefault(o => o.Name == pkPropertyName);
@@ -147,13 +147,13 @@
 
         private static void PrepareInsert<T>(T entity, out string sql, out DynamicParameters parameters)
         {
-            sql = $"INSERT INTO {TableName<T>()}({string.Join(",", GetColumnList(entity))}) VALUES ({string.Join(",", GetColumnList(entity).Select(column => "@" + column))})";
+            sql = $"INSERT INTO {TableOrViewName<T>()}({string.Join(",", GetColumnList(entity))}) VALUES ({string.Join(",", GetColumnList(entity).Select(column => "@" + column))})";
             PrepareUpdateOrInsertParameters(entity, out parameters);
         }
 
         private static void PrepareUpdate<T>(T entity, out string sql, out DynamicParameters parameters)
         {
-            sql = $"UPDATE {TableName<T>()} SET {GetUpdateSetClause(entity)} WHERE {PK<T>()}=@{PK<T>()}";
+            sql = $"UPDATE {TableOrViewName<T>()} SET {GetUpdateSetClause(entity)} WHERE {PK<T>()}=@{PK<T>()}";
             PrepareUpdateOrInsertParameters(entity, out parameters);
         }
 
@@ -174,7 +174,7 @@
 
         private static void PrepareFirst<T>(out string sql)
         {
-            sql = $"SELECT TOP 1 * FROM {TableName<T>()}";
+            sql = $"SELECT TOP 1 * FROM {TableOrViewName<T>()}";
         }
 
         private static string GetUpdateSetClause<T>(T entity)
@@ -232,9 +232,10 @@
             return ScaffoldConfig.GetEntity<T>().PrimaryKey;
         }
 
-        private static string TableName<T>()
+        private static string TableOrViewName<T>()
         {
-            return ScaffoldConfig.GetEntity<T>().TableName;
+            var entity = ScaffoldConfig.GetEntity<T>();
+            return entity.TableName + entity.ViewName;
         }
 
         private static Property[] GetProperties<T>()

@@ -31,7 +31,7 @@
     <property Name="Message" ColumnName="message" Summary="日志内容" />
     <property Name="CreateTime" ColumnName="create_time" Summary="创建时间" />
     <property Name="UpdateTimeTicks" ColumnName="update_time_ticks" Converter="DateTimeToTicks" CSharpType="DateTime?" Summary="创建时间" />
-    <property Name="Url" ColumnName="url" Converter="UriToString" CSharpType="Uri" />
+    <property Name="Url" ColumnName="url" Converter="UriToString" CSharpType="Uri" Summary="链接" />
   </entity>
   <entity Name="Student" TableName="student" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" ColumnName="id" Summary="主键" />
@@ -57,6 +57,13 @@
     <property Name="TeacherId" ColumnName="teacher_id" Summary="教师ID" />
     <property Name="CreateTime" ColumnName="create_time" Summary="创建时间" />
     <property Name="UpdateTime" ColumnName="update_time" Summary="更新时间" />
+  </entity>
+  <entity Name="VLog" ViewName="v_log">
+    <property Name="Identifier" ColumnName="identifier" Summary="主键" />
+    <property Name="Message" ColumnName="message" Summary="日志内容" />
+    <property Name="CreateTime" ColumnName="create_time" Summary="创建时间" />
+    <property Name="UpdateTimeTicks" ColumnName="update_time_ticks" Converter="DateTimeToTicks" CSharpType="DateTime?" Summary="创建时间" />
+    <property Name="Url" ColumnName="url" Converter="UriToString" CSharpType="Uri" Summary="链接" />
   </entity>
   <namespace Name="SexEnum">EFCore.Scaffolding.Extension.Entity.Enums</namespace>
 </config>

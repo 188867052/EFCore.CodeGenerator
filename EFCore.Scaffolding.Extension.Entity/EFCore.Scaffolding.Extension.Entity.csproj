@@ -49,6 +49,7 @@
     <Compile Update="..\Shared\Namespace.cs" Link="Shared\Namespace.cs" />
     <Compile Update="..\Shared\Property.cs" Link="Shared\Property.cs" />
     <Compile Update="..\Shared\ScaffoldConfig.cs" Link="Shared\ScaffoldConfig.cs" />
+    <Compile Update="..\Shared\ValueConverterEnum.cs" Link="Shared\ValueConverterEnum.cs" />
     <Compile Update="..\Shared\WriteAllTextModel.cs" Link="Shared\WriteAllTextModel.cs" />
   </ItemGroup>
 

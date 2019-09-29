@@ -19,6 +19,9 @@
         public string TableName { get; set; }
 
         [XmlAttribute]
+        public string ViewName { get; set; }
+
+        [XmlAttribute]
         public string Summary { get; set; }
 
         [XmlAttribute]

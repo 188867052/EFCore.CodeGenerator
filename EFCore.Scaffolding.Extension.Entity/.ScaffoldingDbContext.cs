@@ -31,6 +31,8 @@ namespace Entities
 
         public virtual DbSet<TeacherCourseMapping> TeacherCourseMapping { get; set; }
 
+        public virtual DbSet<VLog> VLog { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -266,6 +268,32 @@ namespace Entities
                     .WithMany(p => p.TeacherCourseMapping)
                     .HasForeignKey(d => d.TeacherId)
                     .HasConstraintName("FK_teacher_id");
+            });
+
+            modelBuilder.Entity<VLog>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToView("v_log");
+
+                entity.Property(e => e.CreateTime)
+                    .HasColumnName("create_time")
+                    .HasColumnType("datetime");
+
+                entity.Property(e => e.Identifier).HasColumnName("identifier");
+
+                entity.Property(e => e.Message)
+                    .HasColumnName("message")
+                    .HasMaxLength(50);
+
+                entity.Property(e => e.UpdateTimeTicks)
+                    .HasConversion(new DateTimeToTicksConverter())
+                    .HasColumnName("update_time_ticks");
+
+                entity.Property(e => e.Url)
+                    .HasConversion(new UriToStringConverter())
+                    .HasColumnName("url")
+                    .HasMaxLength(100);
             });
 
             OnModelCreatingPartial(modelBuilder);

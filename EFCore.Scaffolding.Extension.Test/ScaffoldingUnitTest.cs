@@ -8,6 +8,7 @@ namespace EFCore.Scaffolding.Extension.Test
     using EFCore.Scaffolding.Extension.Entity.Dapper;
     using EFCore.Scaffolding.Extension.Entity.Enums;
     using Entities;
+    using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
     using WeCantSpell.Hunspell;
     using Xunit;
     using Xunit.Abstractions;
@@ -53,7 +54,10 @@ namespace EFCore.Scaffolding.Extension.Test
         {
             foreach (var table in DbContextGenerator.DatabaseModel.Tables)
             {
-                Assert.NotEmpty(table.PrimaryKey.Columns);
+                if (table.GetType() != typeof(DatabaseView))
+                {
+                    Assert.NotEmpty(table.PrimaryKey.Columns);
+                }
             }
         }
 
@@ -62,16 +66,19 @@ namespace EFCore.Scaffolding.Extension.Test
         {
             foreach (var table in DbContextGenerator.DatabaseModel.Tables)
             {
-                foreach (var column in table.Columns)
+                if (table.GetType() != typeof(DatabaseView))
                 {
-                    var index = table.Columns.IndexOf(column);
-                    if (index < table.PrimaryKey.Columns.Count)
+                    foreach (var column in table.Columns)
                     {
-                        Assert.Contains(column, table.PrimaryKey.Columns);
-                    }
-                    else
-                    {
-                        Assert.DoesNotContain(column, table.PrimaryKey.Columns);
+                        var index = table.Columns.IndexOf(column);
+                        if (index < table.PrimaryKey.Columns.Count)
+                        {
+                            Assert.Contains(column, table.PrimaryKey.Columns);
+                        }
+                        else
+                        {
+                            Assert.DoesNotContain(column, table.PrimaryKey.Columns);
+                        }
                     }
                 }
             }
