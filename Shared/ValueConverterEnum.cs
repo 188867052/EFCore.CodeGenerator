@@ -26,5 +26,10 @@
         /// Bool to Zero & One converter.
         /// </summary>
         BoolToZeroOne,
+
+        /// <summary>
+        /// Uri to string converter.
+        /// </summary>
+        UriToString,
     }
 }

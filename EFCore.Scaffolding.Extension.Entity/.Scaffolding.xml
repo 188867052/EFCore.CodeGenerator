@@ -31,7 +31,7 @@
     <property Name="Message" ColumnName="message" Summary="日志内容" />
     <property Name="CreateTime" ColumnName="create_time" Summary="创建时间" />
     <property Name="UpdateTimeTicks" ColumnName="update_time_ticks" Converter="DateTimeToTicks" CSharpType="DateTime?" Summary="创建时间" />
-    <property Name="Url" ColumnName="url" />
+    <property Name="Url" ColumnName="url" Converter="UriToString" CSharpType="Uri" />
   </entity>
   <entity Name="Student" TableName="student" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" ColumnName="id" Summary="主键" />

@@ -22,6 +22,7 @@
         {
             DefaultTypeMap.MatchNamesWithUnderscores = true;
             SqlMapper.AddTypeHandler(new DateTimeToTicksHandler());
+            SqlMapper.AddTypeHandler(new UriToStringHandler());
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
             file = Directory.GetFiles(di.Parent.Parent.Parent.Parent.FullName, ".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
             ScaffoldConfig = GetScaffoldConfig();

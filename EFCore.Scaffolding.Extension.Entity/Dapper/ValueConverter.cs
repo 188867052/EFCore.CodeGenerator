@@ -9,6 +9,7 @@
         private static readonly DateTimeToTicksConverter dateTimeToTicks = new DateTimeToTicksConverter();
         private static readonly BoolToStringConverter boolToString = new BoolToStringConverter(bool.FalseString, bool.TrueString);
         private static readonly BoolToZeroOneConverter<int> boolToZeroOne = new BoolToZeroOneConverter<int>();
+        private static readonly UriToStringConverter uriToString = new UriToStringConverter();
 
         public static object GetConvertedValue<T>(T obj, PropertyInfo propertyInfo, Models.Property property)
         {
@@ -24,6 +25,8 @@
                     return dateTimeToTicks.ConvertToProviderExpression.Compile()((DateTime)v);
                 case ValueConverterEnum.BoolToZeroOne:
                     return boolToZeroOne.ConvertToProviderExpression.Compile()((bool)v);
+                case ValueConverterEnum.UriToString:
+                    return uriToString.ConvertToProviderExpression.Compile()((Uri)v);
                 default:
                     throw new NotSupportedException("Not Supported Converter.");
             }

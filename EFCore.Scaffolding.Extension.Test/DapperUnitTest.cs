@@ -179,5 +179,21 @@
 
             log = DapperHelper.FirstOrDefault<Log>();
         }
+
+        [Fact]
+        public void Test_UriToStringConverter()
+        {
+            var log = new Log
+            {
+                Message = nameof(this.Test_DateTimeToTicksConverter),
+                UpdateTimeTicks = DateTime.Now,
+                Url = new Uri("https://www.google.com/"),
+            };
+
+            int count = DapperHelper.Insert(log);
+            Assert.Equal(1, count);
+
+            log = DapperHelper.FirstOrDefault<Log>();
+        }
     }
 }

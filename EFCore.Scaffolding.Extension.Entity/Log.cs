@@ -25,6 +25,6 @@ namespace Entities
         /// </summary>
         public DateTime? UpdateTimeTicks { get; set; }
 
-        public string Url { get; set; }
+        public Uri Url { get; set; }
     }
 }

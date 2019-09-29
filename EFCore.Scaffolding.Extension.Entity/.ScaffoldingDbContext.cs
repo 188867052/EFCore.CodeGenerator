@@ -160,6 +160,7 @@ namespace Entities
                     .HasColumnName("update_time_ticks");
 
                 entity.Property(e => e.Url)
+                    .HasConversion(new UriToStringConverter())
                     .HasColumnName("url")
                     .HasMaxLength(100);
             });
