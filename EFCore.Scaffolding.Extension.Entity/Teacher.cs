@@ -37,8 +37,8 @@ namespace Entities
         /// </summary>
         public DateTime? UpdateTime { get; set; }
 
-        public ICollection<Class> Class { get; set; }
+        public virtual ICollection<Class> Class { get; set; }
 
-        public ICollection<TeacherCourseMapping> TeacherCourseMapping { get; set; }
+        public virtual ICollection<TeacherCourseMapping> TeacherCourseMapping { get; set; }
     }
 }

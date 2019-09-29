@@ -40,8 +40,8 @@ namespace Entities
         /// </summary>
         public bool IsDeleted { get; set; }
 
-        public CourseScore CourseScore { get; set; }
+        public virtual CourseScore CourseScore { get; set; }
 
-        public ICollection<TeacherCourseMapping> TeacherCourseMapping { get; set; }
+        public virtual ICollection<TeacherCourseMapping> TeacherCourseMapping { get; set; }
     }
 }

@@ -51,6 +51,6 @@ namespace Entities
         /// </summary>
         public bool IsDeleted { get; set; }
 
-        public Class Class { get; set; }
+        public virtual Class Class { get; set; }
     }
 }

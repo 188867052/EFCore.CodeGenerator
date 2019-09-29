@@ -50,8 +50,8 @@ namespace Entities
         /// </summary>
         public bool IsDeleted { get; set; }
 
-        public Teacher HeadTeacher { get; set; }
+        public virtual Teacher HeadTeacher { get; set; }
 
-        public ICollection<Student> Student { get; set; }
+        public virtual ICollection<Student> Student { get; set; }
     }
 }

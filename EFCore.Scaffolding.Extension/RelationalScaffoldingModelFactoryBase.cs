@@ -1,25 +1,25 @@
-﻿namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
-{
-    using System;
-    using System.Collections.Generic;
-    using System.Globalization;
-    using System.Linq;
-    using EFCore.Scaffolding.Extension;
-    using JetBrains.Annotations;
-    using Microsoft.EntityFrameworkCore.Design;
-    using Microsoft.EntityFrameworkCore.Design.Internal;
-    using Microsoft.EntityFrameworkCore.Internal;
-    using Microsoft.EntityFrameworkCore.Metadata;
-    using Microsoft.EntityFrameworkCore.Metadata.Builders;
-    using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-    using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
-    using Microsoft.EntityFrameworkCore.Migrations;
-    using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-    using Microsoft.EntityFrameworkCore.Scaffolding.Metadata.Internal;
-    using ScaffoldingAnnotationNames = Metadata.Internal.ScaffoldingAnnotationNames;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using EFCore.Scaffolding.Extension;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Design.Internal;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Utilities;
 
-    public abstract class RelationalScaffoldingModelFactoryBase : IScaffoldingModelFactory
+namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
+{
+    public class RelationalScaffoldingModelFactoryBase : IScaffoldingModelFactory
     {
         internal const string NavigationNameUniquifyingPattern = "{0}Navigation";
         internal const string SelfReferencingPrincipalEndNavigationNamePattern = "Inverse{0}";
@@ -35,25 +35,29 @@
         private readonly IPluralizer _pluralizer;
         private readonly ICSharpUtilities _cSharpUtilities;
         private readonly IScaffoldingTypeMapper _scaffoldingTypeMapper;
+        private readonly LoggingDefinitions _loggingDefinitions;
 
         public RelationalScaffoldingModelFactoryBase(
             [NotNull] IOperationReporter reporter,
             [NotNull] ICandidateNamingService candidateNamingService,
             [NotNull] IPluralizer pluralizer,
             [NotNull] ICSharpUtilities cSharpUtilities,
-            [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper)
+            [NotNull] IScaffoldingTypeMapper scaffoldingTypeMapper,
+            [NotNull] LoggingDefinitions loggingDefinitions)
         {
             Check.NotNull(reporter, nameof(reporter));
             Check.NotNull(candidateNamingService, nameof(candidateNamingService));
             Check.NotNull(pluralizer, nameof(pluralizer));
             Check.NotNull(cSharpUtilities, nameof(cSharpUtilities));
             Check.NotNull(scaffoldingTypeMapper, nameof(scaffoldingTypeMapper));
+            Check.NotNull(loggingDefinitions, nameof(loggingDefinitions));
 
             this._reporter = reporter;
             this._candidateNamingService = candidateNamingService;
             this._pluralizer = pluralizer;
             this._cSharpUtilities = cSharpUtilities;
             this._scaffoldingTypeMapper = scaffoldingTypeMapper;
+            this._loggingDefinitions = loggingDefinitions;
         }
 
         public virtual IModel Create(DatabaseModel databaseModel, bool useDatabaseNames)
@@ -98,8 +102,6 @@
 
             var table = column.Table ?? this._nullTable;
             var usedNames = new List<string>();
-
-            // TODO - need to clean up the way CSharpNamer & CSharpUniqueNamer work (see issue #1671)
             if (column.Table != null)
             {
                 usedNames.Add(this.GetEntityTypeName(table));
@@ -144,7 +146,7 @@
 
             if (!string.IsNullOrEmpty(databaseModel.DatabaseName))
             {
-                modelBuilder.Model.Scaffolding().DatabaseName = databaseModel.DatabaseName;
+                modelBuilder.Model.SetDatabaseName(databaseModel.DatabaseName);
             }
 
             this.VisitSequences(modelBuilder, databaseModel.Sequences);
@@ -260,25 +262,40 @@
             var builder = modelBuilder.Entity(entityTypeName);
 
             var dbSetName = this.GetDbSetName(table);
-            builder.Metadata.Scaffolding().DbSetName = dbSetName;
+            builder.Metadata.SetDbSetName(dbSetName);
 
-            builder.ToTable(table.Name, table.Schema);
+            if (table is DatabaseView)
+            {
+                builder.ToView(table.Name, table.Schema);
+            }
+            else
+            {
+                builder.ToTable(table.Name, table.Schema);
+            }
+
+            if (table.Comment != null)
+            {
+                builder.HasComment(table.Comment);
+            }
 
             this.VisitColumns(builder, table.Columns);
 
-            var keyBuilder = this.VisitPrimaryKey(builder, table);
-
-            this.SetKeyDictionary(keyBuilder, table);
-
-            if (keyBuilder == null)
+            if (table.PrimaryKey != null)
             {
-                var errorMessage = DesignStrings.UnableToGenerateEntityType(table.DisplayName());
-                this._reporter.WriteWarning(errorMessage);
+                var keyBuilder = this.VisitPrimaryKey(builder, table);
 
-                var model = modelBuilder.Model;
-                model.RemoveEntityType(entityTypeName);
-                model.Scaffolding().EntityTypeErrors.Add(entityTypeName, errorMessage);
-                return null;
+                this.SetKeyDictionary(keyBuilder, table);
+
+                if (keyBuilder == null)
+                {
+                    var errorMessage = DesignStrings.UnableToGenerateEntityType(table.DisplayName());
+                    this._reporter.WriteWarning(errorMessage);
+
+                    var model = modelBuilder.Model;
+                    model.RemoveEntityType(entityTypeName);
+                    model.GetEntityTypeErrors().Add(entityTypeName, errorMessage);
+                    return null;
+                }
             }
 
             this.VisitUniqueConstraints(builder, table.UniqueConstraints);
@@ -327,7 +344,8 @@
                 clrType = clrType.MakeNullable();
             }
 
-            if (clrType == typeof(bool) && column.DefaultValueSql != null)
+            if (clrType == typeof(bool)
+                && column.DefaultValueSql != null)
             {
                 this._reporter.WriteWarning(
                     DesignStrings.NonNullableBoooleanColumnHasDefaultConstraint(column.DisplayName()));
@@ -385,6 +403,11 @@
                 property.HasComputedColumnSql(column.ComputedColumnSql);
             }
 
+            if (column.Comment != null)
+            {
+                property.HasComment(column.Comment);
+            }
+
             if (!(column.Table.PrimaryKey?.Columns.Contains(column) ?? false))
             {
                 property.IsRequired(!column.IsNullable);
@@ -395,12 +418,11 @@
                 property.IsConcurrencyToken();
             }
 
-            property.Metadata.Scaffolding().ColumnOrdinal = column.Table.Columns.IndexOf(column);
+            property.Metadata.SetColumnOrdinal(column.Table.Columns.IndexOf(column));
 
             property.Metadata.AddAnnotations(
                 column.GetAnnotations().Where(
-                    a => a.Name != column.StoreType
-                         && a.Name != ScaffoldingAnnotationNames.ConcurrencyToken));
+                    a => a.Name != ScaffoldingAnnotationNames.ConcurrencyToken));
 
             this.SetDictionary(property, column);
             return property;
@@ -412,17 +434,12 @@
             Check.NotNull(table, nameof(table));
 
             var primaryKey = table.PrimaryKey;
-            if (primaryKey == null)
-            {
-                this._reporter.WriteWarning(DesignStrings.MissingPrimaryKey(table.DisplayName()));
-                return null;
-            }
 
             var unmappedColumns = primaryKey.Columns
                 .Where(c => this._unmappedColumns.Contains(c))
                 .Select(c => c.Name)
                 .ToList();
-            if (unmappedColumns.Any())
+            if (unmappedColumns.Count > 0)
             {
                 this._reporter.WriteWarning(
                     DesignStrings.PrimaryKeyErrorPropertyNotFound(
@@ -433,6 +450,7 @@
 
             var keyBuilder = builder.HasKey(primaryKey.Columns.Select(this.GetPropertyName).ToArray());
 
+
             if (primaryKey.Columns.Count == 1
                 && primaryKey.Columns[0].ValueGenerated == null
                 && primaryKey.Columns[0].DefaultValueSql == null)
@@ -440,12 +458,18 @@
                 var property = builder.Metadata.FindProperty(this.GetPropertyName(primaryKey.Columns[0]))?.AsProperty();
                 if (property != null)
                 {
-                    var conventionalValueGenerated = new RelationalValueGeneratorConvention().GetValueGenerated(property);
+                    var conventionalValueGenerated = RelationalValueGenerationConvention.GetValueGenerated(property);
                     if (conventionalValueGenerated == ValueGenerated.OnAdd)
                     {
                         property.ValueGenerated = ValueGenerated.Never;
                     }
                 }
+            }
+
+            if (!string.IsNullOrEmpty(primaryKey.Name)
+                && primaryKey.Name != keyBuilder.Metadata.GetDefaultName())
+            {
+                keyBuilder.HasName(primaryKey.Name);
             }
 
             keyBuilder.Metadata.AddAnnotations(primaryKey.GetAnnotations());
@@ -475,7 +499,7 @@
                 .Where(c => this._unmappedColumns.Contains(c))
                 .Select(c => c.Name)
                 .ToList();
-            if (unmappedColumns.Any())
+            if (unmappedColumns.Count > 0)
             {
                 this._reporter.WriteWarning(
                     DesignStrings.UnableToScaffoldIndexMissingProperty(
@@ -487,7 +511,8 @@
             var propertyNames = uniqueConstraint.Columns.Select(this.GetPropertyName).ToArray();
             var indexBuilder = builder.HasIndex(propertyNames).IsUnique();
 
-            if (!string.IsNullOrEmpty(uniqueConstraint.Name))
+            if (!string.IsNullOrEmpty(uniqueConstraint.Name)
+                && uniqueConstraint.Name != indexBuilder.Metadata.GetDefaultName())
             {
                 indexBuilder.HasName(uniqueConstraint.Name);
             }
@@ -519,7 +544,7 @@
                 .Where(c => this._unmappedColumns.Contains(c))
                 .Select(c => c.Name)
                 .ToList();
-            if (unmappedColumns.Any())
+            if (unmappedColumns.Count > 0)
             {
                 this._reporter.WriteWarning(
                     DesignStrings.UnableToScaffoldIndexMissingProperty(
@@ -538,7 +563,7 @@
             }
 
             if (!string.IsNullOrEmpty(index.Name)
-                && index.Name != ConstraintNamer.GetDefaultName(indexBuilder.Metadata))
+                && index.Name != indexBuilder.Metadata.GetDefaultName())
             {
                 indexBuilder.HasName(index.Name);
             }
@@ -597,7 +622,7 @@
                 .Where(c => this._unmappedColumns.Contains(c))
                 .Select(c => c.Name)
                 .ToList();
-            if (unmappedDependentColumns.Any())
+            if (unmappedDependentColumns.Count > 0)
             {
                 this._reporter.WriteWarning(
                     DesignStrings.ForeignKeyScaffoldErrorPropertyNotFound(
@@ -626,7 +651,7 @@
                 .Where(pc => principalEntityType.FindProperty(this.GetPropertyName(pc)) == null)
                 .Select(pc => pc.Name)
                 .ToList();
-            if (unmappedPrincipalColumns.Any())
+            if (unmappedPrincipalColumns.Count > 0)
             {
                 this._reporter.WriteWarning(
                     DesignStrings.ForeignKeyScaffoldErrorPropertyNotFound(
@@ -646,19 +671,18 @@
             if (principalKey == null)
             {
                 var index = principalEntityType.FindIndex(principalProperties.AsReadOnly());
-                if (index != null
-                    && index.IsUnique)
+                if (index?.IsUnique == true)
                 {
                     // ensure all principal properties are non-nullable even if the columns
                     // are nullable on the database. EF's concept of a key requires this.
                     var nullablePrincipalProperties =
                         principalPropertiesMap.Where(tuple => tuple.property.IsNullable).ToList();
-                    if (nullablePrincipalProperties.Any())
+                    if (nullablePrincipalProperties.Count > 0)
                     {
                         this._reporter.WriteWarning(
                             DesignStrings.ForeignKeyPrincipalEndContainsNullableColumns(
                                 foreignKey.DisplayName(),
-                                index.Relational().Name,
+                                index.GetName(),
                                 nullablePrincipalProperties.Select(tuple => tuple.column.DisplayName()).ToList()
                                     .Aggregate((a, b) => a + "," + b)));
 
@@ -683,25 +707,25 @@
                 }
             }
 
-            var key = dependentEntityType.GetOrAddForeignKey(
+            var newForeignKey = dependentEntityType.AddForeignKey(
                 dependentProperties, principalKey, principalEntityType);
 
             var dependentKey = dependentEntityType.FindKey(dependentProperties);
             var dependentIndex = dependentEntityType.FindIndex(dependentProperties);
-            key.IsUnique = dependentKey != null
-                           || dependentIndex != null && dependentIndex.IsUnique;
+            newForeignKey.IsUnique = dependentKey != null
+                           || dependentIndex?.IsUnique == true;
 
             if (!string.IsNullOrEmpty(foreignKey.Name)
-                && foreignKey.Name != ConstraintNamer.GetDefaultName(key))
+                && foreignKey.Name != newForeignKey.GetDefaultName())
             {
-                key.Relational().Name = foreignKey.Name;
+                newForeignKey.SetConstraintName(foreignKey.Name);
             }
 
-            AssignOnDeleteAction(foreignKey, key);
+            AssignOnDeleteAction(foreignKey, newForeignKey);
 
-            key.AddAnnotations(foreignKey.GetAnnotations());
+            newForeignKey.AddAnnotations(foreignKey.GetAnnotations());
 
-            return key;
+            return newForeignKey;
         }
 
         protected virtual void AddNavigationProperties([NotNull] IMutableForeignKey foreignKey)
@@ -773,22 +797,10 @@
                 return null;
             }
 
-            var typeScaffoldingInfo = this._scaffoldingTypeMapper.FindMapping(
+            return this._scaffoldingTypeMapper.FindMapping(
                 column.StoreType,
                 column.IsKeyOrIndex(),
                 column.IsRowVersion());
-
-            if (column.StoreType != null)
-            {
-                return new TypeScaffoldingInfo(
-                    typeScaffoldingInfo.ClrType,
-                    inferred: false,
-                    scaffoldUnicode: typeScaffoldingInfo.ScaffoldUnicode,
-                    scaffoldMaxLength: typeScaffoldingInfo.ScaffoldMaxLength,
-                    scaffoldFixedLength: typeScaffoldingInfo.ScaffoldFixedLength);
-            }
-
-            return typeScaffoldingInfo;
         }
 
         private static void AssignOnDeleteAction(
@@ -816,8 +828,7 @@
         // TODO use CSharpUniqueNamer
         private static string NavigationUniquifier([NotNull] string proposedIdentifier, [CanBeNull] ICollection<string> existingIdentifiers)
         {
-            if (existingIdentifiers == null
-                || !existingIdentifiers.Contains(proposedIdentifier))
+            if (existingIdentifiers?.Contains(proposedIdentifier) != true)
             {
                 return proposedIdentifier;
             }

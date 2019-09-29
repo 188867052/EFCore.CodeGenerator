@@ -35,6 +35,6 @@ namespace Entities
         /// </summary>
         public DateTime? UpdateTime { get; set; }
 
-        public Course IdNavigation { get; set; }
+        public virtual Course IdNavigation { get; set; }
     }
 }

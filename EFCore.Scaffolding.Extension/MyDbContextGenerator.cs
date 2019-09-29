@@ -13,12 +13,10 @@
     {
         [Obsolete]
         public MyDbContextGenerator(
-            IEnumerable<IScaffoldingProviderCodeGenerator> legacyProviderCodeGenerators,
-            IEnumerable<IProviderConfigurationCodeGenerator> providerCodeGenerators,
+            IProviderConfigurationCodeGenerator providerCodeGenerators,
             IAnnotationCodeGenerator annotationCodeGenerator,
             ICSharpHelper cSharpHelper)
             : base(
-                legacyProviderCodeGenerators,
                 providerCodeGenerators,
                 annotationCodeGenerator,
                 cSharpHelper)

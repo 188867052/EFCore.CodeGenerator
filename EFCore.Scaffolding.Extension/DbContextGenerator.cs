@@ -11,6 +11,7 @@
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.EntityFrameworkCore.Diagnostics;
     using Microsoft.EntityFrameworkCore.Metadata.Internal;
+    using Microsoft.EntityFrameworkCore.Scaffolding;
     using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
     using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
     using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
@@ -51,7 +52,7 @@
             var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
             using (var connection = new SqlConnection(Connection.ConnectionString))
             {
-                return databaseModelFactory.Create(connection, new List<string>(), new List<string>());
+                return databaseModelFactory.Create(connection, new DatabaseModelFactoryOptions(new List<string>(), new List<string>()));
             }
         }
 

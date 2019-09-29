@@ -1,32 +1,31 @@
-﻿namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
-{
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-    using EFCore.Scaffolding.Extension;
-    using JetBrains.Annotations;
-    using Microsoft.EntityFrameworkCore.Design;
-    using Microsoft.EntityFrameworkCore.Design.Internal;
-    using Microsoft.EntityFrameworkCore.Internal;
-    using Microsoft.EntityFrameworkCore.Metadata;
-    using Microsoft.EntityFrameworkCore.Metadata.Conventions.Internal;
-    using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using EFCore.Scaffolding.Extension;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Design.Internal;
+using Microsoft.EntityFrameworkCore.Internal;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
+namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
+{
     public abstract class CSharpEntityTypeGeneratorBase : ICSharpEntityTypeGenerator
     {
-        private readonly ICSharpHelper code;
-        private bool useDataAnnotations;
+        private readonly ICSharpHelper _code;
 
-        protected IndentedStringBuilder IndentedStringBuilder { get; set; }
+        public IndentedStringBuilder IndentedStringBuilder;
+        private bool _useDataAnnotations;
 
         public CSharpEntityTypeGeneratorBase(
             [NotNull] ICSharpHelper cSharpHelper)
         {
             Check.NotNull(cSharpHelper, nameof(cSharpHelper));
 
-            this.code = cSharpHelper;
+            this._code = cSharpHelper;
         }
 
         protected virtual void GenerateNameSpace(IEntityType entityType)
@@ -39,13 +38,12 @@
             Check.NotNull(@namespace, nameof(@namespace));
 
             this.IndentedStringBuilder = new IndentedStringBuilder();
-            this.useDataAnnotations = useDataAnnotations;
+            this._useDataAnnotations = useDataAnnotations;
 
             this.IndentedStringBuilder.AppendLine("using System;");
             this.IndentedStringBuilder.AppendLine("using System.Collections.Generic;");
             this.GenerateNameSpace(entityType);
-
-            if (this.useDataAnnotations)
+            if (this._useDataAnnotations)
             {
                 this.IndentedStringBuilder.AppendLine("using System.ComponentModel.DataAnnotations;");
                 this.IndentedStringBuilder.AppendLine("using System.ComponentModel.DataAnnotations.Schema;");
@@ -79,7 +77,7 @@
         {
             Check.NotNull(entityType, nameof(entityType));
 
-            if (this.useDataAnnotations)
+            if (this._useDataAnnotations)
             {
                 this.GenerateEntityTypeDataAnnotations(entityType);
             }
@@ -109,22 +107,23 @@
 
         private void GenerateTableAttribute(IEntityType entityType)
         {
-            var tableName = entityType.Relational().TableName;
-            var schema = entityType.Relational().Schema;
-            var defaultSchema = entityType.Model.Relational().DefaultSchema;
+            var tableName = entityType.GetTableName();
+            var schema = entityType.GetSchema();
+            var defaultSchema = entityType.Model.GetDefaultSchema();
 
             var schemaParameterNeeded = schema != null && schema != defaultSchema;
-            var tableAttributeNeeded = schemaParameterNeeded || tableName != null && tableName != entityType.Scaffolding().DbSetName;
+            var isView = entityType.FindAnnotation(RelationalAnnotationNames.ViewDefinition) != null;
+            var tableAttributeNeeded = !isView && (schemaParameterNeeded || tableName != null && tableName != entityType.GetDbSetName());
 
             if (tableAttributeNeeded)
             {
                 var tableAttribute = new AttributeWriter(nameof(TableAttribute));
 
-                tableAttribute.AddParameter(this.code.Literal(tableName));
+                tableAttribute.AddParameter(this._code.Literal(tableName));
 
                 if (schemaParameterNeeded)
                 {
-                    tableAttribute.AddParameter($"{nameof(TableAttribute.Schema)} = {this.code.Literal(schema)}");
+                    tableAttribute.AddParameter($"{nameof(TableAttribute.Schema)} = {this._code.Literal(schema)}");
                 }
 
                 this.IndentedStringBuilder.AppendLine(tableAttribute.ToString());
@@ -161,10 +160,10 @@
         {
             Check.NotNull(entityType, nameof(entityType));
 
-            var properties = entityType.GetProperties().OrderBy(p => p.Scaffolding().ColumnOrdinal);
-            foreach (var property in properties)
+            var properties = entityType.GetProperties().OrderBy(p => p.GetColumnOrdinal());
+            foreach (var property in entityType.GetProperties().OrderBy(p => p.GetColumnOrdinal()))
             {
-                if (this.useDataAnnotations)
+                if (this._useDataAnnotations)
                 {
                     this.GeneratePropertyDataAnnotations(property);
                 }
@@ -180,7 +179,7 @@
 
         protected virtual string GetPropertyType(IProperty property)
         {
-            return this.code.Reference(property.ClrType);
+            return this._code.Reference(property.ClrType);
         }
 
         protected virtual void GetSummary(IEntityType entityType)
@@ -204,32 +203,20 @@
 
         private void GenerateKeyAttribute(IProperty property)
         {
-            var key = property.AsProperty().PrimaryKey;
-
-            if (key?.Properties.Count == 1)
+            var key = property.FindContainingPrimaryKey();
+            if (key != null)
             {
-                if (key is Key concreteKey
-                    && key.Properties.SequenceEqual(new KeyDiscoveryConvention(null).DiscoverKeyProperties(concreteKey.DeclaringEntityType, concreteKey.DeclaringEntityType.GetProperties().ToList())))
-                {
-                    return;
-                }
-
-                if (key.Relational().Name != ConstraintNamer.GetDefaultName(key))
-                {
-                    return;
-                }
-
                 this.IndentedStringBuilder.AppendLine(new AttributeWriter(nameof(KeyAttribute)));
             }
         }
 
         private void GenerateColumnAttribute(IProperty property)
         {
-            var columnName = property.Relational().ColumnName;
+            var columnName = property.GetColumnName();
             var columnType = property.GetConfiguredColumnType();
 
-            var delimitedColumnName = columnName != null && columnName != property.Name ? this.code.Literal(columnName) : null;
-            var delimitedColumnType = columnType != null ? this.code.Literal(columnType) : null;
+            var delimitedColumnName = columnName != null && columnName != property.Name ? this._code.Literal(columnName) : null;
+            var delimitedColumnType = columnType != null ? this._code.Literal(columnType) : null;
 
             if ((delimitedColumnName ?? delimitedColumnType) != null)
             {
@@ -260,7 +247,7 @@
                         ? nameof(StringLengthAttribute)
                         : nameof(MaxLengthAttribute));
 
-                lengthAttribute.AddParameter(this.code.Literal(maxLength.Value));
+                lengthAttribute.AddParameter(this._code.Literal(maxLength.Value));
 
                 this.IndentedStringBuilder.AppendLine(lengthAttribute.ToString());
             }
@@ -283,7 +270,8 @@
 
             var sortedNavigations = entityType.GetNavigations()
                 .OrderBy(n => n.IsDependentToPrincipal() ? 0 : 1)
-                .ThenBy(n => n.IsCollection() ? 1 : 0);
+                .ThenBy(n => n.IsCollection() ? 1 : 0)
+                .ToList();
 
             if (sortedNavigations.Any())
             {
@@ -291,14 +279,14 @@
 
                 foreach (var navigation in sortedNavigations)
                 {
-                    if (this.useDataAnnotations)
+                    if (this._useDataAnnotations)
                     {
                         this.GenerateNavigationDataAnnotations(navigation);
                     }
 
                     var referencedTypeName = navigation.GetTargetType().Name;
                     var navigationType = navigation.IsCollection() ? $"ICollection<{referencedTypeName}>" : referencedTypeName;
-                    this.IndentedStringBuilder.AppendLine($"public {navigationType} {navigation.Name} {{ get; set; }}");
+                    this.IndentedStringBuilder.AppendLine($"public virtual {navigationType} {navigation.Name} {{ get; set; }}");
 
                     if (sortedNavigations.IndexOf(navigation) < sortedNavigations.Count() - 1)
                     {
@@ -322,9 +310,16 @@
                 {
                     var foreignKeyAttribute = new AttributeWriter(nameof(ForeignKeyAttribute));
 
-                    foreignKeyAttribute.AddParameter(
-                        this.code.Literal(
-                            string.Join(",", navigation.ForeignKey.Properties.Select(p => p.Name))));
+                    if (navigation.ForeignKey.Properties.Count > 1)
+                    {
+                        foreignKeyAttribute.AddParameter(
+                              this._code.Literal(
+                                  string.Join(",", navigation.ForeignKey.Properties.Select(p => p.Name))));
+                    }
+                    else
+                    {
+                        foreignKeyAttribute.AddParameter($"nameof({navigation.ForeignKey.Properties.First().Name})");
+                    }
 
                     this.IndentedStringBuilder.AppendLine(foreignKeyAttribute.ToString());
                 }
@@ -341,7 +336,10 @@
                 {
                     var inversePropertyAttribute = new AttributeWriter(nameof(InversePropertyAttribute));
 
-                    inversePropertyAttribute.AddParameter(this.code.Literal(inverseNavigation.Name));
+                    inversePropertyAttribute.AddParameter(
+                        navigation.Name != inverseNavigation.DeclaringEntityType.Name
+                            ? $"nameof({inverseNavigation.DeclaringEntityType.Name}.{inverseNavigation.Name})"
+                            : this._code.Literal(inverseNavigation.Name));
 
                     this.IndentedStringBuilder.AppendLine(inversePropertyAttribute.ToString());
                 }
@@ -350,31 +348,31 @@
 
         private class AttributeWriter
         {
-            private readonly string attibuteName;
-            private readonly List<string> parameters = new List<string>();
+            private readonly string _attributeName;
+            private readonly List<string> _parameters = new List<string>();
 
             public AttributeWriter([NotNull] string attributeName)
             {
                 Check.NotEmpty(attributeName, nameof(attributeName));
 
-                this.attibuteName = attributeName;
+                this._attributeName = attributeName;
             }
 
             public void AddParameter([NotNull] string parameter)
             {
                 Check.NotEmpty(parameter, nameof(parameter));
 
-                this.parameters.Add(parameter);
+                this._parameters.Add(parameter);
             }
 
             public override string ToString()
-                => "[" + (this.parameters.Count == 0
-                       ? StripAttribute(this.attibuteName)
-                       : StripAttribute(this.attibuteName) + "(" + string.Join(", ", this.parameters) + ")") + "]";
+                => "[" + (this._parameters.Count == 0
+                       ? StripAttribute(this._attributeName)
+                       : StripAttribute(this._attributeName) + "(" + string.Join(", ", this._parameters) + ")") + "]";
 
             private static string StripAttribute([NotNull] string attributeName)
                 => attributeName.EndsWith("Attribute", StringComparison.Ordinal)
-                    ? attributeName.Substring(0, attributeName.Length - 9)
+                    ? attributeName[0..^9]
                     : attributeName;
         }
     }
