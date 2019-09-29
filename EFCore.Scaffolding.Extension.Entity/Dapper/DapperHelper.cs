@@ -3,7 +3,6 @@
     using System;
     using System.Collections.Generic;
     using System.Data;
-    using System.Data.SqlClient;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -12,6 +11,7 @@
     using System.Xml.Serialization;
     using EFCore.Scaffolding.Extension.Models;
     using global::Dapper;
+    using Microsoft.Data.SqlClient;
 
     public static class DapperHelper
     {
