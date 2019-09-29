@@ -180,20 +180,40 @@
             log = DapperHelper.FirstOrDefault<Log>();
         }
 
-        [Fact]
-        public void Test_UriToStringConverter()
+        [Theory]
+        [InlineData(null)]
+        [InlineData("http://www.google.com/")]
+        [InlineData("https://www.google.com/")]
+        public void Test_UriToStringConverter(string url)
         {
             var log = new Log
             {
-                Message = nameof(this.Test_DateTimeToTicksConverter),
+                Message = url,
                 UpdateTimeTicks = DateTime.Now,
-                Url = new Uri("https://www.google.com/"),
+                Url = url == null ? null : new Uri(url),
             };
 
             int count = DapperHelper.Insert(log);
             Assert.Equal(1, count);
 
             log = DapperHelper.FirstOrDefault<Log>();
+        }
+
+        [Theory]
+        [InlineData("Fake Uri")]
+        [InlineData("www.google.com")]
+        public void Test_UriToStringConverter_throws(string url)
+        {
+            Assert.Throws<UriFormatException>(() =>
+           {
+               var log = new Log
+               {
+                   Message = url,
+                   UpdateTimeTicks = DateTime.Now,
+                   Url = new Uri(url),
+               };
+               DapperHelper.Insert(log);
+           });
         }
     }
 }

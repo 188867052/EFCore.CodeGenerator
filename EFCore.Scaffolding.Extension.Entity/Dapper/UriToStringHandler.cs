@@ -6,7 +6,7 @@
     {
         public override Uri Parse(object value)
         {
-            if (value != null && value.ToString().StartsWith(Uri.UriSchemeHttp))
+            if (value != null)
             {
                 return new Uri(value.ToString());
             }
