@@ -113,20 +113,18 @@ namespace EFCore.Scaffolding.Extension.Test
         [Fact]
         public void Test_insert_entity()
         {
-            using (ScaffoldingDbContext testContext = new ScaffoldingDbContext())
+            using var testContext = new ScaffoldingDbContext();
+            var entity = new Student
             {
-                var entity = new Student
-                {
-                    Name = "test",
-                    Sex = SexEnum.Male,
-                    Mobile = "123456789",
-                    CreateTime = DateTime.Now,
-                    UpdateTime = DateTime.Now,
-                };
-                testContext.Student.Add(entity);
-                int count = testContext.SaveChanges();
-                Assert.Equal(1, count);
-            }
+                Name = "test",
+                Sex = SexEnum.Male,
+                Mobile = "123456789",
+                CreateTime = DateTime.Now,
+                UpdateTime = DateTime.Now,
+            };
+            testContext.Student.Add(entity);
+            int count = testContext.SaveChanges();
+            Assert.Equal(1, count);
         }
 
         private WordList GetWordList()

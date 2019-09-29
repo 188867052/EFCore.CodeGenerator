@@ -115,37 +115,33 @@
         [Fact]
         public void Test_delete_by_PK()
         {
-            using (var dbContext = new ScaffoldingDbContext())
+            using var dbContext = new ScaffoldingDbContext();
+            var student = new Student
             {
-                var student = new Student
-                {
-                    Name = "insert",
-                    UpdateTime = DateTime.Now,
-                };
+                Name = "insert",
+                UpdateTime = DateTime.Now,
+            };
 
-                dbContext.Add(student);
-                dbContext.SaveChanges();
-                int count = DapperHelper.Delete<Student>(student.Id);
-                Assert.Equal(1, count);
-            }
+            dbContext.Add(student);
+            dbContext.SaveChanges();
+            int count = DapperHelper.Delete<Student>(student.Id);
+            Assert.Equal(1, count);
         }
 
         [Fact]
         public void Test_delete_by_entity()
         {
-            using (var dbContext = new ScaffoldingDbContext())
+            using var dbContext = new ScaffoldingDbContext();
+            var student = new Student
             {
-                var student = new Student
-                {
-                    Name = "insert",
-                    UpdateTime = DateTime.Now,
-                };
+                Name = "insert",
+                UpdateTime = DateTime.Now,
+            };
 
-                dbContext.Add(student);
-                dbContext.SaveChanges();
-                int count = DapperHelper.Delete(student);
-                Assert.Equal(1, count);
-            }
+            dbContext.Add(student);
+            dbContext.SaveChanges();
+            int count = DapperHelper.Delete(student);
+            Assert.Equal(1, count);
         }
 
         [Fact]

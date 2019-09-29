@@ -31,7 +31,7 @@
             this.directory = writeCodePath;
             MyDbContextGenerator dbContextGenerator = (MyDbContextGenerator)Services.GetService<ICSharpDbContextGenerator>();
             MyEntityTypeGenerator entityTypeGenerator = (MyEntityTypeGenerator)Services.GetService<ICSharpEntityTypeGenerator>();
-            var scaffoldingModelFactory = (MyScaffoldingModelFactory)Services.GetService<IScaffoldingModelFactory>();
+            var scaffoldingModelFactory = (RelationalScaffoldingModelFactory)Services.GetService<IScaffoldingModelFactory>();
             Model model = (Model)scaffoldingModelFactory.Create(DatabaseModel, false);
             var dbContextCode = dbContextGenerator.WriteCode(model, @namespace, contextName, Connection.ConnectionString, false, false);
             this.WriteAllTextModels.Add(new WriteAllTextModel(dbContextCode, Path.Combine(this.directory, $".{contextName}.cs")));
@@ -75,8 +75,7 @@
             var servicesCache = new ServiceCollection()
                   .AddEntityFrameworkDesignTimeServices()
                   .AddSingleton<ICSharpDbContextGenerator, MyDbContextGenerator>()
-                  .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>()
-                  .AddSingleton<IScaffoldingModelFactory, MyScaffoldingModelFactory>();
+                  .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>();
             new SqlServerDesignTimeServices().ConfigureDesignTimeServices(servicesCache);
 
             return servicesCache;

@@ -66,7 +66,7 @@
                         break;
                     case ValueConverterEnum.BoolToZeroOne:
                         line.Add($@".HasConversion(new BoolToZeroOneConverter<int>())");
-                        break;  
+                        break;
                     case ValueConverterEnum.UriToString:
                         line.Add($@".HasConversion(new UriToStringConverter())");
                         break;
