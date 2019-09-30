@@ -19,27 +19,23 @@ namespace EFCore.Scaffolding.Extension
                 }
 
                 string filePath = GetPipelineFile();
-                bool isAzure = string.IsNullOrEmpty(filePath);
+                bool isAzure = !string.IsNullOrEmpty(filePath);
                 if (isAzure)
                 {
-                    if (string.IsNullOrEmpty(aliCloud))
-                    {
-                        aliCloud = File.ReadAllText(filePath);
-                    }
+                    aliCloud = File.ReadAllText(filePath);
+                    return aliCloud;
                 }
                 else
                 {
                     return LocalConnectionString;
                 }
-
-                return aliCloud;
             }
         }
 
         private static string GetPipelineFile()
         {
             var di = new DirectoryInfo(Environment.CurrentDirectory);
-            return Directory.GetFiles(di.Parent.Parent.Parent.Parent.FullName, "ConnectionString.txt", SearchOption.AllDirectories).FirstOrDefault();
+            return Directory.GetFiles(di.Parent.Parent.Parent.Parent.Parent.FullName, "ConnectionString.txt", SearchOption.AllDirectories).FirstOrDefault();
         }
     }
 }
