@@ -39,7 +39,7 @@ steps:
   displayName: set ConnectionString
   inputs:
     script: 'echo $(ConnectionString)>ConnectionString.txt'
-    workingDirectory: 'd:/a/1/s/ConnectionString'
+    workingDirectory: 'd:/a/1/s/'
 
 - task: DotNetCoreCLI@2
   displayName: dotnet test & code generator
