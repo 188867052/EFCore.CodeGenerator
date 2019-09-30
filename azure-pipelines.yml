@@ -41,6 +41,12 @@ steps:
     script: 'echo $(ConnectionString)>ConnectionString.txt'
     workingDirectory: 'd:/a/1/s/'
 
+- task: CmdLine@2
+  displayName: debug dir
+  inputs:
+    script: 'dir'
+    workingDirectory: 'd:/a/1/s/'
+
 - task: DotNetCoreCLI@2
   displayName: dotnet test & code generator
   inputs:
