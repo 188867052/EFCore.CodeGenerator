@@ -35,6 +35,11 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: CmdLine@2
+  inputs:
+    script: 'echo $(ConnectionString)>ConnectionString.txt'
+    workingDirectory: 'd:/a/1/s/temp'
+
 - task: DotNetCoreCLI@2
   displayName: dotnet test & code generator
   inputs:
