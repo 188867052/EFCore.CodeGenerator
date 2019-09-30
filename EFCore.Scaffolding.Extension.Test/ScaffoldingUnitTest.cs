@@ -33,7 +33,7 @@ namespace EFCore.Scaffolding.Extension.Test
             string sql = File.ReadAllText(scaffoldingFile.FullName);
             if (!string.IsNullOrEmpty(sql))
             {
-                int count = DapperHelper.Connection.Execute(sql);
+                int count = DapperExtension.Connection.Execute(sql);
                 Assert.Equal(count, -1);
             }
         }

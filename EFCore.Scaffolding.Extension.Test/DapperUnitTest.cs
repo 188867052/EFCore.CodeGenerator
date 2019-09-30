@@ -28,8 +28,8 @@
                 Message = nameof(this.Value_converter),
             };
 
-            int count = DapperHelper.Insert(log);
-            log = DapperHelper.Find<Log>(id);
+            int count = DapperExtension.Insert(log);
+            log = DapperExtension.Find<Log>(id);
 
             Assert.Equal(1, count);
             Assert.Equal(id, log.Identifier);
@@ -45,7 +45,7 @@
                 Message = nameof(this.Test_insert_default_value_sql_PK_is_default),
             };
 
-            int count = DapperHelper.Insert(log);
+            int count = DapperExtension.Insert(log);
             Assert.Equal(1, count);
         }
 
@@ -60,7 +60,7 @@
                 Message = nameof(this.Test_insert_default_value_sql_PK_has_value),
             };
 
-            int count = DapperHelper.Insert(log);
+            int count = DapperExtension.Insert(log);
             Assert.Equal(1, count);
         }
 
@@ -75,10 +75,10 @@
                 Message = nameof(this.Test_insert_default_value_sql_PK_has_value),
             };
 
-            DapperHelper.Insert(log);
+            DapperExtension.Insert(log);
             log.UpdateTimeTicks = DateTime.Now;
             log.Message = nameof(this.Test_update_entity);
-            int count = DapperHelper.Update(log);
+            int count = DapperExtension.Update(log);
             Assert.Equal(1, count);
         }
 
@@ -86,11 +86,11 @@
 
         public void Test_update_entity_with_self_increase_PK()
         {
-            var student = DapperHelper.FirstOrDefault<Student>();
+            var student = DapperExtension.FirstOrDefault<Student>();
             if (student != null)
             {
                 student.Name = "update";
-                int count = DapperHelper.Update(student);
+                int count = DapperExtension.Update(student);
                 Assert.Equal(1, count);
             }
         }
@@ -108,7 +108,7 @@
                 UpdateTime = DateTime.Now,
             };
 
-            int count = DapperHelper.Insert(student);
+            int count = DapperExtension.Insert(student);
             Assert.Equal(1, count);
         }
 
@@ -124,7 +124,7 @@
 
             dbContext.Add(student);
             dbContext.SaveChanges();
-            int count = DapperHelper.Delete<Student>(student.Id);
+            int count = DapperExtension.Delete<Student>(student.Id);
             Assert.Equal(1, count);
         }
 
@@ -140,7 +140,7 @@
 
             dbContext.Add(student);
             dbContext.SaveChanges();
-            int count = DapperHelper.Delete(student);
+            int count = DapperExtension.Delete(student);
             Assert.Equal(1, count);
         }
 
@@ -155,10 +155,10 @@
                 IsDeleted = true,
             };
 
-            int count = DapperHelper.Insert(course);
+            int count = DapperExtension.Insert(course);
             Assert.Equal(1, count);
 
-            course = DapperHelper.FirstOrDefault<Course>();
+            course = DapperExtension.FirstOrDefault<Course>();
         }
 
         [Fact]
@@ -170,10 +170,10 @@
                 UpdateTimeTicks = DateTime.Now,
             };
 
-            int count = DapperHelper.Insert(log);
+            int count = DapperExtension.Insert(log);
             Assert.Equal(1, count);
 
-            log = DapperHelper.FirstOrDefault<Log>();
+            log = DapperExtension.FirstOrDefault<Log>();
         }
 
         [Theory]
@@ -189,10 +189,10 @@
                 Url = url == null ? null : new Uri(url),
             };
 
-            int count = DapperHelper.Insert(log);
+            int count = DapperExtension.Insert(log);
             Assert.Equal(1, count);
 
-            log = DapperHelper.FirstOrDefault<Log>();
+            log = DapperExtension.FirstOrDefault<Log>();
         }
 
         [Theory]
@@ -208,14 +208,14 @@
                    UpdateTimeTicks = DateTime.Now,
                    Url = new Uri(url),
                };
-               DapperHelper.Insert(log);
+               DapperExtension.Insert(log);
            });
         }
 
         [Fact]
         public void Test_select_from_view()
         {
-            var log = DapperHelper.FirstOrDefault<VLog>();
+            var log = DapperExtension.FirstOrDefault<VLog>();
         }
     }
 }

@@ -23,3 +23,6 @@ dotnet_diagnostic.CA1810.severity = none
 
 # CA5369: 将 XmlReader 用于反序列化
 dotnet_diagnostic.CA5369.severity = none
+
+# SA1201: Elements should appear in the correct order
+dotnet_diagnostic.SA1201.severity = none
