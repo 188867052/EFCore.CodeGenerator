@@ -36,6 +36,7 @@ steps:
     restoreSolution: '$(solution)'
 
 - task: CmdLine@2
+  displayName: set ConnectionString
   inputs:
     script: 'echo $(ConnectionString)>ConnectionString.txt'
     workingDirectory: 'd:/a/1/s/temp'
