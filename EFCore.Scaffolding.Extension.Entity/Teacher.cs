@@ -4,6 +4,9 @@ using EFCore.Scaffolding.Extension.Entity.Enums;
 
 namespace Entities
 {
+    /// <summary>
+    /// 老师.
+    /// </summary>
     public partial class Teacher
     {
         public Teacher()

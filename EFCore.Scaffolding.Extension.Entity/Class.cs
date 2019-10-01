@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Entities
 {
+    /// <summary>
+    /// 班级.
+    /// </summary>
     public partial class Class
     {
         public Class()

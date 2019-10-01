@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Entities
 {
+    /// <summary>
+    /// 课程.
+    /// </summary>
     public partial class Course
     {
         public Course()

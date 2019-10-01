@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Entities
 {
+    /// <summary>
+    /// 日志.
+    /// </summary>
     public partial class Log
     {
         /// <summary>
