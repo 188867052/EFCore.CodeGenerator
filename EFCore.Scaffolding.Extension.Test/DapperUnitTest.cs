@@ -9,11 +9,11 @@
 
     public class DapperUnitTest
     {
-        private readonly ITestOutputHelper output;
+        private readonly ITestOutputHelper log;
 
         public DapperUnitTest(ITestOutputHelper outputHelper)
         {
-            this.output = outputHelper;
+            this.log = outputHelper;
         }
 
         [Fact]
@@ -196,6 +196,7 @@
         }
 
         [Theory]
+        [InlineData("")]
         [InlineData("Fake Uri")]
         [InlineData("www.google.com")]
         public void Test_UriToStringConverter_throws(string url)

@@ -17,11 +17,11 @@ namespace EFCore.Scaffolding.Extension.Test
     public class ScaffoldingUnitTest
     {
         private static WordList wordList;
-        private readonly ITestOutputHelper output;
+        private readonly ITestOutputHelper log;
 
         public ScaffoldingUnitTest(ITestOutputHelper outputHelper)
         {
-            this.output = outputHelper;
+            this.log = outputHelper;
         }
 
         [Fact]
@@ -46,7 +46,7 @@ namespace EFCore.Scaffolding.Extension.Test
             var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
             var list = ScaffoldingHelper.Scaffolding("Entities", "ScaffoldingDbContext", scaffoldingFile.Directory.FullName);
 
-            this.output.WriteLine(string.Join(Environment.NewLine, list));
+            this.log.WriteLine(string.Join(Environment.NewLine, list));
         }
 
         [Fact]
@@ -94,10 +94,10 @@ namespace EFCore.Scaffolding.Extension.Test
                 isSuccess &= tableNameSuggests.Count == 0;
                 if (tableNameSuggests.Count != 0)
                 {
-                    this.output.WriteLine($"Typo: Table Name: {table.Name}.");
-                    this.output.WriteLine("Suggestions:");
-                    this.output.WriteLine($"{string.Join(Environment.NewLine, tableNameSuggests.Where(o => !o.Contains("-")).Select(o => "     " + o.Replace(" ", "_").ToLower()))}");
-                    this.output.WriteLine(new string('-', 30));
+                    this.log.WriteLine($"Typo: Table Name: {table.Name}.");
+                    this.log.WriteLine("Suggestions:");
+                    this.log.WriteLine($"{string.Join(Environment.NewLine, tableNameSuggests.Where(o => !o.Contains("-")).Select(o => "     " + o.Replace(" ", "_").ToLower()))}");
+                    this.log.WriteLine(new string('-', 30));
                 }
 
                 foreach (var column in table.Columns)
@@ -106,10 +106,10 @@ namespace EFCore.Scaffolding.Extension.Test
                     isSuccess &= columnSuggests.Count == 0;
                     if (columnSuggests.Count != 0)
                     {
-                        this.output.WriteLine($"Typo: Table Name: {table.Name}, Column: {column.Name}.");
-                        this.output.WriteLine("Suggestions:");
-                        this.output.WriteLine($"{string.Join(Environment.NewLine, columnSuggests.Where(o => !o.Contains("-")).Select(o => "     " + o.Replace(" ", "_").ToLower()))}");
-                        this.output.WriteLine(new string('-', 30));
+                        this.log.WriteLine($"Typo: Table Name: {table.Name}, Column: {column.Name}.");
+                        this.log.WriteLine("Suggestions:");
+                        this.log.WriteLine($"{string.Join(Environment.NewLine, columnSuggests.Where(o => !o.Contains("-")).Select(o => "     " + o.Replace(" ", "_").ToLower()))}");
+                        this.log.WriteLine(new string('-', 30));
                     }
                 }
 
