@@ -22,7 +22,7 @@
         {
             using var connection = Connection;
             var keys = Utilities.PK<T>().Split(',');
-            string sql = $"SELECT * FROM {Utilities.TableOrViewName<T>()} WHERE " + string.Join(" AND ", keys.Select(o => $"{o}=@{o}"));
+            string sql = $"SELECT * FROM {Utilities.TableOrView<T>()} WHERE " + string.Join(" AND ", keys.Select(o => $"{o}=@{o}"));
             var parameters = new DynamicParameters();
             for (int i = 0; i < keyValues.Length; i++)
             {
@@ -86,21 +86,21 @@
         public static IEnumerable<T> FindAll<T>()
         {
             using var connection = Connection;
-            string sql = $"SELECT * FROM {Utilities.TableOrViewName<T>()}";
+            string sql = $"SELECT * FROM {Utilities.TableOrView<T>()}";
             return connection.Query<T>(sql);
         }
 
         public static IEnumerable<T> Page<T>(int size)
         {
             using var connection = Connection;
-            string sql = $"SELECT TOP {size} * FROM {Utilities.TableOrViewName<T>()}";
+            string sql = $"SELECT TOP {size} * FROM {Utilities.TableOrView<T>()}";
             return connection.Query<T>(sql);
         }
 
         internal static T Query<T>(string sql, object param = null)
         {
             using var connection = Connection;
-            sql = $"SELECT * FROM {Utilities.TableOrViewName<T>()} WHERE " + sql;
+            sql = $"SELECT * FROM {Utilities.TableOrView<T>()} WHERE " + sql;
             return connection.QueryFirst<T>(sql, param);
         }
     }

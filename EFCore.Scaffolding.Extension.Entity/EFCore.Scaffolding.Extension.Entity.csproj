@@ -44,6 +44,7 @@
     <Folder Include="Shared\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="..\Shared\Class.cs" Link="Shared\Class.cs" />
     <Compile Update="..\Shared\Connection.cs" Link="Shared\Connection.cs" />
     <Compile Update="..\Shared\ConverterEnum.cs" Link="Shared\ConverterEnum.cs" />
     <Compile Update="..\Shared\Entity.cs" Link="Shared\Entity.cs" />

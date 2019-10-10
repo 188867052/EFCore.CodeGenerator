@@ -11,15 +11,15 @@
     [XmlRoot(ElementName = "config", IsNullable = false)]
     public class ScaffoldConfig
     {
-        [XmlElement("entity")]
-        public Entity[] Entities { get; set; }
+        [XmlElement("class")]
+        public Class[] Classes { get; set; }
 
         [XmlElement("namespace")]
         public Namespace[] Namespaces { get; set; }
 
-        public Entity GetEntity<T>()
+        public Class GetEntity<T>()
         {
-            return this.Entities.FirstOrDefault(o => o.Name == typeof(T).Name);
+            return this.Classes.FirstOrDefault(o => o.Name == typeof(T).Name);
         }
     }
 }

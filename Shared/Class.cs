@@ -7,7 +7,7 @@
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
-    public class Entity
+    public class Class
     {
         [XmlElement(ElementName = "property")]
         public Property[] Properties { get; set; }
@@ -16,10 +16,10 @@
         public string Name { get; set; }
 
         [XmlAttribute]
-        public string TableName { get; set; }
+        public string Table { get; set; }
 
         [XmlAttribute]
-        public string ViewName { get; set; }
+        public string View { get; set; }
 
         [XmlAttribute]
         public string Summary { get; set; }

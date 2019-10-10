@@ -10,7 +10,7 @@
     public class Namespace
     {
         [XmlAttribute]
-        public string Name { get; set; }
+        public string Type { get; set; }
 
         [XmlText]
         public string Value { get; set; }

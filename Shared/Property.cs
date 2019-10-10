@@ -19,13 +19,13 @@ namespace EFCore.Scaffolding.Extension.Models
         public string ValueGenerated { get; set; }
 
         [XmlAttribute]
-        public string ColumnName { get; set; }
+        public string Column { get; set; }
 
         [XmlAttribute]
         public string Converter { get; set; }
 
         [XmlAttribute]
-        public string CSharpType { get; set; }
+        public string Type { get; set; }
 
         [XmlAttribute]
         public string Summary { get; set; }

@@ -35,21 +35,21 @@
             var newConfig = new ScaffoldConfig
             {
                 Namespaces = ScaffoldConfig.Namespaces?.OrderBy(o => o.Value).ToArray(),
-                Entities = Array.Empty<Entity>(),
+                Classes = Array.Empty<Class>(),
             };
 
-            IList<Entity> list = new List<Entity>();
+            IList<Class> list = new List<Class>();
 
             foreach (var table in databaseModel.Tables.OrderBy(o => o.Name))
             {
                 // TODO: may has issue.
                 var entityType = entityTypes.FirstOrDefault(o => table.Name.Replace("_", string.Empty).Equals(o.Name, StringComparison.InvariantCultureIgnoreCase));
-                var configEntity = ScaffoldConfig.Entities.FirstOrDefault(o => o.Name == entityType.Name);
-                Entity entity = new Entity
+                var configEntity = ScaffoldConfig.Classes.FirstOrDefault(o => o.Name == entityType.Name);
+                Class entity = new Class
                 {
                     Name = entityType.Name,
-                    TableName = table.GetType() == typeof(DatabaseView) ? null : table.Name,
-                    ViewName = table.GetType() == typeof(DatabaseView) ? table.Name : null,
+                    Table = table.GetType() == typeof(DatabaseView) ? null : table.Name,
+                    View = table.GetType() == typeof(DatabaseView) ? table.Name : null,
                     Summary = configEntity?.Summary,
                     PrimaryKey = table.PrimaryKey == null ? null : string.Join(",", table.PrimaryKey.Columns.Select(o => o.Name)),
                 };
@@ -65,10 +65,10 @@
                     {
                         Name = property.Name,
                         DefaultValueSql = column.DefaultValueSql,
-                        ColumnName = column.Name,
+                        Column = column.Name,
                         ValueGenerated = column.ValueGenerated?.ToString(),
                         Summary = configProperty?.Summary,
-                        CSharpType = configProperty?.CSharpType,
+                        Type = configProperty?.Type,
                         Converter = configProperty?.Converter,
                     };
                     propertyList.Add(p);
@@ -78,7 +78,7 @@
                 entity.Properties = propertyList.ToArray();
             }
 
-            newConfig.Entities = list.ToArray();
+            newConfig.Classes = list.ToArray();
             string xmlSerialized = Serialize(newConfig);
             File.WriteAllText(file, xmlSerialized, Encoding.UTF8);
         }

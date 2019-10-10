@@ -30,9 +30,9 @@
 
         protected override void GenerateNameSpace()
         {
-            foreach (var property in Helper.ScaffoldConfig.Entities.SelectMany(table => table.Properties.Select(property => property)))
+            foreach (var property in Helper.ScaffoldConfig.Classes.SelectMany(table => table.Properties.Select(property => property)))
             {
-                Namespace ns = Helper.ScaffoldConfig.Namespaces.FirstOrDefault(o => o.Name == property.CSharpType);
+                Namespace ns = Helper.ScaffoldConfig.Namespaces.FirstOrDefault(o => o.Type == property.Type);
                 if (ns != null)
                 {
                     string us = $"using {ns.Value};";
@@ -50,7 +50,7 @@
         {
             var line = base.Lines(property);
             var propertyImp = (Microsoft.EntityFrameworkCore.Metadata.Internal.Property)property;
-            var fieldConfig = Helper.ScaffoldConfig?.Entities?.FirstOrDefault(o => o.Name == propertyImp?.DeclaringType?.Name)?.Properties?.FirstOrDefault(o => o.Name == property.Name);
+            var fieldConfig = Helper.ScaffoldConfig?.Classes?.FirstOrDefault(o => o.Name == propertyImp?.DeclaringType?.Name)?.Properties?.FirstOrDefault(o => o.Name == property.Name);
             if (fieldConfig != null)
             {
                 switch (fieldConfig.ConverterEnum)
@@ -59,7 +59,7 @@
                         line.Add($@".HasConversion(new DateTimeToTicksConverter())");
                         break;
                     case ValueConverterEnum.EnumToString:
-                        line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.CSharpType}>())");
+                        line.Add($@".HasConversion(new EnumToStringConverter<{fieldConfig.Type}>())");
                         break;
                     case ValueConverterEnum.BoolToString:
                         line.Add($@".HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))");

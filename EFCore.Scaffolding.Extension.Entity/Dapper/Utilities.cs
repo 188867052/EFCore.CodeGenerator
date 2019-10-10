@@ -25,7 +25,7 @@
 
         internal static string PK<T>() => scaffoldConfig.GetEntity<T>().PrimaryKey;
 
-        internal static string TableOrViewName<T>() => scaffoldConfig.GetEntity<T>().TableName + scaffoldConfig.GetEntity<T>().ViewName;
+        internal static string TableOrView<T>() => scaffoldConfig.GetEntity<T>().Table + scaffoldConfig.GetEntity<T>().View;
 
         internal static Property[] GetProperties<T>() => scaffoldConfig.GetEntity<T>().Properties;
 
@@ -33,7 +33,7 @@
 
         internal static List<PropertyInfo> GetPropertyInfos<T>() => typeof(T).GetProperties().ToList();
 
-        internal static void PrepareFirst<T>(out string sql) => sql = $"SELECT TOP 1 * FROM {TableOrViewName<T>()}";
+        internal static void PrepareFirst<T>(out string sql) => sql = $"SELECT TOP 1 * FROM {TableOrView<T>()}";
 
         internal static string GetUpdateSetClause<T>(T entity) => string.Join(",", GetColumnList(entity).Select(o => $"{o}=@{o}"));
 
@@ -46,7 +46,7 @@
         internal static void PrepareDelete<T>(int id, out string sql, out DynamicParameters parameters)
         {
             var keys = PK<T>();
-            sql = $"DELETE FROM {TableOrViewName<T>()} WHERE {keys}=@{keys}";
+            sql = $"DELETE FROM {TableOrView<T>()} WHERE {keys}=@{keys}";
             parameters = new DynamicParameters();
             parameters.Add(keys, id);
         }
@@ -54,22 +54,22 @@
         internal static void PrepareDelete<T>(T entity, out string sql, out DynamicParameters parameters)
         {
             var keys = PK<T>();
-            sql = $"DELETE FROM {TableOrViewName<T>()} WHERE {keys}=@{keys}";
+            sql = $"DELETE FROM {TableOrView<T>()} WHERE {keys}=@{keys}";
             parameters = new DynamicParameters();
-            string pkPropertyName = GetProperties<T>().FirstOrDefault(o => o.ColumnName == keys).Name;
+            string pkPropertyName = GetProperties<T>().FirstOrDefault(o => o.Column == keys).Name;
             var pkPropertyInfo = GetPropertyInfos<T>().FirstOrDefault(o => o.Name == pkPropertyName);
             parameters.Add(keys, pkPropertyInfo.GetValue(entity));
         }
 
         internal static void PrepareInsert<T>(T entity, out string sql, out DynamicParameters parameters)
         {
-            sql = $"INSERT INTO {TableOrViewName<T>()}({string.Join(",", GetColumnList(entity))}) VALUES ({string.Join(",", GetColumnList(entity).Select(column => "@" + column))})";
+            sql = $"INSERT INTO {TableOrView<T>()}({string.Join(",", GetColumnList(entity))}) VALUES ({string.Join(",", GetColumnList(entity).Select(column => "@" + column))})";
             PrepareUpdateOrInsertParameters(entity, out parameters);
         }
 
         internal static void PrepareUpdate<T>(T entity, out string sql, out DynamicParameters parameters)
         {
-            sql = $"UPDATE {TableOrViewName<T>()} SET {GetUpdateSetClause(entity)} WHERE {PK<T>()}=@{PK<T>()}";
+            sql = $"UPDATE {TableOrView<T>()} SET {GetUpdateSetClause(entity)} WHERE {PK<T>()}=@{PK<T>()}";
             PrepareUpdateOrInsertParameters(entity, out parameters);
         }
 
@@ -83,7 +83,7 @@
                 var property = scaffoldConfig.GetEntity<T>().Properties.FirstOrDefault(o => o.Name == item.Name);
                 if (property != null)
                 {
-                    parameters.Add(property.ColumnName, ValueConverter.GetConvertedValue(entity, item, property));
+                    parameters.Add(property.Column, ValueConverter.GetConvertedValue(entity, item, property));
                 }
             }
         }
@@ -99,7 +99,7 @@
                 // Not self-incrementing, no default value (usually a non-primary key field)
                 if (!isIncrease && !isDefaultValueSql)
                 {
-                    values.Add(property.ColumnName);
+                    values.Add(property.Column);
                     continue;
                 }
 
@@ -113,14 +113,14 @@
                         case nameof(Guid):
                             if ((Guid)value != default)
                             {
-                                values.Add(property.ColumnName);
+                                values.Add(property.Column);
                             }
 
                             continue;
                         case nameof(Int32):
                             if ((int)value != default)
                             {
-                                values.Add(property.ColumnName);
+                                values.Add(property.Column);
                             }
 
                             continue;

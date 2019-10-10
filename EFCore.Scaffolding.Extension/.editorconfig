@@ -1,13 +1,4 @@
 ﻿[*.cs]
 
-# SA1633: File should have header
-dotnet_diagnostic.SA1633.severity = none
-
-# SA1200: Using directives should be placed correctly
-dotnet_diagnostic.SA1200.severity = none
-
-# EF1001: Internal EF Core API usage.
-dotnet_diagnostic.EF1001.severity = none
-
 # SA1600: Elements should be documented
 dotnet_diagnostic.SA1600.severity = none

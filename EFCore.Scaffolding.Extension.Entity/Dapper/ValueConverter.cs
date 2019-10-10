@@ -28,7 +28,7 @@
                 case ValueConverterEnum.UriToString:
                     return uriToString.ConvertToProviderExpression.Compile()((Uri)v);
                 default:
-                    throw new NotSupportedException("Not Supported Converter.");
+                    throw new NotSupportedException($"Not Supported Converter: {property.ConverterEnum}.");
             }
         }
     }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EFCore.Scaffolding.Extension.Entity.Enums
+﻿namespace EFCore.Scaffolding.Extension.Entity.Enums
 {
     public enum SexEnum
     {
