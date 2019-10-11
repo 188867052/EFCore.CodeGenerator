@@ -1,4 +1,4 @@
-﻿IF COL_LENGTH('log', 'url') IS NOT NULL    
-    PRINT N'存在'    
-ELSE    
-    alter table log add url nvarchar(100) null 
+﻿ALTER VIEW [dbo].[v_log]
+AS
+SELECT dbo.[log].*,newid() as new_id
+FROM   dbo.[log]
