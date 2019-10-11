@@ -32,5 +32,7 @@ namespace Entities
         /// 链接.
         /// </summary>
         public Uri Url { get; set; }
+
+        public Guid? NewId { get; set; }
     }
 }

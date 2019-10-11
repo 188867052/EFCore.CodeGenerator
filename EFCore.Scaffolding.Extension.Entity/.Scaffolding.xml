@@ -64,6 +64,7 @@
     <property Name="CreateTime" Column="create_time" Summary="创建时间" />
     <property Name="UpdateTimeTicks" Column="update_time_ticks" Converter="DateTimeToTicks" Type="DateTime?" Summary="创建时间" />
     <property Name="Url" Column="url" Converter="UriToString" Type="Uri" Summary="链接" />
+    <property Name="NewId" Column="new_id" />
   </class>
   <namespace Type="SexEnum">EFCore.Scaffolding.Extension.Entity.Enums</namespace>
 </config>

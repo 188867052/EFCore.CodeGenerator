@@ -286,6 +286,8 @@ namespace Entities
                     .HasColumnName("message")
                     .HasMaxLength(50);
 
+                entity.Property(e => e.NewId).HasColumnName("new_id");
+
                 entity.Property(e => e.UpdateTimeTicks)
                     .HasConversion(new DateTimeToTicksConverter())
                     .HasColumnName("update_time_ticks");
