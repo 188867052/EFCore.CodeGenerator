@@ -54,7 +54,7 @@ namespace EFCore.Scaffolding.Extension.Test
         {
             foreach (var table in DbContextGenerator.DatabaseModel.Tables)
             {
-                if (table.GetType() != typeof(DatabaseView))
+                if (table.GetType() == typeof(DatabaseTable))
                 {
                     Assert.NotEmpty(table.PrimaryKey.Columns);
                 }
