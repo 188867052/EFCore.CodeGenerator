@@ -64,6 +64,9 @@ steps:
   inputs:
     checkWarnings: true
     warningFailOption: 'build'
+    checkCoverage: true
+    coverageFailOption: 'build'
+    coverageType: 'blocks'
 
 - task: CmdLine@2
   displayName: debug cmd dir
