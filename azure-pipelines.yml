@@ -54,19 +54,11 @@ steps:
     testRunTitle: '单元测试并代码生成'
     workingDirectory: 'd:/a/1/s/temp'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    workingDirectory: 'd:/a/1/s/temp'
-
 - task: BuildQualityChecks@6
   displayName: Build Quality Checks
   inputs:
     checkWarnings: true
     warningFailOption: 'build'
-    checkCoverage: true
-    coverageFailOption: 'build'
-    coverageType: 'blocks'
 
 - task: CmdLine@2
   displayName: debug cmd dir
