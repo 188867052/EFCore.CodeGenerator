@@ -53,6 +53,10 @@ steps:
     msbuildArchitecture: 'x64'
     createLogFile: true
 
+- task: NDependTask@1
+  inputs:
+    iscoverage: true
+
 - task: DotNetCoreCLI@2
   displayName: dotnet test & code generator
   inputs:
