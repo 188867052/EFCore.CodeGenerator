@@ -60,28 +60,6 @@ steps:
     testRunTitle: '单元测试并代码生成'
     workingDirectory: 'd:/a/1/s/temp'
 
-
-- task: mspremier.BuildQualityChecks.QualityChecks-task.BuildQualityChecks@5
-  displayName: 'Check build quality'
-  inputs:
-    checkWarnings: true
-    warningFailOption: fixed
-    warningFilters: |
-     /\[warning\]/i
-     /\[super\]/i
-    showStatistics: true
-    checkCoverage: true
-    coverageFailOption: fixed
-    coverageType: branches
-    buildConfiguration: '$(BuildConfiguration)'
-    buildPlatform: '$(BuildPlatform)'
-    explicitFilter: true
-    baseDefinitionId: 33
-    baseRepoId: '21e399f7-aba6-4c72-a5f5-2bcc7b38a0cf'
-    baseBranchRef: refs/heads/master
-    runTitle: 'Run Title'
-
-
 - task: CmdLine@2
   displayName: debug cmd dir
   inputs:
