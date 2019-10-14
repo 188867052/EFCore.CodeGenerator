@@ -47,6 +47,12 @@ steps:
     script: 'dir'
     workingDirectory: 'd:/a/1/s/'
 
+- task: VSBuild@1
+  inputs:
+    solution: '**\*.sln'
+    msbuildArchitecture: 'x64'
+    createLogFile: true
+
 - task: DotNetCoreCLI@2
   displayName: dotnet test & code generator
   inputs:
