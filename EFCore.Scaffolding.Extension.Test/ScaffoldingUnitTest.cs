@@ -120,7 +120,7 @@ namespace EFCore.Scaffolding.Extension.Test
         [Fact]
         public void Test_insert_entity()
         {
-            using var testContext = new ScaffoldingDbContext();
+            using var context = new ScaffoldingDbContext();
             var entity = new Student
             {
                 Name = "test",
@@ -129,9 +129,27 @@ namespace EFCore.Scaffolding.Extension.Test
                 CreateTime = DateTime.Now,
                 UpdateTime = DateTime.Now,
             };
-            testContext.Student.Add(entity);
-            int count = testContext.SaveChanges();
+            context.Student.Add(entity);
+            int count = context.SaveChanges();
             Assert.Equal(1, count);
+        }
+
+        [Fact]
+        public void Test_get_OneToMany_navigate_entity_without_PK()
+        {
+            using var context = new ScaffoldingDbContext();
+            var c = new Class()
+            {
+                Name = "test",
+                Grade = new Grade { Name = "test" },
+            };
+            context.Add(c);
+            int count = context.SaveChanges();
+            Assert.Equal(2, count);
+
+            var newClass = context.Class.Find(c.Id);
+            Assert.NotNull(newClass);
+            Assert.NotNull(newClass.Grade);
         }
 
         private WordList GetWordList()

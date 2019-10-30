@@ -50,7 +50,7 @@
                     Name = entityType.Name,
                     Table = table.GetType() == typeof(DatabaseView) ? null : table.Name,
                     View = table.GetType() == typeof(DatabaseView) ? table.Name : null,
-                    Summary = configEntity?.Summary,
+                    Summary = string.IsNullOrEmpty(table.Comment) ? configEntity?.Summary : table.Comment,
                     PrimaryKey = table.PrimaryKey == null ? null : string.Join(",", table.PrimaryKey.Columns.Select(o => o.Name)),
                 };
                 var properties = entityType.GetProperties();
@@ -67,7 +67,7 @@
                         DefaultValueSql = column.DefaultValueSql,
                         Column = column.Name,
                         ValueGenerated = column.ValueGenerated?.ToString(),
-                        Summary = configProperty?.Summary,
+                        Summary = string.IsNullOrEmpty(column.Comment) ? configProperty?.Summary : column.Comment,
                         Type = configProperty?.Type,
                         Converter = configProperty?.Converter,
                     };

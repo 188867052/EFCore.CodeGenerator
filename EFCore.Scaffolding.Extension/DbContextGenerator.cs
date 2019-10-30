@@ -50,10 +50,8 @@
         {
             var logger = Services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
             var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
-            using (var connection = new SqlConnection(Connection.ConnectionString))
-            {
-                return databaseModelFactory.Create(connection, new DatabaseModelFactoryOptions(new List<string>(), new List<string>()));
-            }
+            using var connection = new SqlConnection(Connection.ConnectionString);
+            return databaseModelFactory.Create(connection, new DatabaseModelFactoryOptions(new List<string>(), new List<string>()));
         }
 
         private static T GetOrAdd<T>(string key, Func<T> action)

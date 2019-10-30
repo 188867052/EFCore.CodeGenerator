@@ -23,6 +23,8 @@ namespace Entities
 
         public virtual DbSet<CourseScore> CourseScore { get; set; }
 
+        public virtual DbSet<Grade> Grade { get; set; }
+
         public virtual DbSet<Log> Log { get; set; }
 
         public virtual DbSet<Student> Student { get; set; }
@@ -52,11 +54,6 @@ namespace Entities
                 entity.Property(e => e.CreateTime)
                     .HasColumnName("create_time")
                     .HasColumnType("datetime");
-
-                entity.Property(e => e.Grade)
-                    .HasColumnName("grade")
-                    .HasMaxLength(10)
-                    .IsFixedLength();
 
                 entity.Property(e => e.HeadTeacherId).HasColumnName("head_teacher_id");
 
@@ -137,6 +134,15 @@ namespace Entities
                     .HasForeignKey<CourseScore>(d => d.Id)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_course_score_course");
+            });
+
+            modelBuilder.Entity<Grade>(entity =>
+            {
+                entity.Property(e => e.Id).HasComment("主键");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(50)
+                    .HasComment("名称");
             });
 
             modelBuilder.Entity<Log>(entity =>
