@@ -135,7 +135,7 @@ namespace EFCore.Scaffolding.Extension.Test
         }
 
         [Fact]
-        public void Test_get_OneToMany_navigate_entity_without_PK()
+        public void Test_insert_select_OneToMany_navigate_entity_without_PK()
         {
             using var context = new ScaffoldingDbContext();
             var c = new Class()
