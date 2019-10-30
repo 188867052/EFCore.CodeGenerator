@@ -7,7 +7,7 @@ namespace EFCore.Scaffolding.Extension
     public static class Connection
     {
         private static string aliCloud;
-        private const string LocalConnectionString = @"Data Source=HCHENG\SQLEXPRESS;Initial Catalog=Scaffolding;Integrated Security=True";
+        private const string LocalConnectionString = @"Data Source=.;Initial Catalog=Scaffolding;Integrated Security=True";
 
         public static string ConnectionString
         {
