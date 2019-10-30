@@ -55,7 +55,7 @@ namespace Entities
                     .HasColumnName("create_time")
                     .HasColumnType("datetime");
 
-                entity.Property(e => e.GradeId).HasColumnName("grade_Id");
+                entity.Property(e => e.GradeId).HasColumnName("grade_id");
 
                 entity.Property(e => e.HeadTeacherId).HasColumnName("head_teacher_id");
 

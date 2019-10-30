@@ -6,9 +6,9 @@
     <property Name="HeadTeacherId" Column="head_teacher_id" Summary="班主任ID" />
     <property Name="CreateTime" Column="create_time" Summary="创建时间" />
     <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
+    <property Name="GradeId" Column="grade_id" />
     <property Name="Location" Column="location" Summary="地址" />
     <property Name="IsDeleted" Column="is_deleted" Summary="是否已删除" />
-    <property Name="GradeId" Column="grade_Id" />
   </class>
   <class Name="Course" Table="course" Summary="课程" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
