@@ -74,6 +74,11 @@
                     propertyList.Add(p);
                 }
 
+                foreach (var item in configEntity.Properties.Where(o => !string.IsNullOrEmpty(o.MapType)))
+                {
+                    propertyList.Add(item);
+                }
+
                 list.Add(entity);
                 entity.Properties = propertyList.ToArray();
             }

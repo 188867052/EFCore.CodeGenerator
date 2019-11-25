@@ -9,6 +9,7 @@
     <property Name="GradeId" Column="grade_id" />
     <property Name="Location" Column="location" Summary="地址" />
     <property Name="IsDeleted" Column="is_deleted" Summary="是否已删除" />
+    <property Name="HeadTeacher" Column="head_teacher_id" MapType="OneToOne" PrincipalTableName="teacher" Summary="班主任" PrincipalColumnName="id" TableName="class" />
   </class>
   <class Name="Course" Table="course" Summary="课程" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />

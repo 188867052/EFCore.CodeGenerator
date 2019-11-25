@@ -4,7 +4,6 @@
     using System.Collections.Generic;
     using System.Data.SqlClient;
     using System.IO;
-    using System.Linq;
     using System.Text;
     using EFCore.Scaffolding.Extension.Models;
     using Microsoft.EntityFrameworkCore;
@@ -15,7 +14,6 @@
     using Microsoft.EntityFrameworkCore.Scaffolding.Internal;
     using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
     using Microsoft.EntityFrameworkCore.SqlServer.Design.Internal;
-    using Microsoft.EntityFrameworkCore.SqlServer.Scaffolding.Internal;
     using Microsoft.Extensions.DependencyInjection;
 
     public class DbContextGenerator
@@ -49,7 +47,7 @@
         private static DatabaseModel GetDatabaseModel()
         {
             var logger = Services.GetService<IDiagnosticsLogger<DbLoggerCategory.Scaffolding>>();
-            var databaseModelFactory = new SqlServerDatabaseModelFactory(logger);
+            var databaseModelFactory = new MySqlServerDatabaseModelFactory(logger);
             using var connection = new SqlConnection(Connection.ConnectionString);
             return databaseModelFactory.Create(connection, new DatabaseModelFactoryOptions(new List<string>(), new List<string>()));
         }

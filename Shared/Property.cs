@@ -28,9 +28,24 @@ namespace EFCore.Scaffolding.Extension.Models
         public string Type { get; set; }
 
         [XmlAttribute]
+        public string MapType { get; set; }
+
+        [XmlAttribute]
+        public string PrincipalTableName { get; set; }
+
+        [XmlAttribute]
         public string Summary { get; set; }
+
+        [XmlAttribute]
+        public string FKPrincipalColumn { get; set; }
+
+        [XmlAttribute]
+        public string PrincipalColumnName { get; set; }
 
         [XmlIgnore]
         public ValueConverterEnum ConverterEnum => string.IsNullOrEmpty(this.Converter) ? default : (ValueConverterEnum)Enum.Parse(typeof(ValueConverterEnum), this.Converter);
+
+        [XmlAttribute]
+        public string TableName { get; set; }
     }
 }
