@@ -135,6 +135,24 @@ namespace EFCore.Scaffolding.Extension.Test
         }
 
         [Fact]
+        public void Test_get_and_insert_entity_with_fake_FK()
+        {
+            using var context = new ScaffoldingDbContext();
+            var c = new Class()
+            {
+                Name = "test",
+                HeadTeacher = new Teacher { Name = "test" },
+            };
+            context.Add(c);
+            int count = context.SaveChanges();
+            Assert.Equal(2, count);
+
+            var newClass = context.Class.Find(c.Id);
+            Assert.NotNull(newClass);
+            Assert.NotNull(newClass.HeadTeacher);
+        }
+
+        [Fact]
         public void Test_insert_select_OneToMany_navigate_entity_without_PK()
         {
             using var context = new ScaffoldingDbContext();

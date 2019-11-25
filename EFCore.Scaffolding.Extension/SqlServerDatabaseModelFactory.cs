@@ -1100,7 +1100,7 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
         /// <param name="tables"></param>
         private void GetForeignKeysFromConfig(IReadOnlyList<DatabaseTable> tables)
         {
-            foreach (var item in Helper.ScaffoldConfig.Classes.SelectMany(o => o.Properties.Where(o => !string.IsNullOrEmpty(o.MapType))))
+            foreach (var item in Helper.ScaffoldConfig.Classes.SelectMany(o => o.Properties.Where(o => !string.IsNullOrEmpty(o.PrincipalTableName))))
             {
                 var principalTable = tables.FirstOrDefault(t => t.Name.Equals(item.PrincipalTableName, StringComparison.OrdinalIgnoreCase));
                 var table = tables.Single(t => t.Name == item.TableName);
@@ -1108,7 +1108,6 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
                 Check.NotNull(table, nameof(table));
                 var foreignKey = new DatabaseForeignKey
                 {
-                    //Name = item.PrincipalColumnName,
                     Table = table,
                     PrincipalTable = principalTable,
                     OnDelete = ConvertToReferentialAction("NO_ACTION"),
@@ -1119,7 +1118,7 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
                 var column = table.Columns.FirstOrDefault(c => c.Name.Equals(item.Column, StringComparison.OrdinalIgnoreCase));
                 Check.NotNull(column, nameof(column));
 
-                foreignKey.PrincipalColumns.Add(column);
+                foreignKey.Columns.Add(column);
                 foreignKey.PrincipalColumns.Add(principalColumn);
                 table.ForeignKeys.Add(foreignKey);
             }

@@ -47,13 +47,9 @@ namespace Entities
         {
             modelBuilder.Entity<Class>(entity =>
             {
-                entity.ToTable("class");
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnName("create_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.GradeId).HasColumnName("grade_id");
 
@@ -76,19 +72,14 @@ namespace Entities
 
                 entity.HasOne(d => d.HeadTeacher)
                     .WithMany(p => p.Class)
-                    .HasForeignKey(d => d.HeadTeacherId)
-                    .HasConstraintName("FK_class_teacher");
+                    .HasForeignKey(d => d.HeadTeacherId);
             });
 
             modelBuilder.Entity<Course>(entity =>
             {
-                entity.ToTable("course");
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnName("create_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.IsDeleted)
                     .HasConversion(new BoolToZeroOneConverter<int>())
@@ -111,17 +102,13 @@ namespace Entities
 
             modelBuilder.Entity<CourseScore>(entity =>
             {
-                entity.ToTable("course_score");
-
                 entity.Property(e => e.Id)
                     .HasColumnName("id")
                     .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CourseId).HasColumnName("course_id");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnName("create_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Score).HasColumnName("score");
 
@@ -149,17 +136,14 @@ namespace Entities
 
             modelBuilder.Entity<Log>(entity =>
             {
-                entity.HasKey(e => e.Identifier);
-
-                entity.ToTable("log");
+                entity.HasKey(e => e.Identifier)
+                    .HasName("PK_log");
 
                 entity.Property(e => e.Identifier)
                     .HasColumnName("identifier")
                     .HasDefaultValueSql("(newid())");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnName("create_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Message)
                     .HasColumnName("message")
@@ -177,8 +161,6 @@ namespace Entities
 
             modelBuilder.Entity<Student>(entity =>
             {
-                entity.ToTable("student");
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.Address)
@@ -188,9 +170,7 @@ namespace Entities
 
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnName("create_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.IsDeleted)
                     .HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))
@@ -227,13 +207,9 @@ namespace Entities
 
             modelBuilder.Entity<Teacher>(entity =>
             {
-                entity.ToTable("teacher");
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnName("create_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.Name)
                     .HasColumnName("name")
@@ -251,15 +227,11 @@ namespace Entities
 
             modelBuilder.Entity<TeacherCourseMapping>(entity =>
             {
-                entity.ToTable("teacher_course_mapping");
-
                 entity.Property(e => e.Id).HasColumnName("id");
 
                 entity.Property(e => e.CourseId).HasColumnName("course_id");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnName("create_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
 

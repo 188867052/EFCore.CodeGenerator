@@ -71,7 +71,8 @@
             var servicesCache = new ServiceCollection()
                   .AddEntityFrameworkDesignTimeServices()
                   .AddSingleton<ICSharpDbContextGenerator, MyDbContextGenerator>()
-                  .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>();
+                  .AddSingleton<ICSharpEntityTypeGenerator, MyEntityTypeGenerator>()
+                  .AddSingleton<IScaffoldingModelFactory, RelationalScaffoldingModelFactory>();
             new SqlServerDesignTimeServices().ConfigureDesignTimeServices(servicesCache);
 
             return servicesCache;

@@ -1,66 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-16"?>
 <config>
-  <class Name="Class" Table="class" Summary="班级" PrimaryKey="id">
+  <class Name="Class" Table="Class" Summary="班级" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
     <property Name="Name" Column="name" Summary="名称" />
     <property Name="HeadTeacherId" Column="head_teacher_id" Summary="班主任ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
+    <property Name="CreateTime" Column="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
     <property Name="GradeId" Column="grade_id" />
     <property Name="Location" Column="location" Summary="地址" />
     <property Name="IsDeleted" Column="is_deleted" Summary="是否已删除" />
-    <property Name="HeadTeacher" Column="head_teacher_id" MapType="OneToOne" PrincipalTableName="teacher" Summary="班主任" PrincipalColumnName="id" TableName="class" />
+    <property Name="HeadTeacher" Column="head_teacher_id" PrincipalTableName="Teacher" PrincipalColumnName="id" TableName="Class" Summary="班主任" />
   </class>
-  <class Name="Course" Table="course" Summary="课程" PrimaryKey="id">
+  <class Name="Course" Table="Course" Summary="课程" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
     <property Name="Name" Column="name" Summary="名称" />
     <property Name="TeacherId" Column="teacher_id" Summary="教师ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
+    <property Name="CreateTime" Column="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
     <property Name="IsDeleted" Column="is_deleted" Converter="BoolToZeroOne" Type="bool" Summary="是否已删除" />
   </class>
-  <class Name="CourseScore" Table="course_score" PrimaryKey="id">
+  <class Name="CourseScore" Table="CourseScore" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
     <property Name="Score" Column="score" Summary="分数" />
     <property Name="StudentId" Column="student_id" Summary="学生ID" />
     <property Name="CourseId" Column="course_id" Summary="课程ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
+    <property Name="CreateTime" Column="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
   </class>
   <class Name="Grade" Table="Grade" PrimaryKey="Id">
     <property Name="Id" ValueGenerated="OnAdd" Column="Id" Summary="主键" />
     <property Name="Name" Column="Name" Summary="名称" />
   </class>
-  <class Name="Log" Table="log" Summary="日志" PrimaryKey="identifier">
+  <class Name="Log" Table="Log" Summary="日志" PrimaryKey="identifier">
     <property Name="Identifier" DefaultValueSql="(newid())" Column="identifier" Summary="主键" />
     <property Name="Message" Column="message" Summary="日志内容" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
+    <property Name="CreateTime" Column="CreateTime" Summary="创建时间" />
     <property Name="UpdateTimeTicks" Column="update_time_ticks" Converter="DateTimeToTicks" Type="DateTime?" Summary="创建时间" />
     <property Name="Url" Column="url" Converter="UriToString" Type="Uri" Summary="链接" />
   </class>
-  <class Name="Student" Table="student" Summary="学生" PrimaryKey="id">
+  <class Name="Student" Table="Student" Summary="学生" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
     <property Name="Name" Column="name" Summary="名称" />
     <property Name="Sex" Column="sex" Converter="EnumToString" Type="SexEnum" Summary="性别" />
     <property Name="ClassId" Column="class_id" Summary="班级ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
+    <property Name="CreateTime" Column="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
     <property Name="Address" Column="address" Summary="地址" />
     <property Name="Mobile" Column="mobile" Summary="联系电话" />
     <property Name="IsDeleted" Column="is_deleted" Converter="BoolToString" Type="bool" Summary="是否已删除" />
   </class>
-  <class Name="Teacher" Table="teacher" Summary="老师" PrimaryKey="id">
+  <class Name="Teacher" Table="Teacher" Summary="老师" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
     <property Name="Name" Column="name" Summary="名称" />
     <property Name="Sex" Column="sex" Converter="EnumToString" Type="SexEnum" Summary="性别" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
+    <property Name="CreateTime" Column="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
   </class>
-  <class Name="TeacherCourseMapping" Table="teacher_course_mapping" PrimaryKey="id">
+  <class Name="TeacherCourseMapping" Table="TeacherCourseMapping" PrimaryKey="id">
     <property Name="Id" ValueGenerated="OnAdd" Column="id" Summary="主键" />
     <property Name="CourseId" Column="course_id" Summary="课程ID" />
     <property Name="TeacherId" Column="teacher_id" Summary="教师ID" />
-    <property Name="CreateTime" Column="create_time" Summary="创建时间" />
+    <property Name="CreateTime" Column="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Column="update_time" Summary="更新时间" />
   </class>
   <class Name="VLog" View="v_log" Summary="日志视图">

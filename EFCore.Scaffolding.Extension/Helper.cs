@@ -74,7 +74,7 @@
                     propertyList.Add(p);
                 }
 
-                foreach (var item in configEntity.Properties.Where(o => !string.IsNullOrEmpty(o.MapType)))
+                foreach (var item in configEntity.Properties.Where(o => !string.IsNullOrEmpty(o.PrincipalTableName)))
                 {
                     propertyList.Add(item);
                 }
