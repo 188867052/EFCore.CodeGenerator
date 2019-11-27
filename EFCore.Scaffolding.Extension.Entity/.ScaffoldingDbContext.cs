@@ -47,8 +47,6 @@ namespace Entities
         {
             modelBuilder.Entity<Class>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
-
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.GradeId).HasColumnName("grade_id");
@@ -66,9 +64,7 @@ namespace Entities
                     .HasColumnName("name")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.UpdateTime)
-                    .HasColumnName("update_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.HasOne(d => d.HeadTeacher)
                     .WithMany(p => p.Class)
@@ -77,8 +73,6 @@ namespace Entities
 
             modelBuilder.Entity<Course>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
-
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.IsDeleted)
@@ -102,9 +96,7 @@ namespace Entities
 
             modelBuilder.Entity<CourseScore>(entity =>
             {
-                entity.Property(e => e.Id)
-                    .HasColumnName("id")
-                    .ValueGeneratedOnAdd();
+                entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Property(e => e.CourseId).HasColumnName("course_id");
 
@@ -114,9 +106,7 @@ namespace Entities
 
                 entity.Property(e => e.StudentId).HasColumnName("student_id");
 
-                entity.Property(e => e.UpdateTime)
-                    .HasColumnName("update_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.HasOne(d => d.IdNavigation)
                     .WithOne(p => p.CourseScore)
@@ -195,9 +185,7 @@ namespace Entities
                     .HasMaxLength(10)
                     .IsFixedLength();
 
-                entity.Property(e => e.UpdateTime)
-                    .HasColumnName("update_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Class)
                     .WithMany(p => p.Student)
@@ -220,9 +208,7 @@ namespace Entities
                     .HasColumnName("sex")
                     .HasMaxLength(50);
 
-                entity.Property(e => e.UpdateTime)
-                    .HasColumnName("update_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<TeacherCourseMapping>(entity =>
@@ -235,9 +221,7 @@ namespace Entities
 
                 entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
 
-                entity.Property(e => e.UpdateTime)
-                    .HasColumnName("update_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
                 entity.HasOne(d => d.Course)
                     .WithMany(p => p.TeacherCourseMapping)

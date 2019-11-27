@@ -28,7 +28,7 @@ namespace EFCore.Scaffolding.Extension.Test
         [Order(1)]
         public void Run_database_script()
         {
-            DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
+            var di = new DirectoryInfo(Environment.CurrentDirectory);
             var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".sql", SearchOption.AllDirectories).FirstOrDefault();
             string sql = File.ReadAllText(scaffoldingFile.FullName);
             if (!string.IsNullOrEmpty(sql))
@@ -42,7 +42,7 @@ namespace EFCore.Scaffolding.Extension.Test
         [Order(2)]
         public void Generate_entities_and_DBContext()
         {
-            DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
+            var di = new DirectoryInfo(Environment.CurrentDirectory);
             var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
             var list = ScaffoldingHelper.Scaffolding("Entities", "ScaffoldingDbContext", scaffoldingFile.Directory.FullName);
 

@@ -28,9 +28,6 @@ namespace EFCore.Scaffolding.Extension.Models
         public string Type { get; set; }
 
         [XmlAttribute]
-        public string TableName { get; set; }
-
-        [XmlAttribute]
         public string FK { get; set; }
 
         [XmlAttribute]
@@ -44,5 +41,21 @@ namespace EFCore.Scaffolding.Extension.Models
 
         [XmlIgnore]
         public string PrincipalColumnName => FK.Split('.')[1];
+
+        [XmlIgnore]
+        public string ColumnName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.Column))
+                {
+                    return this.Name;
+                }
+                else
+                {
+                    return this.Column;
+                }
+            }
+        }
     }
 }

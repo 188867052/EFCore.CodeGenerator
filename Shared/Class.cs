@@ -26,5 +26,21 @@
 
         [XmlAttribute]
         public string PrimaryKey { get; set; }
+
+        [XmlIgnore]
+        public string TableName
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.Table))
+                {
+                    return this.Name;
+                }
+                else
+                {
+                    return this.Table;
+                }
+            }
+        }
     }
 }

@@ -54,7 +54,7 @@
                     PrimaryKey = table.PrimaryKey == null ? null : string.Join(",", table.PrimaryKey.Columns.Select(o => o.Name)),
                 };
 
-                if (entity.Name == entity.Table)
+                if (entity.Name == entity.TableName)
                 {
                     entity.Table = null;
                 }
@@ -96,7 +96,7 @@
                         FK = fk,
                     };
 
-                    if (p.Name == p.Column)
+                    if (p.Name == p.ColumnName)
                     {
                         p.Column = null;
                     }
