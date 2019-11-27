@@ -38,6 +38,9 @@ namespace Entities
         /// </summary>
         public DateTime? UpdateTime { get; set; }
 
+        /// <summary>
+        /// 年级.
+        /// </summary>
         public int? GradeId { get; set; }
 
         /// <summary>
@@ -49,6 +52,8 @@ namespace Entities
         /// 是否已删除.
         /// </summary>
         public bool IsDeleted { get; set; }
+
+        public virtual Grade Grade { get; set; }
 
         public virtual Teacher HeadTeacher { get; set; }
 

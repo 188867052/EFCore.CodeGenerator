@@ -6,7 +6,7 @@
     <property Name="HeadTeacherId" FK="Teacher.Id" Summary="班主任ID" />
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTime" Summary="更新时间" />
-    <property Name="GradeId" />
+    <property Name="GradeId" FK="Grade.Id" Summary="年级" />
     <property Name="Location" Summary="地址" />
     <property Name="IsDeleted" Summary="是否已删除" />
   </class>

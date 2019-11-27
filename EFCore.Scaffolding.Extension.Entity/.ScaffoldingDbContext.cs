@@ -57,6 +57,10 @@ namespace Entities
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
+                entity.HasOne(d => d.Grade)
+                    .WithMany(p => p.Class)
+                    .HasForeignKey(d => d.GradeId);
+
                 entity.HasOne(d => d.HeadTeacher)
                     .WithMany(p => p.Class)
                     .HasForeignKey(d => d.HeadTeacherId);
