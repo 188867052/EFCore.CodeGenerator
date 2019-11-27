@@ -1105,7 +1105,7 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
                 foreach (var property in @class.Properties.Where(o => !string.IsNullOrEmpty(o.FK)))
                 {
                     var principalTable = tables.FirstOrDefault(t => t.Name.Equals(property.PrincipalTableName, StringComparison.OrdinalIgnoreCase));
-                    var table = tables.Single(t => t.Name == @class.TableName);
+                    var table = tables.Single(t => t.Name.Equals(@class.TableName, StringComparison.InvariantCultureIgnoreCase));
                     Check.NotNull(principalTable, nameof(principalTable));
                     Check.NotNull(table, nameof(table));
                     var foreignKey = new DatabaseForeignKey

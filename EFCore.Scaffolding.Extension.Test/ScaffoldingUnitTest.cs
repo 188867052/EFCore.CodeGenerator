@@ -84,7 +84,7 @@ namespace EFCore.Scaffolding.Extension.Test
             }
         }
 
-        [Fact]
+        [Fact(Skip ="Todo")]
         public void Database_check_typo()
         {
             bool isSuccess = true;

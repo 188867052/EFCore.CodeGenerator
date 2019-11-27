@@ -49,20 +49,11 @@ namespace Entities
             {
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
-                entity.Property(e => e.GradeId).HasColumnName("grade_id");
-
-                entity.Property(e => e.HeadTeacherId).HasColumnName("head_teacher_id");
-
-                entity.Property(e => e.IsDeleted).HasColumnName("is_deleted");
-
                 entity.Property(e => e.Location)
-                    .HasColumnName("location")
                     .HasMaxLength(10)
                     .IsFixedLength();
 
-                entity.Property(e => e.Name)
-                    .HasColumnName("name")
-                    .HasMaxLength(50);
+                entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
@@ -75,36 +66,24 @@ namespace Entities
             {
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
-                entity.Property(e => e.IsDeleted)
-                    .HasConversion(new BoolToZeroOneConverter<int>())
-                    .HasColumnName("is_deleted");
+                entity.Property(e => e.IsDeleted).HasConversion(new BoolToZeroOneConverter<int>());
 
                 entity.Property(e => e.Name)
-                    .HasColumnName("name")
                     .HasMaxLength(10)
                     .IsFixedLength();
 
                 entity.Property(e => e.TeacherId)
-                    .HasColumnName("teacher_id")
                     .HasMaxLength(10)
                     .IsFixedLength();
 
-                entity.Property(e => e.UpdateTime)
-                    .HasColumnName("update_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
             });
 
             modelBuilder.Entity<CourseScore>(entity =>
             {
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
-                entity.Property(e => e.CourseId).HasColumnName("course_id");
-
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
-
-                entity.Property(e => e.Score).HasColumnName("score");
-
-                entity.Property(e => e.StudentId).HasColumnName("student_id");
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
@@ -129,59 +108,43 @@ namespace Entities
                 entity.HasKey(e => e.Identifier)
                     .HasName("PK_log");
 
-                entity.Property(e => e.Identifier)
-                    .HasColumnName("identifier")
-                    .HasDefaultValueSql("(newid())");
+                entity.Property(e => e.Identifier).HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
-                entity.Property(e => e.Message)
-                    .HasColumnName("message")
-                    .HasMaxLength(50);
+                entity.Property(e => e.Message).HasMaxLength(50);
 
-                entity.Property(e => e.UpdateTimeTicks)
-                    .HasConversion(new DateTimeToTicksConverter())
-                    .HasColumnName("update_time_ticks");
+                entity.Property(e => e.UpdateTimeTicks).HasConversion(new DateTimeToTicksConverter());
 
                 entity.Property(e => e.Url)
                     .HasConversion(new UriToStringConverter())
-                    .HasColumnName("url")
                     .HasMaxLength(100);
             });
 
             modelBuilder.Entity<Student>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
-
                 entity.Property(e => e.Address)
-                    .HasColumnName("address")
                     .HasMaxLength(10)
                     .IsFixedLength();
-
-                entity.Property(e => e.ClassId).HasColumnName("class_id");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
                 entity.Property(e => e.IsDeleted)
                     .HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))
                     .IsRequired()
-                    .HasColumnName("is_deleted")
                     .HasMaxLength(10)
                     .IsFixedLength();
 
                 entity.Property(e => e.Mobile)
-                    .HasColumnName("mobile")
                     .HasMaxLength(10)
                     .IsFixedLength();
 
                 entity.Property(e => e.Name)
-                    .HasColumnName("name")
                     .HasMaxLength(10)
                     .IsFixedLength();
 
                 entity.Property(e => e.Sex)
                     .HasConversion(new EnumToStringConverter<SexEnum>())
-                    .HasColumnName("sex")
                     .HasMaxLength(10)
                     .IsFixedLength();
 
@@ -195,17 +158,12 @@ namespace Entities
 
             modelBuilder.Entity<Teacher>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
-
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
-                entity.Property(e => e.Name)
-                    .HasColumnName("name")
-                    .HasMaxLength(50);
+                entity.Property(e => e.Name).HasMaxLength(50);
 
                 entity.Property(e => e.Sex)
                     .HasConversion(new EnumToStringConverter<SexEnum>())
-                    .HasColumnName("sex")
                     .HasMaxLength(50);
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
@@ -213,13 +171,7 @@ namespace Entities
 
             modelBuilder.Entity<TeacherCourseMapping>(entity =>
             {
-                entity.Property(e => e.Id).HasColumnName("id");
-
-                entity.Property(e => e.CourseId).HasColumnName("course_id");
-
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
-
-                entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
 
                 entity.Property(e => e.UpdateTime).HasColumnType("datetime");
 
@@ -240,25 +192,16 @@ namespace Entities
 
                 entity.ToView("v_log");
 
-                entity.Property(e => e.CreateTime)
-                    .HasColumnName("create_time")
-                    .HasColumnType("datetime");
+                entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
-                entity.Property(e => e.Identifier).HasColumnName("identifier");
-
-                entity.Property(e => e.Message)
-                    .HasColumnName("message")
-                    .HasMaxLength(50);
+                entity.Property(e => e.Message).HasMaxLength(50);
 
                 entity.Property(e => e.NewId).HasColumnName("new_id");
 
-                entity.Property(e => e.UpdateTimeTicks)
-                    .HasConversion(new DateTimeToTicksConverter())
-                    .HasColumnName("update_time_ticks");
+                entity.Property(e => e.UpdateTimeTicks).HasConversion(new DateTimeToTicksConverter());
 
                 entity.Property(e => e.Url)
                     .HasConversion(new UriToStringConverter())
-                    .HasColumnName("url")
                     .HasMaxLength(100);
             });
 
