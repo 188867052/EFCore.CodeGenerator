@@ -53,14 +53,37 @@
                     Summary = string.IsNullOrEmpty(table.Comment) ? configEntity?.Summary : table.Comment,
                     PrimaryKey = table.PrimaryKey == null ? null : string.Join(",", table.PrimaryKey.Columns.Select(o => o.Name)),
                 };
+
+                if (entity.Name == entity.Table)
+                {
+                    entity.Table = null;
+                }
                 var properties = entityType.GetProperties();
 
                 IList<Models.Property> propertyList = new List<Models.Property>();
                 foreach (var column in table.Columns)
                 {
-                    // TODO: may has issue.
                     var property = properties.FirstOrDefault(o => o.Name.Equals(column.Name.Replace("_", string.Empty), StringComparison.InvariantCultureIgnoreCase));
                     var configProperty = configEntity?.Properties.FirstOrDefault(o => o.Name == property.Name);
+                    string fk = "";
+
+                    // 数据库配置
+                    if (column.Table.ForeignKeys.SelectMany(o => o.Columns).Contains(column))
+                    {
+                        foreach (var item in table.ForeignKeys)
+                        {
+                            if (item.Columns.Contains(column))
+                            {
+                                fk = $"{item.PrincipalTable.Name}.{item.PrincipalColumns[0].Name}";
+                            }
+                        }
+                    }
+
+                    if (string.IsNullOrEmpty(fk))
+                    {
+                        fk = configProperty.FK;
+                    }
+
                     var p = new Models.Property
                     {
                         Name = property.Name,
@@ -70,13 +93,15 @@
                         Summary = string.IsNullOrEmpty(column.Comment) ? configProperty?.Summary : column.Comment,
                         Type = configProperty?.Type,
                         Converter = configProperty?.Converter,
+                        FK = fk,
                     };
-                    propertyList.Add(p);
-                }
 
-                foreach (var item in configEntity.Properties.Where(o => !string.IsNullOrEmpty(o.PrincipalTableName)))
-                {
-                    propertyList.Add(item);
+                    if (p.Name == p.Column)
+                    {
+                        p.Column = null;
+                    }
+
+                    propertyList.Add(p);
                 }
 
                 list.Add(entity);

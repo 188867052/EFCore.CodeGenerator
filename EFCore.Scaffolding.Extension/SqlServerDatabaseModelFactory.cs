@@ -1100,27 +1100,32 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
         /// <param name="tables"></param>
         private void GetForeignKeysFromConfig(IReadOnlyList<DatabaseTable> tables)
         {
-            foreach (var item in Helper.ScaffoldConfig.Classes.SelectMany(o => o.Properties.Where(o => !string.IsNullOrEmpty(o.PrincipalTableName))))
+            foreach (var @class in Helper.ScaffoldConfig.Classes)
             {
-                var principalTable = tables.FirstOrDefault(t => t.Name.Equals(item.PrincipalTableName, StringComparison.OrdinalIgnoreCase));
-                var table = tables.Single(t => t.Name == item.TableName);
-                Check.NotNull(principalTable, nameof(principalTable));
-                Check.NotNull(table, nameof(table));
-                var foreignKey = new DatabaseForeignKey
+                foreach (var property in @class.Properties.Where(o => !string.IsNullOrEmpty(o.FK)))
                 {
-                    Table = table,
-                    PrincipalTable = principalTable,
-                    OnDelete = ConvertToReferentialAction("NO_ACTION"),
-                };
+                    var principalTable = tables.FirstOrDefault(t => t.Name.Equals(property.PrincipalTableName, StringComparison.OrdinalIgnoreCase));
+                    var table = tables.Single(t => t.Name == @class.Table);
+                    Check.NotNull(principalTable, nameof(principalTable));
+                    Check.NotNull(table, nameof(table));
+                    var foreignKey = new DatabaseForeignKey
+                    {
+                        Table = table,
+                        PrincipalTable = principalTable,
+                        OnDelete = ConvertToReferentialAction("NO_ACTION"),
+                    };
 
-                var principalColumn = foreignKey.PrincipalTable.Columns.FirstOrDefault(c => c.Name.Equals(item.PrincipalColumnName, StringComparison.OrdinalIgnoreCase));
-                Check.NotNull(principalColumn, nameof(principalColumn));
-                var column = table.Columns.FirstOrDefault(c => c.Name.Equals(item.Column, StringComparison.OrdinalIgnoreCase));
-                Check.NotNull(column, nameof(column));
-
-                foreignKey.Columns.Add(column);
-                foreignKey.PrincipalColumns.Add(principalColumn);
-                table.ForeignKeys.Add(foreignKey);
+                    var principalColumn = foreignKey.PrincipalTable.Columns.FirstOrDefault(c => c.Name.Equals(property.PrincipalColumnName, StringComparison.OrdinalIgnoreCase));
+                    Check.NotNull(principalColumn, nameof(principalColumn));
+                    var column = table.Columns.FirstOrDefault(c => c.Name.Equals(property.Column, StringComparison.OrdinalIgnoreCase));
+                    Check.NotNull(column, nameof(column));
+                    if (!table.ForeignKeys.SelectMany(o => o.Columns).Contains(column))
+                    {
+                        foreignKey.Columns.Add(column);
+                        foreignKey.PrincipalColumns.Add(principalColumn);
+                        table.ForeignKeys.Add(foreignKey);
+                    }
+                }
             }
         }
 

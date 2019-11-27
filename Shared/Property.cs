@@ -28,18 +28,21 @@ namespace EFCore.Scaffolding.Extension.Models
         public string Type { get; set; }
 
         [XmlAttribute]
-        public string PrincipalTableName { get; set; }
-
-        [XmlAttribute]
-        public string PrincipalColumnName { get; set; }
-
-        [XmlAttribute]
         public string TableName { get; set; }
+
+        [XmlAttribute]
+        public string FK { get; set; }
 
         [XmlAttribute]
         public string Summary { get; set; }
 
         [XmlIgnore]
         public ValueConverterEnum ConverterEnum => string.IsNullOrEmpty(this.Converter) ? default : (ValueConverterEnum)Enum.Parse(typeof(ValueConverterEnum), this.Converter);
+
+        [XmlIgnore]
+        public string PrincipalTableName => FK.Split('.')[0];
+
+        [XmlIgnore]
+        public string PrincipalColumnName => FK.Split('.')[1];
     }
 }
