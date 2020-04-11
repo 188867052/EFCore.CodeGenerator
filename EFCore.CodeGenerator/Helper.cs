@@ -17,11 +17,11 @@
         static Helper()
         {
             DirectoryInfo di = new DirectoryInfo(Environment.CurrentDirectory);
-            file = Directory.GetFiles(di.Parent.Parent.Parent.Parent.FullName, ".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
-            ScaffoldConfig = GetScaffoldConfig();
+            file = Directory.GetFiles(di.Parent.Parent.Parent.Parent.FullName, ".dbsetting.xml", SearchOption.AllDirectories).FirstOrDefault();
+            DbSetting = GetScaffoldConfig();
         }
 
-        internal static ScaffoldConfig ScaffoldConfig { get; }
+        internal static DbSetting DbSetting { get; }
 
         internal static T GetService<T>(this IServiceCollection services)
         {
@@ -31,9 +31,9 @@
         internal static void FormattingXml(Model model, DatabaseModel databaseModel)
         {
             var entityTypes = model.GetEntityTypes();
-            var newConfig = new ScaffoldConfig
+            var newConfig = new DbSetting
             {
-                Namespaces = ScaffoldConfig.Namespaces?.OrderBy(o => o.Value).ToArray(),
+                Namespaces = DbSetting.Namespaces?.OrderBy(o => o.Value).ToArray(),
                 Classes = Array.Empty<Class>(),
             };
 
@@ -43,7 +43,7 @@
             {
                 // TODO: may has issue.
                 var entityType = entityTypes.FirstOrDefault(o => table.Name.Replace("_", string.Empty).Equals(o.Name, StringComparison.InvariantCultureIgnoreCase));
-                var configEntity = ScaffoldConfig.Classes.FirstOrDefault(o => o.Name == entityType.Name);
+                var configEntity = DbSetting.Classes.FirstOrDefault(o => o.Name == entityType.Name);
                 Class entity = new Class
                 {
                     Name = entityType.Name,
@@ -112,7 +112,7 @@
             File.WriteAllText(file, xmlSerialized, Encoding.UTF8);
         }
 
-        private static ScaffoldConfig GetScaffoldConfig()
+        private static DbSetting GetScaffoldConfig()
         {
             var xml = File.ReadAllText(file, Encoding.UTF8);
             var scaffoldConfig = Deserialize(xml);
@@ -120,12 +120,12 @@
             return scaffoldConfig;
         }
 
-        private static ScaffoldConfig Deserialize(string xml)
+        private static DbSetting Deserialize(string xml)
         {
             using (StringReader sr = new StringReader(xml))
             {
-                XmlSerializer xmldes = new XmlSerializer(typeof(ScaffoldConfig));
-                return (ScaffoldConfig)xmldes.Deserialize(sr);
+                XmlSerializer xmldes = new XmlSerializer(typeof(DbSetting));
+                return (DbSetting)xmldes.Deserialize(sr);
             }
         }
 

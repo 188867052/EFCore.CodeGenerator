@@ -68,7 +68,7 @@
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTimeTicks" Converter="DateTimeToTicks" Type="DateTime?" Summary="创建时间" />
     <property Name="Url" Converter="UriToString" Type="Uri" Summary="链接" />
-    <property Name="NewId" Column="new_id" />
+    <property Name="NewId" Column="new_id" Summary="New Id" />
   </class>
   <namespace Type="SexEnum">EFCore.CodeGenerator</namespace>
 </config>

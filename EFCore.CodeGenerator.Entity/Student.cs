@@ -1,5 +1,6 @@
-﻿using EFCore.CodeGenerator;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using EFCore.CodeGenerator;
 
 namespace Entities
 {

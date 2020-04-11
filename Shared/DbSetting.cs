@@ -1,16 +1,16 @@
-﻿namespace EFCore.CodeGenerator
-{
-    using EFCore.CodeGenerator.Models;
-    using System;
-    using System.ComponentModel;
-    using System.Linq;
-    using System.Xml.Serialization;
+﻿using EFCore.CodeGenerator.Models;
+using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Xml.Serialization;
 
+namespace EFCore.CodeGenerator
+{
     [Serializable]
     [DesignerCategory("code")]
     [XmlType(AnonymousType = true)]
     [XmlRoot(ElementName = "config", IsNullable = false)]
-    public class ScaffoldConfig
+    public class DbSetting
     {
         [XmlElement("class")]
         public Class[] Classes { get; set; }

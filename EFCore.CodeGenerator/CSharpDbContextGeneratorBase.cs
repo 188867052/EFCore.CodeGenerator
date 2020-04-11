@@ -175,7 +175,7 @@ namespace Microsoft.EntityFrameworkCore.Scaffolding.Internal
 
                 using (this.sb.Indent())
                 {
-                    this.sb.AppendLine($"optionsBuilder.UseSqlServer(EFCore.Scaffolding.Extension.{nameof(Connection)}.{nameof(Connection.ConnectionString)});");
+                    this.sb.AppendLine($"optionsBuilder.UseSqlServer({typeof(Connection).FullName}.{nameof(Connection.ConnectionString)});");
                 }
 
                 this.sb.AppendLine("}");

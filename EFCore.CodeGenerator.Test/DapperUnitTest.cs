@@ -114,7 +114,7 @@
         [Fact]
         public void Test_delete_by_PK()
         {
-            using var dbContext = new ScaffoldingDbContext();
+            using var dbContext = new TestDbContext();
             var student = new Student
             {
                 Name = "insert",
@@ -130,7 +130,7 @@
         [Fact]
         public void Test_delete_by_entity()
         {
-            using var dbContext = new ScaffoldingDbContext();
+            using var dbContext = new TestDbContext();
             var student = new Student
             {
                 Name = "insert",

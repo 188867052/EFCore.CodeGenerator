@@ -30,9 +30,9 @@
 
         protected override void GenerateNameSpace()
         {
-            foreach (var property in Helper.ScaffoldConfig.Classes.SelectMany(table => table.Properties.Select(property => property)))
+            foreach (var property in Helper.DbSetting.Classes.SelectMany(table => table.Properties.Select(property => property)))
             {
-                Namespace ns = Helper.ScaffoldConfig.Namespaces.FirstOrDefault(o => o.Type == property.Type);
+                Namespace ns = Helper.DbSetting.Namespaces.FirstOrDefault(o => o.Type == property.Type);
                 if (ns != null)
                 {
                     string us = $"using {ns.Value};";
@@ -50,7 +50,7 @@
         {
             var line = base.Lines(property);
             var propertyImp = (Microsoft.EntityFrameworkCore.Metadata.Internal.Property)property;
-            var fieldConfig = Helper.ScaffoldConfig?.Classes?.FirstOrDefault(o => o.Name == propertyImp?.DeclaringType?.Name)?.Properties?.FirstOrDefault(o => o.Name == property.Name);
+            var fieldConfig = Helper.DbSetting?.Classes?.FirstOrDefault(o => o.Name == propertyImp?.DeclaringType?.Name)?.Properties?.FirstOrDefault(o => o.Name == property.Name);
             if (fieldConfig != null)
             {
                 switch (fieldConfig.ConverterEnum)

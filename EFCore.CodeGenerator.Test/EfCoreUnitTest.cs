@@ -6,59 +6,20 @@ namespace EFCore.Scaffolding.Extension.Test
     using System.Linq;
     using Dapper;
     using EFCore.CodeGenerator;
-    using EFCore.CodeGenerator.Entity.Dapper;
     using Entities;
     using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
     using WeCantSpell.Hunspell;
     using Xunit;
     using Xunit.Abstractions;
-    using Xunit.Extensions.Ordering;
 
-    public class ScaffoldingUnitTest
+    public class EfCoreUnitTest
     {
         private static WordList wordList;
         private readonly ITestOutputHelper log;
 
-        public ScaffoldingUnitTest(ITestOutputHelper outputHelper)
+        public EfCoreUnitTest(ITestOutputHelper outputHelper)
         {
             this.log = outputHelper;
-        }
-
-        [Fact]
-        [Order(1)]
-        public void Run_database_script()
-        {
-            var di = new DirectoryInfo(Environment.CurrentDirectory);
-            var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".sql", SearchOption.AllDirectories).FirstOrDefault();
-            string sql = File.ReadAllText(scaffoldingFile.FullName);
-            if (!string.IsNullOrEmpty(sql))
-            {
-                int count = DapperExtension.Connection.Execute(sql);
-                Assert.Equal(count, -1);
-            }
-        }
-
-        [Fact]
-        [Order(2)]
-        public void Generate_entities_and_DBContext()
-        {
-            var di = new DirectoryInfo(Environment.CurrentDirectory);
-            var scaffoldingFile = di.Parent.Parent.Parent.Parent.GetFiles(".Scaffolding.xml", SearchOption.AllDirectories).FirstOrDefault();
-            var list = ScaffoldingHelper.Scaffolding("Entities", "ScaffoldingDbContext", scaffoldingFile.Directory.FullName);
-
-            this.log.WriteLine(string.Join(Environment.NewLine, list));
-        }
-
-        [Fact]
-        public void Database_check_all_table_must_has_primary_key()
-        {
-            foreach (var table in DbContextGenerator.DatabaseModel.Tables)
-            {
-                if (table.GetType() == typeof(DatabaseTable))
-                {
-                    Assert.NotEmpty(table.PrimaryKey.Columns);
-                }
-            }
         }
 
         [Fact]
@@ -120,7 +81,7 @@ namespace EFCore.Scaffolding.Extension.Test
         [Fact]
         public void Test_insert_entity()
         {
-            using var context = new ScaffoldingDbContext();
+            using var context = new TestDbContext();
             var entity = new Student
             {
                 Name = "test",
@@ -137,7 +98,7 @@ namespace EFCore.Scaffolding.Extension.Test
         [Fact]
         public void Test_get_and_insert_entity_with_fake_FK()
         {
-            using var context = new ScaffoldingDbContext();
+            using var context = new TestDbContext();
             var c = new Entities.Class()
             {
                 Name = "test",
@@ -155,7 +116,7 @@ namespace EFCore.Scaffolding.Extension.Test
         [Fact]
         public void Test_insert_select_OneToMany_navigate_entity_without_PK()
         {
-            using var context = new ScaffoldingDbContext();
+            using var context = new TestDbContext();
             var c = new Entities.Class()
             {
                 Name = "test",

@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <StartupObject></StartupObject>
     <ApplicationIcon />
@@ -34,9 +34,11 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="xunit.assert" Version="2.4.1" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Shared\*.cs" />
+    <ProjectReference Include="..\EFCore.CodeGenerator.Entity\EFCore.CodeGenerator.Entity.csproj" />
     <Compile Update="..\Shared\Class.cs" Link="Shared\Class.cs" />
     <Compile Update="..\Shared\Connection.cs" Link="Shared\Connection.cs" />
     <Compile Update="..\Shared\Entity.cs" Link="Shared\Entity.cs" />

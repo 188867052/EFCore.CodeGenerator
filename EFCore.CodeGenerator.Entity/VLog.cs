@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Entities
 {
@@ -32,6 +33,9 @@ namespace Entities
         /// </summary>
         public Uri Url { get; set; }
 
+        /// <summary>
+        /// New Id.
+        /// </summary>
         public Guid? NewId { get; set; }
     }
 }

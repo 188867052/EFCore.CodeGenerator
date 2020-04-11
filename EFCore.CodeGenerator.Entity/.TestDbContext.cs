@@ -1,16 +1,18 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using EFCore.CodeGenerator;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities
 {
-    public partial class ScaffoldingDbContext : DbContext
+    public partial class TestDbContext : DbContext
     {
-        public ScaffoldingDbContext()
+        public TestDbContext()
         {
         }
 
-        public ScaffoldingDbContext(DbContextOptions<ScaffoldingDbContext> options)
+        public TestDbContext(DbContextOptions<TestDbContext> options)
             : base(options)
         {
         }
@@ -37,7 +39,7 @@ namespace Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Connection.ConnectionString);
+                optionsBuilder.UseSqlServer(EFCore.CodeGenerator.Connection.ConnectionString);
             }
         }
 
