@@ -1,4 +1,4 @@
-﻿namespace EFCore.CodeGenerator.Models
+﻿namespace EFCore.CodeGenerator
 {
     using System;
     using System.ComponentModel;

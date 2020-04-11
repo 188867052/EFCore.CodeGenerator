@@ -2,7 +2,7 @@
 {
     using System;
     using System.Linq;
-    using EFCore.CodeGenerator.Models;
+    using EFCore.CodeGenerator.Entity.Dapper;
     using JetBrains.Annotations;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.EntityFrameworkCore.Metadata;
@@ -20,7 +20,7 @@
         {
             string typeName = base.GetPropertyType(property);
             var propertyImp = (Microsoft.EntityFrameworkCore.Metadata.Internal.Property)property;
-            var fieldConfig = Helper.DbSetting?.Classes?.FirstOrDefault(o => o.Name == propertyImp?.DeclaringType?.Name)?.Properties?.FirstOrDefault(o => o.Name == property.Name);
+            var fieldConfig = Utilities.DbSetting?.Classes?.FirstOrDefault(o => o.Name == propertyImp?.DeclaringType?.Name)?.Properties?.FirstOrDefault(o => o.Name == property.Name);
             if (fieldConfig != null && !string.IsNullOrEmpty(fieldConfig.Type))
             {
                 return fieldConfig.Type;
@@ -31,7 +31,7 @@
 
         protected override void GetSummary(IProperty property)
         {
-            var table = Helper.DbSetting.Classes.FirstOrDefault(o => o.Name == property.DeclaringEntityType.Name);
+            var table = Utilities.DbSetting.Classes.FirstOrDefault(o => o.Name == property.DeclaringEntityType.Name);
             if (table != null)
             {
                 foreach (var p in table.Properties.Where(p => !string.IsNullOrEmpty(p.Summary) && p.Name == property.Name))
@@ -45,7 +45,7 @@
 
         protected override void GetSummary(IEntityType entityType)
         {
-            var table = Helper.DbSetting.Classes.FirstOrDefault(o => o.Name == entityType.Name);
+            var table = Utilities.DbSetting.Classes.FirstOrDefault(o => o.Name == entityType.Name);
             if (table != null && !string.IsNullOrEmpty(table.Summary))
             {
                 this.IndentedStringBuilder.AppendLine($"/// <summary>");
@@ -56,12 +56,12 @@
 
         protected override void GenerateNameSpace(IEntityType entityType)
         {
-            var table = Helper.DbSetting.Classes.FirstOrDefault(o => o.Name == entityType.Name);
+            var table = Utilities.DbSetting.Classes.FirstOrDefault(o => o.Name == entityType.Name);
             if (table != null)
             {
-                foreach (Property property in table.Properties.Select(property => property))
+                foreach (var property in table.Properties.Select(property => property))
                 {
-                    Namespace ns = Helper.DbSetting.Namespaces.FirstOrDefault(o => o.Type == property.Type);
+                    var ns = Utilities.DbSetting.Namespaces.FirstOrDefault(o => o.Type == property.Type);
                     if (ns != null)
                     {
                         string us = $"using {ns.Value};";

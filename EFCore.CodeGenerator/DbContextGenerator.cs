@@ -5,6 +5,7 @@
     using System.Data.SqlClient;
     using System.IO;
     using System.Text;
+    using EFCore.CodeGenerator.Entity.Dapper;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Design;
     using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -33,7 +34,7 @@
             var dbContextCode = dbContextGenerator.WriteCode(model, @namespace, contextName, Connection.ConnectionString, false, false);
             this.WriteAllTextModels.Add(new WriteAllTextModel(dbContextCode, Path.Combine(this.directory, $".{contextName}.cs")));
 
-            Helper.FormattingXml(model, DatabaseModel);
+            Utilities.FormattingXml(model, DatabaseModel);
             foreach (var entityType in model.GetEntityTypes())
             {
                 var entityCode = entityTypeGenerator.WriteCode(entityType, @namespace, false);
