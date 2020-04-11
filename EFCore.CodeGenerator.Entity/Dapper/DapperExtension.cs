@@ -154,7 +154,6 @@
 
         internal static string GetUpdateSetClause<T>(T entity) => string.Join(",", GetColumnList(entity).Select(o => $"{o}=@{o}"));
 
-
         internal static IList<string> GetColumnList<T>(T entity)
         {
             var values = new List<string>();
