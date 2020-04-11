@@ -1,5 +1,6 @@
-﻿namespace EFCore.Scaffolding.Extension.Models
+﻿namespace EFCore.CodeGenerator
 {
+    using EFCore.CodeGenerator.Models;
     using System;
     using System.ComponentModel;
     using System.Linq;

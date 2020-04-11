@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Xml.Serialization;
 
-namespace EFCore.Scaffolding.Extension.Models
+namespace EFCore.CodeGenerator
 {
     [Serializable]
     [DesignerCategory("code")]

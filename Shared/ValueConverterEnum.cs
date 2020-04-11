@@ -1,4 +1,4 @@
-﻿namespace EFCore.Scaffolding.Extension
+﻿namespace EFCore.CodeGenerator
 {
     public enum ValueConverterEnum
     {

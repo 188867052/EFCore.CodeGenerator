@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace EFCore.Scaffolding.Extension
+namespace EFCore.CodeGenerator
 {
     public static class Connection
     {
