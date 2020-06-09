@@ -30,6 +30,11 @@
 
         protected override void GenerateNameSpace()
         {
+            if (Utilities.DbSetting.Classes == null)
+            {
+                return;
+            }
+
             foreach (var property in Utilities.DbSetting.Classes.SelectMany(table => table.Properties.Select(property => property)))
             {
                 var ns = Utilities.DbSetting.Namespaces.FirstOrDefault(o => o.Type == property.Type);

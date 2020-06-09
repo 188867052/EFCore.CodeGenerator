@@ -76,7 +76,7 @@ namespace EFCore.CodeGenerator.Entity.Dapper
             {
                 // TODO: may has issue.
                 var entityType = entityTypes.FirstOrDefault(o => table.Name.Replace("_", string.Empty).Equals(o.Name, StringComparison.InvariantCultureIgnoreCase));
-                var configEntity = DbSetting.Classes.FirstOrDefault(o => o.Name == entityType.Name);
+                var configEntity = DbSetting.Classes?.FirstOrDefault(o => o.Name == entityType.Name);
                 var entity = new Class
                 {
                     Name = entityType.Name,
@@ -97,7 +97,7 @@ namespace EFCore.CodeGenerator.Entity.Dapper
                 {
                     var property = properties.FirstOrDefault(o => o.Name.Equals(column.Name.Replace("_", string.Empty), StringComparison.InvariantCultureIgnoreCase));
                     var configProperty = configEntity?.Properties.FirstOrDefault(o => o.Name == property.Name);
-                    string fk = "";
+                    string fk = string.Empty;
 
                     // 数据库配置
                     if (column.Table.ForeignKeys.SelectMany(o => o.Columns).Contains(column))
@@ -113,7 +113,7 @@ namespace EFCore.CodeGenerator.Entity.Dapper
 
                     if (string.IsNullOrEmpty(fk))
                     {
-                        fk = configProperty.FK;
+                        fk = configProperty?.FK;
                     }
 
                     var p = new CodeGenerator.Property

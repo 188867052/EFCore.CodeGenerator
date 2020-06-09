@@ -56,7 +56,7 @@
 
         protected override void GenerateNameSpace(IEntityType entityType)
         {
-            var table = Utilities.DbSetting.Classes.FirstOrDefault(o => o.Name == entityType.Name);
+            var table = Utilities.DbSetting.Classes?.FirstOrDefault(o => o.Name == entityType.Name);
             if (table != null)
             {
                 foreach (var property in table.Properties.Select(property => property))

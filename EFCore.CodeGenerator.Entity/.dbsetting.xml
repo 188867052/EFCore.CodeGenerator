@@ -1,68 +1,246 @@
 ﻿<?xml version="1.0" encoding="utf-16"?>
 <config>
-  <class Name="Class" Summary="班级" PrimaryKey="Id">
-    <property Name="Id" ValueGenerated="OnAdd" Summary="主键" />
-    <property Name="Name" Summary="名称" />
-    <property Name="HeadTeacherId" FK="Teacher.Id" Summary="班主任ID" />
-    <property Name="CreateTime" Summary="创建时间" />
-    <property Name="UpdateTime" Summary="更新时间" />
-    <property Name="GradeId" FK="Grade.Id" Summary="年级" />
-    <property Name="Location" Summary="地址" />
-    <property Name="IsDeleted" Summary="是否已删除" />
+  <class Name="AuthEntityInfo" Table="Auth_EntityInfo" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="Name" />
+    <property Name="TypeName" />
+    <property Name="AuditEnabled" />
+    <property Name="PropertyJson" />
   </class>
-  <class Name="Course" Summary="课程" PrimaryKey="Id">
-    <property Name="Id" ValueGenerated="OnAdd" Summary="主键" />
-    <property Name="Name" Summary="名称" />
-    <property Name="TeacherId" Summary="教师ID" />
-    <property Name="CreateTime" Summary="创建时间" />
-    <property Name="UpdateTime" Summary="更新时间" />
-    <property Name="IsDeleted" Converter="BoolToZeroOne" Type="bool" Summary="是否已删除" />
+  <class Name="AuthEntityRole" Table="Auth_EntityRole" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="RoleId" FK="Identity_Role.Id" />
+    <property Name="EntityId" FK="Auth_EntityInfo.Id" />
+    <property Name="Operation" />
+    <property Name="FilterGroupJson" />
+    <property Name="IsLocked" />
+    <property Name="CreatedTime" />
   </class>
-  <class Name="CourseScore" PrimaryKey="Id">
-    <property Name="Id" ValueGenerated="OnAdd" FK="Course.Id" Summary="主键" />
-    <property Name="Score" Summary="分数" />
-    <property Name="StudentId" Summary="学生ID" />
-    <property Name="CourseId" Summary="课程ID" />
-    <property Name="CreateTime" Summary="创建时间" />
-    <property Name="UpdateTime" Summary="更新时间" />
+  <class Name="AuthEntityUser" Table="Auth_EntityUser" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="UserId" FK="Identity_User.Id" />
+    <property Name="EntityId" FK="Auth_EntityInfo.Id" />
+    <property Name="FilterGroupJson" />
+    <property Name="IsLocked" />
+    <property Name="CreatedTime" />
   </class>
-  <class Name="Grade" PrimaryKey="Id">
-    <property Name="Id" ValueGenerated="OnAdd" Summary="主键" />
-    <property Name="Name" Summary="名称" />
+  <class Name="AuthFunction" Table="Auth_Function" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="Name" />
+    <property Name="Area" />
+    <property Name="Controller" />
+    <property Name="Action" />
+    <property Name="IsController" />
+    <property Name="IsAjax" />
+    <property Name="AccessType" />
+    <property Name="IsAccessTypeChanged" />
+    <property Name="AuditOperationEnabled" />
+    <property Name="AuditEntityEnabled" />
+    <property Name="CacheExpirationSeconds" />
+    <property Name="IsCacheSliding" />
+    <property Name="IsLocked" />
   </class>
-  <class Name="Log" Summary="日志" PrimaryKey="Identifier">
-    <property Name="Identifier" DefaultValueSql="(newid())" Summary="主键" />
+  <class Name="AuthModule" Table="Auth_Module" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" />
+    <property Name="Name" />
+    <property Name="Remark" />
+    <property Name="Code" />
+    <property Name="OrderCode" />
+    <property Name="TreePathString" />
+    <property Name="ParentId" FK="Auth_Module.Id" />
+  </class>
+  <class Name="AuthModuleFunction" Table="Auth_ModuleFunction" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="ModuleId" FK="Auth_Module.Id" />
+    <property Name="FunctionId" FK="Auth_Function.Id" />
+  </class>
+  <class Name="AuthModuleRole" Table="Auth_ModuleRole" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="ModuleId" FK="Auth_Module.Id" />
+    <property Name="RoleId" FK="Identity_Role.Id" />
+  </class>
+  <class Name="AuthModuleUser" Table="Auth_ModuleUser" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="ModuleId" FK="Auth_Module.Id" />
+    <property Name="UserId" FK="Identity_User.Id" />
+    <property Name="Disabled" />
+  </class>
+  <class Name="ConverterTest" PrimaryKey="Identifier">
+    <property Name="Identifier" ValueGenerated="OnAdd" Summary="主键" />
     <property Name="Message" Summary="日志内容" />
     <property Name="CreateTime" Summary="创建时间" />
     <property Name="UpdateTimeTicks" Converter="DateTimeToTicks" Type="DateTime?" Summary="创建时间" />
     <property Name="Url" Converter="UriToString" Type="Uri" Summary="链接" />
   </class>
-  <class Name="Student" Summary="学生" PrimaryKey="Id">
-    <property Name="Id" ValueGenerated="OnAdd" Summary="主键" />
-    <property Name="Name" Summary="名称" />
-    <property Name="Sex" Converter="EnumToString" Type="SexEnum" Summary="性别" />
-    <property Name="ClassId" FK="Class.Id" Summary="班级ID" />
-    <property Name="CreateTime" Summary="创建时间" />
-    <property Name="UpdateTime" Summary="更新时间" />
-    <property Name="Address" Summary="地址" />
-    <property Name="Mobile" Summary="联系电话" />
-    <property Name="IsDeleted" Converter="BoolToString" Type="bool" Summary="是否已删除" />
+  <class Name="IdentityLoginLog" Table="Identity_LoginLog" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="Ip" />
+    <property Name="UserAgent" />
+    <property Name="LogoutTime" />
+    <property Name="CreatedTime" />
+    <property Name="UserId" FK="Identity_User.Id" />
   </class>
-  <class Name="Teacher" Summary="老师" PrimaryKey="Id">
-    <property Name="Id" ValueGenerated="OnAdd" Summary="主键" />
-    <property Name="Name" Summary="名称" />
-    <property Name="Sex" Converter="EnumToString" Type="SexEnum" Summary="性别" />
-    <property Name="CreateTime" Summary="创建时间" />
-    <property Name="UpdateTime" Summary="更新时间" />
+  <class Name="IdentityOrganization" Table="Identity_Organization" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" />
+    <property Name="Name" />
+    <property Name="Remark" />
+    <property Name="ParentId" FK="Identity_Organization.Id" />
   </class>
-  <class Name="TeacherCourseMapping" PrimaryKey="Id">
-    <property Name="Id" ValueGenerated="OnAdd" Summary="主键" />
-    <property Name="CourseId" FK="Course.Id" Summary="课程ID" />
-    <property Name="TeacherId" FK="Teacher.Id" Summary="教师ID" />
-    <property Name="CreateTime" Summary="创建时间" />
-    <property Name="UpdateTime" Summary="更新时间" />
+  <class Name="IdentityRole" Table="Identity_Role" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" />
+    <property Name="Name" />
+    <property Name="NormalizedName" />
+    <property Name="ConcurrencyStamp" />
+    <property Name="Remark" />
+    <property Name="IsAdmin" />
+    <property Name="IsDefault" />
+    <property Name="IsSystem" />
+    <property Name="IsLocked" />
+    <property Name="CreatedTime" />
+    <property Name="DeletedTime" />
+    <property Name="MessageId" FK="Infos_Message.Id" />
   </class>
-  <class Name="VLog" View="v_log" Summary="日志视图">
+  <class Name="IdentityRoleClaim" Table="Identity_RoleClaim" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" />
+    <property Name="RoleId" FK="Identity_Role.Id" />
+    <property Name="ClaimType" />
+    <property Name="ClaimValue" />
+  </class>
+  <class Name="IdentityUser" Table="Identity_User" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" />
+    <property Name="UserName" />
+    <property Name="NormalizedUserName" />
+    <property Name="NickName" />
+    <property Name="Email" />
+    <property Name="NormalizeEmail" />
+    <property Name="EmailConfirmed" />
+    <property Name="PasswordHash" />
+    <property Name="HeadImg" />
+    <property Name="SecurityStamp" />
+    <property Name="ConcurrencyStamp" />
+    <property Name="PhoneNumber" />
+    <property Name="PhoneNumberConfirmed" />
+    <property Name="TwoFactorEnabled" />
+    <property Name="LockoutEnd" />
+    <property Name="LockoutEnabled" />
+    <property Name="AccessFailedCount" />
+    <property Name="IsSystem" />
+    <property Name="IsLocked" />
+    <property Name="CreatedTime" />
+    <property Name="DeletedTime" />
+    <property Name="Remark" />
+    <property Name="MessageId" FK="Infos_Message.Id" />
+  </class>
+  <class Name="IdentityUserClaim" Table="Identity_UserClaim" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" />
+    <property Name="UserId" FK="Identity_User.Id" />
+    <property Name="ClaimType" />
+    <property Name="ClaimValue" />
+  </class>
+  <class Name="IdentityUserDetail" Table="Identity_UserDetail" PrimaryKey="Id">
+    <property Name="Id" ValueGenerated="OnAdd" />
+    <property Name="RegisterIp" />
+    <property Name="UserId" FK="Identity_User.Id" />
+  </class>
+  <class Name="IdentityUserLogin" Table="Identity_UserLogin" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="LoginProvider" />
+    <property Name="ProviderKey" />
+    <property Name="ProviderDisplayName" />
+    <property Name="Avatar" />
+    <property Name="UserId" FK="Identity_User.Id" />
+    <property Name="CreatedTime" />
+  </class>
+  <class Name="IdentityUserRole" Table="Identity_UserRole" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="UserId" FK="Identity_User.Id" />
+    <property Name="RoleId" FK="Identity_Role.Id" />
+    <property Name="CreatedTime" />
+    <property Name="IsLocked" />
+    <property Name="DeletedTime" />
+  </class>
+  <class Name="IdentityUserToken" Table="Identity_UserToken" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="UserId" FK="Identity_User.Id" />
+    <property Name="LoginProvider" />
+    <property Name="Name" />
+    <property Name="Value" />
+  </class>
+  <class Name="InfosMessage" Table="Infos_Message" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="Title" />
+    <property Name="Content" />
+    <property Name="MessageType" />
+    <property Name="NewReplyCount" />
+    <property Name="IsSended" />
+    <property Name="CanReply" />
+    <property Name="BeginDate" />
+    <property Name="EndDate" />
+    <property Name="IsLocked" />
+    <property Name="DeletedTime" />
+    <property Name="CreatedTime" />
+    <property Name="SenderId" FK="Identity_User.Id" />
+  </class>
+  <class Name="InfosMessageReceive" Table="Infos_MessageReceive" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="ReadDate" />
+    <property Name="NewReplyCount" />
+    <property Name="CreatedTime" />
+    <property Name="MessageId" FK="Infos_Message.Id" />
+    <property Name="UserId" FK="Identity_User.Id" />
+  </class>
+  <class Name="InfosMessageReply" Table="Infos_MessageReply" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="Content" />
+    <property Name="IsRead" />
+    <property Name="ParentMessageId" FK="Infos_Message.Id" />
+    <property Name="ParentReplyId" FK="Infos_MessageReply.Id" />
+    <property Name="IsLocked" />
+    <property Name="DeletedTime" />
+    <property Name="CreatedTime" />
+    <property Name="UserId" FK="Identity_User.Id" />
+    <property Name="BelongMessageId" FK="Infos_Message.Id" />
+  </class>
+  <class Name="SystemsAuditEntity" Table="Systems_AuditEntity" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="Name" />
+    <property Name="TypeName" />
+    <property Name="EntityKey" />
+    <property Name="OperateType" />
+    <property Name="OperationId" FK="Systems_AuditOperation.Id" />
+  </class>
+  <class Name="SystemsAuditOperation" Table="Systems_AuditOperation" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="FunctionName" />
+    <property Name="UserId" />
+    <property Name="UserName" />
+    <property Name="NickName" />
+    <property Name="Ip" />
+    <property Name="OperationSystem" />
+    <property Name="Browser" />
+    <property Name="UserAgent" />
+    <property Name="ResultType" />
+    <property Name="Message" />
+    <property Name="Elapsed" />
+    <property Name="CreatedTime" />
+  </class>
+  <class Name="SystemsAuditProperty" Table="Systems_AuditProperty" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="DisplayName" />
+    <property Name="FieldName" />
+    <property Name="OriginalValue" />
+    <property Name="NewValue" />
+    <property Name="DataType" />
+    <property Name="AuditEntityId" FK="Systems_AuditEntity.Id" />
+  </class>
+  <class Name="SystemsKeyValue" Table="Systems_KeyValue" PrimaryKey="Id">
+    <property Name="Id" />
+    <property Name="ValueJson" />
+    <property Name="ValueType" />
+    <property Name="Key" />
+    <property Name="IsLocked" />
+  </class>
+  <class Name="VConverter" View="v_Converter">
     <property Name="Identifier" Summary="主键" />
     <property Name="Message" Summary="日志内容" />
     <property Name="CreateTime" Summary="创建时间" />

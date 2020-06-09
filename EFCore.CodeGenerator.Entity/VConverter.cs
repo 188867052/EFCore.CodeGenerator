@@ -3,10 +3,7 @@ using System.Collections.Generic;
 
 namespace Entities
 {
-    /// <summary>
-    /// 日志.
-    /// </summary>
-    public partial class Log
+    public partial class VConverter
     {
         /// <summary>
         /// 主键.
@@ -32,5 +29,10 @@ namespace Entities
         /// 链接.
         /// </summary>
         public Uri Url { get; set; }
+
+        /// <summary>
+        /// New Id.
+        /// </summary>
+        public Guid? NewId { get; set; }
     }
 }

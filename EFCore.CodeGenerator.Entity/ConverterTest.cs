@@ -3,15 +3,12 @@ using System.Collections.Generic;
 
 namespace Entities
 {
-    /// <summary>
-    /// 日志视图.
-    /// </summary>
-    public partial class VLog
+    public partial class ConverterTest
     {
         /// <summary>
         /// 主键.
         /// </summary>
-        public Guid Identifier { get; set; }
+        public int Identifier { get; set; }
 
         /// <summary>
         /// 日志内容.
@@ -32,10 +29,5 @@ namespace Entities
         /// 链接.
         /// </summary>
         public Uri Url { get; set; }
-
-        /// <summary>
-        /// New Id.
-        /// </summary>
-        public Guid? NewId { get; set; }
     }
 }

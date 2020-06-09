@@ -1100,6 +1100,10 @@ ORDER BY [table_schema], [table_name], [f].[name], [fc].[constraint_column_id]";
         /// <param name="tables"></param>
         private void GetForeignKeysFromConfig(IReadOnlyList<DatabaseTable> tables)
         {
+            if (EFCore.CodeGenerator.Entity.Dapper.Utilities.DbSetting.Classes == null)
+            {
+                return;
+            }
             foreach (var @class in EFCore.CodeGenerator.Entity.Dapper.Utilities.DbSetting.Classes)
             {
                 foreach (var property in @class.Properties.Where(o => !string.IsNullOrEmpty(o.FK)))

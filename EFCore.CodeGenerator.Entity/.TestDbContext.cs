@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using EFCore.CodeGenerator;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Entities
@@ -17,23 +16,59 @@ namespace Entities
         {
         }
 
-        public virtual DbSet<Class> Class { get; set; }
+        public virtual DbSet<AuthEntityInfo> AuthEntityInfo { get; set; }
 
-        public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<AuthEntityRole> AuthEntityRole { get; set; }
 
-        public virtual DbSet<CourseScore> CourseScore { get; set; }
+        public virtual DbSet<AuthEntityUser> AuthEntityUser { get; set; }
 
-        public virtual DbSet<Grade> Grade { get; set; }
+        public virtual DbSet<AuthFunction> AuthFunction { get; set; }
 
-        public virtual DbSet<Log> Log { get; set; }
+        public virtual DbSet<AuthModule> AuthModule { get; set; }
 
-        public virtual DbSet<Student> Student { get; set; }
+        public virtual DbSet<AuthModuleFunction> AuthModuleFunction { get; set; }
 
-        public virtual DbSet<Teacher> Teacher { get; set; }
+        public virtual DbSet<AuthModuleRole> AuthModuleRole { get; set; }
 
-        public virtual DbSet<TeacherCourseMapping> TeacherCourseMapping { get; set; }
+        public virtual DbSet<AuthModuleUser> AuthModuleUser { get; set; }
 
-        public virtual DbSet<VLog> VLog { get; set; }
+        public virtual DbSet<ConverterTest> ConverterTest { get; set; }
+
+        public virtual DbSet<IdentityLoginLog> IdentityLoginLog { get; set; }
+
+        public virtual DbSet<IdentityOrganization> IdentityOrganization { get; set; }
+
+        public virtual DbSet<IdentityRole> IdentityRole { get; set; }
+
+        public virtual DbSet<IdentityRoleClaim> IdentityRoleClaim { get; set; }
+
+        public virtual DbSet<IdentityUser> IdentityUser { get; set; }
+
+        public virtual DbSet<IdentityUserClaim> IdentityUserClaim { get; set; }
+
+        public virtual DbSet<IdentityUserDetail> IdentityUserDetail { get; set; }
+
+        public virtual DbSet<IdentityUserLogin> IdentityUserLogin { get; set; }
+
+        public virtual DbSet<IdentityUserRole> IdentityUserRole { get; set; }
+
+        public virtual DbSet<IdentityUserToken> IdentityUserToken { get; set; }
+
+        public virtual DbSet<InfosMessage> InfosMessage { get; set; }
+
+        public virtual DbSet<InfosMessageReceive> InfosMessageReceive { get; set; }
+
+        public virtual DbSet<InfosMessageReply> InfosMessageReply { get; set; }
+
+        public virtual DbSet<SystemsAuditEntity> SystemsAuditEntity { get; set; }
+
+        public virtual DbSet<SystemsAuditOperation> SystemsAuditOperation { get; set; }
+
+        public virtual DbSet<SystemsAuditProperty> SystemsAuditProperty { get; set; }
+
+        public virtual DbSet<SystemsKeyValue> SystemsKeyValue { get; set; }
+
+        public virtual DbSet<VConverter> VConverter { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,74 +80,158 @@ namespace Entities
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Class>(entity =>
+            modelBuilder.Entity<AuthEntityInfo>(entity =>
             {
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+                entity.ToTable("Auth_EntityInfo");
 
-                entity.Property(e => e.Location)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.HasIndex(e => e.TypeName)
+                    .HasName("ClassFullNameIndex")
+                    .IsUnique();
 
-                entity.Property(e => e.Name).HasMaxLength(50);
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+                entity.Property(e => e.Name).IsRequired();
 
-                entity.HasOne(d => d.Grade)
-                    .WithMany(p => p.Class)
-                    .HasForeignKey(d => d.GradeId);
+                entity.Property(e => e.PropertyJson).IsRequired();
 
-                entity.HasOne(d => d.HeadTeacher)
-                    .WithMany(p => p.Class)
-                    .HasForeignKey(d => d.HeadTeacherId);
+                entity.Property(e => e.TypeName).IsRequired();
             });
 
-            modelBuilder.Entity<Course>(entity =>
+            modelBuilder.Entity<AuthEntityRole>(entity =>
             {
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+                entity.ToTable("Auth_EntityRole");
 
-                entity.Property(e => e.IsDeleted).HasConversion(new BoolToZeroOneConverter<int>());
+                entity.HasIndex(e => e.RoleId);
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.HasIndex(e => new { e.EntityId, e.RoleId, e.Operation })
+                    .HasName("EntityRoleIndex")
+                    .IsUnique();
 
-                entity.Property(e => e.TeacherId)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+                entity.HasOne(d => d.Entity)
+                    .WithMany(p => p.AuthEntityRole)
+                    .HasForeignKey(d => d.EntityId);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AuthEntityRole)
+                    .HasForeignKey(d => d.RoleId);
             });
 
-            modelBuilder.Entity<CourseScore>(entity =>
+            modelBuilder.Entity<AuthEntityUser>(entity =>
             {
-                entity.Property(e => e.Id).ValueGeneratedOnAdd();
+                entity.ToTable("Auth_EntityUser");
 
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+                entity.HasIndex(e => e.UserId);
 
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+                entity.HasIndex(e => new { e.EntityId, e.UserId })
+                    .HasName("EntityUserIndex");
 
-                entity.HasOne(d => d.IdNavigation)
-                    .WithOne(p => p.CourseScore)
-                    .HasForeignKey<CourseScore>(d => d.Id)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_course_score_course");
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Entity)
+                    .WithMany(p => p.AuthEntityUser)
+                    .HasForeignKey(d => d.EntityId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AuthEntityUser)
+                    .HasForeignKey(d => d.UserId);
             });
 
-            modelBuilder.Entity<Grade>(entity =>
+            modelBuilder.Entity<AuthFunction>(entity =>
             {
-                entity.Property(e => e.Id).HasComment("主键");
+                entity.ToTable("Auth_Function");
 
-                entity.Property(e => e.Name)
-                    .HasMaxLength(50)
-                    .HasComment("名称");
+                entity.HasIndex(e => new { e.Area, e.Controller, e.Action })
+                    .HasName("AreaControllerActionIndex")
+                    .IsUnique()
+                    .HasFilter("([Area] IS NOT NULL AND [Controller] IS NOT NULL AND [Action] IS NOT NULL)");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
             });
 
-            modelBuilder.Entity<Log>(entity =>
+            modelBuilder.Entity<AuthModule>(entity =>
+            {
+                entity.ToTable("Auth_Module");
+
+                entity.HasIndex(e => e.ParentId);
+
+                entity.Property(e => e.Code).IsRequired();
+
+                entity.Property(e => e.Name).IsRequired();
+
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.InverseParent)
+                    .HasForeignKey(d => d.ParentId);
+            });
+
+            modelBuilder.Entity<AuthModuleFunction>(entity =>
+            {
+                entity.ToTable("Auth_ModuleFunction");
+
+                entity.HasIndex(e => e.FunctionId);
+
+                entity.HasIndex(e => new { e.ModuleId, e.FunctionId })
+                    .HasName("ModuleFunctionIndex")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Function)
+                    .WithMany(p => p.AuthModuleFunction)
+                    .HasForeignKey(d => d.FunctionId);
+
+                entity.HasOne(d => d.Module)
+                    .WithMany(p => p.AuthModuleFunction)
+                    .HasForeignKey(d => d.ModuleId);
+            });
+
+            modelBuilder.Entity<AuthModuleRole>(entity =>
+            {
+                entity.ToTable("Auth_ModuleRole");
+
+                entity.HasIndex(e => e.RoleId);
+
+                entity.HasIndex(e => new { e.ModuleId, e.RoleId })
+                    .HasName("ModuleRoleIndex")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Module)
+                    .WithMany(p => p.AuthModuleRole)
+                    .HasForeignKey(d => d.ModuleId);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.AuthModuleRole)
+                    .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<AuthModuleUser>(entity =>
+            {
+                entity.ToTable("Auth_ModuleUser");
+
+                entity.HasIndex(e => e.UserId);
+
+                entity.HasIndex(e => new { e.ModuleId, e.UserId })
+                    .HasName("ModuleUserIndex")
+                    .IsUnique();
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Module)
+                    .WithMany(p => p.AuthModuleUser)
+                    .HasForeignKey(d => d.ModuleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.AuthModuleUser)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<ConverterTest>(entity =>
             {
                 entity.HasKey(e => e.Identifier)
                     .HasName("PK_log");
-
-                entity.Property(e => e.Identifier).HasDefaultValueSql("(newid())");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
@@ -125,76 +244,290 @@ namespace Entities
                     .HasMaxLength(100);
             });
 
-            modelBuilder.Entity<Student>(entity =>
+            modelBuilder.Entity<IdentityLoginLog>(entity =>
             {
-                entity.Property(e => e.Address)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.ToTable("Identity_LoginLog");
 
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+                entity.HasIndex(e => e.UserId);
 
-                entity.Property(e => e.IsDeleted)
-                    .HasConversion(new BoolToStringConverter(bool.FalseString, bool.TrueString))
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsFixedLength();
+                entity.Property(e => e.Id).ValueGeneratedNever();
 
-                entity.Property(e => e.Mobile)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(10)
-                    .IsFixedLength();
-
-                entity.Property(e => e.Sex)
-                    .HasConversion(new EnumToStringConverter<SexEnum>())
-                    .HasMaxLength(10)
-                    .IsFixedLength();
-
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
-
-                entity.HasOne(d => d.Class)
-                    .WithMany(p => p.Student)
-                    .HasForeignKey(d => d.ClassId)
-                    .HasConstraintName("FK_student_class");
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.IdentityLoginLog)
+                    .HasForeignKey(d => d.UserId);
             });
 
-            modelBuilder.Entity<Teacher>(entity =>
+            modelBuilder.Entity<IdentityOrganization>(entity =>
             {
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+                entity.ToTable("Identity_Organization");
 
-                entity.Property(e => e.Name).HasMaxLength(50);
+                entity.HasIndex(e => e.ParentId);
 
-                entity.Property(e => e.Sex)
-                    .HasConversion(new EnumToStringConverter<SexEnum>())
-                    .HasMaxLength(50);
+                entity.Property(e => e.Name).IsRequired();
 
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+                entity.HasOne(d => d.Parent)
+                    .WithMany(p => p.InverseParent)
+                    .HasForeignKey(d => d.ParentId);
             });
 
-            modelBuilder.Entity<TeacherCourseMapping>(entity =>
+            modelBuilder.Entity<IdentityRole>(entity =>
             {
-                entity.Property(e => e.CreateTime).HasColumnType("datetime");
+                entity.ToTable("Identity_Role");
 
-                entity.Property(e => e.UpdateTime).HasColumnType("datetime");
+                entity.HasIndex(e => e.MessageId);
 
-                entity.HasOne(d => d.Course)
-                    .WithMany(p => p.TeacherCourseMapping)
-                    .HasForeignKey(d => d.CourseId)
-                    .HasConstraintName("FK_course_id");
+                entity.HasIndex(e => new { e.NormalizedName, e.DeletedTime })
+                    .HasName("RoleNameIndex")
+                    .IsUnique()
+                    .HasFilter("([DeletedTime] IS NOT NULL)");
 
-                entity.HasOne(d => d.Teacher)
-                    .WithMany(p => p.TeacherCourseMapping)
-                    .HasForeignKey(d => d.TeacherId)
-                    .HasConstraintName("FK_teacher_id");
+                entity.Property(e => e.Name).IsRequired();
+
+                entity.Property(e => e.NormalizedName).IsRequired();
+
+                entity.Property(e => e.Remark).HasMaxLength(512);
+
+                entity.HasOne(d => d.Message)
+                    .WithMany(p => p.IdentityRole)
+                    .HasForeignKey(d => d.MessageId);
             });
 
-            modelBuilder.Entity<VLog>(entity =>
+            modelBuilder.Entity<IdentityRoleClaim>(entity =>
+            {
+                entity.ToTable("Identity_RoleClaim");
+
+                entity.HasIndex(e => e.RoleId);
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.IdentityRoleClaim)
+                    .HasForeignKey(d => d.RoleId);
+            });
+
+            modelBuilder.Entity<IdentityUser>(entity =>
+            {
+                entity.ToTable("Identity_User");
+
+                entity.HasIndex(e => e.MessageId);
+
+                entity.HasIndex(e => new { e.NormalizeEmail, e.DeletedTime })
+                    .HasName("EmailIndex");
+
+                entity.HasIndex(e => new { e.NormalizedUserName, e.DeletedTime })
+                    .HasName("UserNameIndex")
+                    .IsUnique()
+                    .HasFilter("([DeletedTime] IS NOT NULL)");
+
+                entity.Property(e => e.NormalizedUserName).IsRequired();
+
+                entity.Property(e => e.UserName).IsRequired();
+
+                entity.HasOne(d => d.Message)
+                    .WithMany(p => p.IdentityUser)
+                    .HasForeignKey(d => d.MessageId);
+            });
+
+            modelBuilder.Entity<IdentityUserClaim>(entity =>
+            {
+                entity.ToTable("Identity_UserClaim");
+
+                entity.HasIndex(e => e.UserId);
+
+                entity.Property(e => e.ClaimType).IsRequired();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.IdentityUserClaim)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<IdentityUserDetail>(entity =>
+            {
+                entity.ToTable("Identity_UserDetail");
+
+                entity.HasIndex(e => e.UserId)
+                    .IsUnique();
+
+                entity.HasOne(d => d.User)
+                    .WithOne(p => p.IdentityUserDetail)
+                    .HasForeignKey<IdentityUserDetail>(d => d.UserId);
+            });
+
+            modelBuilder.Entity<IdentityUserLogin>(entity =>
+            {
+                entity.ToTable("Identity_UserLogin");
+
+                entity.HasIndex(e => e.UserId);
+
+                entity.HasIndex(e => new { e.LoginProvider, e.ProviderKey })
+                    .HasName("UserLoginIndex")
+                    .IsUnique()
+                    .HasFilter("([LoginProvider] IS NOT NULL AND [ProviderKey] IS NOT NULL)");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.IdentityUserLogin)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<IdentityUserRole>(entity =>
+            {
+                entity.ToTable("Identity_UserRole");
+
+                entity.HasIndex(e => e.RoleId);
+
+                entity.HasIndex(e => new { e.UserId, e.RoleId, e.DeletedTime })
+                    .HasName("UserRoleIndex")
+                    .IsUnique()
+                    .HasFilter("([DeletedTime] IS NOT NULL)");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.IdentityUserRole)
+                    .HasForeignKey(d => d.RoleId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.IdentityUserRole)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<IdentityUserToken>(entity =>
+            {
+                entity.ToTable("Identity_UserToken");
+
+                entity.HasIndex(e => new { e.UserId, e.LoginProvider, e.Name })
+                    .HasName("UserTokenIndex")
+                    .IsUnique()
+                    .HasFilter("([LoginProvider] IS NOT NULL AND [Name] IS NOT NULL)");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.IdentityUserToken)
+                    .HasForeignKey(d => d.UserId);
+            });
+
+            modelBuilder.Entity<InfosMessage>(entity =>
+            {
+                entity.ToTable("Infos_Message");
+
+                entity.HasIndex(e => e.SenderId);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Content).IsRequired();
+
+                entity.Property(e => e.Title).IsRequired();
+
+                entity.HasOne(d => d.Sender)
+                    .WithMany(p => p.InfosMessage)
+                    .HasForeignKey(d => d.SenderId);
+            });
+
+            modelBuilder.Entity<InfosMessageReceive>(entity =>
+            {
+                entity.ToTable("Infos_MessageReceive");
+
+                entity.HasIndex(e => e.MessageId);
+
+                entity.HasIndex(e => e.UserId);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Message)
+                    .WithMany(p => p.InfosMessageReceive)
+                    .HasForeignKey(d => d.MessageId);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.InfosMessageReceive)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<InfosMessageReply>(entity =>
+            {
+                entity.ToTable("Infos_MessageReply");
+
+                entity.HasIndex(e => e.BelongMessageId);
+
+                entity.HasIndex(e => e.ParentMessageId);
+
+                entity.HasIndex(e => e.ParentReplyId);
+
+                entity.HasIndex(e => e.UserId);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Content).IsRequired();
+
+                entity.HasOne(d => d.BelongMessage)
+                    .WithMany(p => p.InfosMessageReplyBelongMessage)
+                    .HasForeignKey(d => d.BelongMessageId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ParentMessage)
+                    .WithMany(p => p.InfosMessageReplyParentMessage)
+                    .HasForeignKey(d => d.ParentMessageId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.ParentReply)
+                    .WithMany(p => p.InverseParentReply)
+                    .HasForeignKey(d => d.ParentReplyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.InfosMessageReply)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
+            modelBuilder.Entity<SystemsAuditEntity>(entity =>
+            {
+                entity.ToTable("Systems_AuditEntity");
+
+                entity.HasIndex(e => e.OperationId);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.Operation)
+                    .WithMany(p => p.SystemsAuditEntity)
+                    .HasForeignKey(d => d.OperationId);
+            });
+
+            modelBuilder.Entity<SystemsAuditOperation>(entity =>
+            {
+                entity.ToTable("Systems_AuditOperation");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+            });
+
+            modelBuilder.Entity<SystemsAuditProperty>(entity =>
+            {
+                entity.ToTable("Systems_AuditProperty");
+
+                entity.HasIndex(e => e.AuditEntityId);
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.HasOne(d => d.AuditEntity)
+                    .WithMany(p => p.SystemsAuditProperty)
+                    .HasForeignKey(d => d.AuditEntityId);
+            });
+
+            modelBuilder.Entity<SystemsKeyValue>(entity =>
+            {
+                entity.ToTable("Systems_KeyValue");
+
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
+                entity.Property(e => e.Key).IsRequired();
+            });
+
+            modelBuilder.Entity<VConverter>(entity =>
             {
                 entity.HasNoKey();
 
-                entity.ToView("v_log");
+                entity.ToView("v_Converter");
 
                 entity.Property(e => e.CreateTime).HasColumnType("datetime");
 
